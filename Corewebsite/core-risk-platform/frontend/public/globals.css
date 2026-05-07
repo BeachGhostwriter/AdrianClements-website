@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --nav-width: 240px;
+  --header-height: 56px;
+}
+
+@layer base {
+  body { @apply bg-gray-50 text-gray-900 antialiased; }
+}
+
+@layer components {
+  .card { @apply bg-white rounded-xl border border-gray-200 shadow-sm; }
+  .card-header { @apply px-6 py-4 border-b border-gray-100; }
+  .card-body { @apply px-6 py-4; }
+  .btn { @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors; }
+  .btn-primary { @apply btn bg-brand-600 text-white hover:bg-brand-700; }
+  .btn-secondary { @apply btn bg-white text-gray-700 border border-gray-300 hover:bg-gray-50; }
+  .btn-danger { @apply btn bg-red-600 text-white hover:bg-red-700; }
+  .badge { @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium; }
+  .badge-critical { @apply badge bg-red-100 text-red-800; }
+  .badge-high     { @apply badge bg-orange-100 text-orange-800; }
+  .badge-medium   { @apply badge bg-yellow-100 text-yellow-800; }
+  .badge-low      { @apply badge bg-green-100 text-green-800; }
+  .badge-monitor  { @apply badge bg-gray-100 text-gray-700; }
+  .input { @apply block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none; }
+  .label { @apply block text-sm font-medium text-gray-700 mb-1; }
+}

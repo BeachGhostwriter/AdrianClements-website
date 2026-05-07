@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+.npm
+
+# Build outputs
+dist/
+.next/
+out/
+build/
+
+# Environment files
+.env
+.env.local
+.env.production
+*.env
+
+# Database
+*.db
+*.sqlite
+
+# Prisma
+prisma/migrations/dev.db
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.swp
+
+# Excel data files (may contain sensitive data)
+backend/data/*.xlsx
+backend/data/*.xls

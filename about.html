@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adrian Clements | AMC — Risk Management Consulting</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'bcg-green':     '#00A651',
+            'bcg-green-dark':'#006338',
+            'bcg-black':     '#1A1A1A',
+            'bcg-grey':      '#F4F4F4',
+            'bcg-mid':       '#555555',
+          },
+          fontFamily: {
+            sans: ['"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 10px; scroll-behavior: smooth; }
+    body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 1.4rem; line-height: 1.5; color: #1A1A1A; background: #fff; overflow-x: hidden; }
+    .display-xl  { font-size: clamp(2.8rem, 4.5vw, 5.2rem); font-weight: 300; line-height: 1.08; letter-spacing: -0.02em; }
+    .display-lg  { font-size: clamp(2.2rem, 3vw, 3.6rem);   font-weight: 300; line-height: 1.1;  letter-spacing: -0.015em; }
+    .display-md  { font-size: clamp(1.8rem, 2.2vw, 2.6rem); font-weight: 400; line-height: 1.2; }
+    .body-lg     { font-size: 1.6rem; line-height: 1.65; }
+    .body-sm     { font-size: 1.3rem; line-height: 1.55; }
+    .label       { font-size: 1.1rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+    .nav-link { font-size: 1.3rem; font-weight: 500; color: #1A1A1A; text-decoration: none; padding: 0.4rem 0; position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #00A651; transition: width 0.22s cubic-bezier(.4,0,.2,1); }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link:hover { color: #006338; }
+    .btn-green { display: inline-flex; align-items: center; gap: 0.6rem; background: #00A651; color: #fff; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 1rem 2.2rem; border: none; cursor: pointer; transition: background 0.18s ease, transform 0.14s ease; text-decoration: none; }
+    .btn-green:hover  { background: #006338; transform: translateY(-1px); }
+    .btn-green:active { background: #004d28; transform: translateY(0); }
+    .btn-green:focus-visible { outline: 2px solid #00A651; outline-offset: 3px; }
+    .arrow-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #00A651; text-decoration: none; transition: gap 0.18s ease, color 0.14s ease; }
+    .arrow-link:hover { gap: 1rem; color: #006338; }
+    .arrow-link:focus-visible { outline: 2px solid #00A651; outline-offset: 2px; }
+    .card-hover { transition: transform 0.22s cubic-bezier(.4,0,.2,1), box-shadow 0.22s cubic-bezier(.4,0,.2,1); }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,166,81,0.08); }
+    .img-overlay { position: relative; overflow: hidden; }
+    .img-overlay img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s cubic-bezier(.4,0,.2,1); }
+    .img-overlay:hover img { transform: scale(1.04); }
+    .overlay-grad { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.1) 60%, transparent 100%); }
+    .section-rule { width: 4rem; height: 3px; background: #00A651; margin-bottom: 1.6rem; }
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f0f0f0; }
+    ::-webkit-scrollbar-thumb { background: #00A651; border-radius: 3px; }
+
+    /* ── Nav Dropdown ── */
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-menu {
+      position: absolute; top: calc(100% + 1rem); left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      background: #fff; border: 1px solid #e8e8e8;
+      min-width: 24rem; padding: 0.6rem 0;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
+      z-index: 200;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown:focus-within .nav-dropdown-menu {
+      opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
+      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s;
+    }
+    .dropdown-item {
+      display: flex; align-items: center; padding: 1rem 2rem;
+      font-size: 1.3rem; font-weight: 500; color: #1A1A1A;
+      text-decoration: none; border-left: 3px solid transparent;
+      transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease;
+    }
+    .dropdown-item:hover { background: #f8f8f8; color: #00A651; border-left-color: #00A651; }
+    .dropdown-divider { height: 1px; background: #f0f0f0; margin: 0.4rem 0; }
+    .nav-dropdown-btn {
+      font-size: 1.3rem; font-weight: 500; color: #1A1A1A;
+      background: none; border: none; cursor: pointer; font-family: inherit;
+      padding: 0.4rem 0; display: inline-flex; align-items: center; gap: 0.4rem;
+      position: relative;
+    }
+    .nav-dropdown-btn::after {
+      content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+      background: #00A651; transition: width 0.22s cubic-bezier(.4,0,.2,1);
+    }
+    .nav-dropdown:hover .nav-dropdown-btn::after { width: 100%; }
+    .nav-dropdown:hover .nav-dropdown-btn { color: #006338; }
+    .nav-dropdown-chevron { transition: transform 0.18s ease; }
+    .nav-dropdown:hover .nav-dropdown-chevron { transform: rotate(180deg); }
+
+    /* ── Bio timeline ── */
+    .timeline-item { padding-left: 2.4rem; border-left: 2px solid #e8e8e8; position: relative; padding-bottom: 2.8rem; }
+    .timeline-item::before { content: ''; position: absolute; left: -5px; top: 0.5rem; width: 8px; height: 8px; background: #00A651; border-radius: 50%; }
+    .timeline-item:last-child { padding-bottom: 0; }
+  </style>
+</head>
+<body>
+
+<!-- ════════ NAVIGATION ════════ -->
+<header id="site-header" style="position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #e8e8e8;transition:box-shadow 0.2s ease;">
+  <nav style="max-width:1280px;margin:0 auto;padding:1.8rem 2.4rem;min-height:9rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;">
+    <a href="index.html" style="flex-shrink:0;" aria-label="AMC Home">
+      <img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:8rem;width:auto;" />
+    </a>
+    <div style="display:flex;align-items:center;gap:2.8rem;flex-wrap:wrap;">
+      <a href="index.html#services"  class="nav-link">Services</a>
+      <a href="index.html#insights"  class="nav-link">Research</a>
+      <a href="publications.html"    class="nav-link">Publications</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          About
+          <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" role="menu">
+          <a href="about.html" class="dropdown-item" style="color:#00A651;font-weight:600;">Adrian Clements</a>
+          <div class="dropdown-divider"></div>
+          <a href="publications.html#publications" class="dropdown-item">Articles &amp; Publications</a>
+          <a href="publications.html#speeches" class="dropdown-item">Speeches</a>
+          <a href="publications.html#quotations" class="dropdown-item">Quotations &amp; Interviews</a>
+        </div>
+      </div>
+      <a href="index.html#expertise" class="nav-link">Expertise</a>
+      <a href="index.html#contact"   class="nav-link">Contact</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:1.6rem;">
+      <a href="index.html#contact" class="btn-green" style="padding:0.8rem 1.8rem;">
+        Contact Adrian
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <button id="burger" aria-label="Toggle menu" style="display:flex;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;">
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+      </button>
+    </div>
+  </nav>
+  <div id="mobile-menu" style="background:#fff;border-top:1px solid #e8e8e8;padding:2rem 2.4rem;flex-direction:column;gap:1.6rem;">
+    <a href="index.html#services"  class="nav-link" style="font-size:1.6rem;">Services</a>
+    <a href="index.html#insights"  class="nav-link" style="font-size:1.6rem;">Research</a>
+    <a href="publications.html"    class="nav-link" style="font-size:1.6rem;">Publications</a>
+    <a href="about.html"           class="nav-link" style="font-size:1.6rem;">About — Adrian Clements</a>
+    <a href="publications.html#publications" class="nav-link" style="font-size:1.4rem;padding-left:1.6rem;color:#555;">Articles &amp; Publications</a>
+    <a href="publications.html#speeches"    class="nav-link" style="font-size:1.4rem;padding-left:1.6rem;color:#555;">Speeches</a>
+    <a href="publications.html#quotations"  class="nav-link" style="font-size:1.4rem;padding-left:1.6rem;color:#555;">Quotations &amp; Interviews</a>
+    <a href="index.html#expertise" class="nav-link" style="font-size:1.6rem;">Expertise</a>
+    <a href="index.html#contact"   class="nav-link" style="font-size:1.6rem;">Contact</a>
+  </div>
+</header>
+
+<!-- ════════ HERO ════════ -->
+<section style="position:relative;background:#1A1A1A;overflow:hidden;min-height:56vh;display:flex;align-items:flex-end;" aria-label="About Adrian Clements">
+  <div style="position:absolute;inset:0;">
+    <img src="Webpictures/Boat.jpg" alt="Adrian Clements" aria-hidden="true" style="width:100%;height:100%;object-fit:cover;display:block;" />
+    <div style="position:absolute;inset:0;background:linear-gradient(105deg, rgba(0,99,56,0.88) 0%, rgba(0,166,81,0.4) 45%, rgba(0,0,0,0.65) 100%);"></div>
+    <div style="position:absolute;top:-20%;right:0;width:50%;aspect-ratio:1;background:radial-gradient(circle,rgba(0,166,81,0.18) 0%,transparent 70%);pointer-events:none;"></div>
+  </div>
+  <div style="position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:5rem 2.4rem 6rem;width:100%;">
+    <p class="label" style="color:#00A651;margin-bottom:1.4rem;">About</p>
+    <h1 class="display-xl" style="color:#fff;max-width:72rem;margin-bottom:2rem;">Adrian Clements</h1>
+    <p class="body-lg" style="color:rgba(255,255,255,0.82);max-width:56rem;margin-bottom:3rem;">Risk management consultant, educator, and researcher — with over two decades of practitioner experience across banking, insurance, and industrial risk.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:3.2rem;">
+      <a href="#biography" style="color:rgba(255,255,255,0.6);font-size:1.3rem;font-weight:500;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:0.2rem;transition:color 0.15s,border-color 0.15s;" onmouseenter="this.style.color='#fff';this.style.borderColor='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.6)';this.style.borderColor='rgba(255,255,255,0.3)'">Biography</a>
+      <a href="publications.html#publications" style="color:rgba(255,255,255,0.6);font-size:1.3rem;font-weight:500;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:0.2rem;transition:color 0.15s,border-color 0.15s;" onmouseenter="this.style.color='#fff';this.style.borderColor='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.6)';this.style.borderColor='rgba(255,255,255,0.3)'">Articles &amp; Publications</a>
+      <a href="publications.html#speeches" style="color:rgba(255,255,255,0.6);font-size:1.3rem;font-weight:500;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:0.2rem;transition:color 0.15s,border-color 0.15s;" onmouseenter="this.style.color='#fff';this.style.borderColor='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.6)';this.style.borderColor='rgba(255,255,255,0.3)'">Speeches</a>
+      <a href="publications.html#quotations" style="color:rgba(255,255,255,0.6);font-size:1.3rem;font-weight:500;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:0.2rem;transition:color 0.15s,border-color 0.15s;" onmouseenter="this.style.color='#fff';this.style.borderColor='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.6)';this.style.borderColor='rgba(255,255,255,0.3)'">Quotations &amp; Interviews</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ BIOGRAPHY ════════ -->
+<section id="biography" style="padding:8rem 2.4rem;background:#fff;" aria-label="Biography">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1.5fr;gap:7.2rem;align-items:start;" class="bio-grid">
+
+    <!-- Left column: photo + quick facts -->
+    <div>
+      <div class="img-overlay card-hover" style="height:48rem;margin-bottom:3.2rem;">
+        <img src="Webpictures/Boat.jpg" alt="Adrian Clements" />
+        <div class="overlay-grad"></div>
+      </div>
+
+      <!-- Quick-facts card -->
+      <div style="background:#F4F4F4;padding:3.2rem;">
+        <div class="section-rule"></div>
+        <p class="label" style="color:#555;margin-bottom:2rem;">At a Glance</p>
+        <div style="display:flex;flex-direction:column;gap:1.6rem;">
+          <div style="display:flex;gap:1.2rem;align-items:flex-start;">
+            <div style="width:3px;height:100%;background:#00A651;flex-shrink:0;align-self:stretch;min-height:1.6rem;"></div>
+            <div>
+              <p style="font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#888;margin-bottom:0.3rem;">Experience</p>
+              <p style="font-size:1.5rem;color:#1A1A1A;font-weight:500;">20+ years in risk management</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:1.2rem;align-items:flex-start;">
+            <div style="width:3px;background:#00A651;flex-shrink:0;align-self:stretch;min-height:1.6rem;"></div>
+            <div>
+              <p style="font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#888;margin-bottom:0.3rem;">Sectors</p>
+              <p style="font-size:1.5rem;color:#1A1A1A;font-weight:500;">Banking, Insurance, Industrial, Asset Management</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:1.2rem;align-items:flex-start;">
+            <div style="width:3px;background:#00A651;flex-shrink:0;align-self:stretch;min-height:1.6rem;"></div>
+            <div>
+              <p style="font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#888;margin-bottom:0.3rem;">Published in</p>
+              <p style="font-size:1.5rem;color:#1A1A1A;font-weight:500;">Criticaleye, Strategic Risk, The Economist, Global Risk Magazine</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:1.2rem;align-items:flex-start;">
+            <div style="width:3px;background:#00A651;flex-shrink:0;align-self:stretch;min-height:1.6rem;"></div>
+            <div>
+              <p style="font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#888;margin-bottom:0.3rem;">Spoken at</p>
+              <p style="font-size:1.5rem;color:#1A1A1A;font-weight:500;">FERMA, Mapfre Global Risk, RiskNet, MarcusEvans, The Economist</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:1.2rem;align-items:flex-start;">
+            <div style="width:3px;background:#00A651;flex-shrink:0;align-self:stretch;min-height:1.6rem;"></div>
+            <div>
+              <p style="font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#888;margin-bottom:0.3rem;">Based in</p>
+              <p style="font-size:1.5rem;color:#1A1A1A;font-weight:500;">Luxembourg / International</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right column: bio text + timeline -->
+    <div>
+      <div class="section-rule"></div>
+      <p class="label" style="color:#00A651;margin-bottom:1.6rem;">Biography</p>
+      <h2 class="display-lg" style="color:#1A1A1A;margin-bottom:3.2rem;">Practitioner-Led Risk Intelligence</h2>
+
+      <!-- Bio paragraphs — add detail here -->
+      <div style="display:flex;flex-direction:column;gap:2rem;margin-bottom:4.8rem;">
+        <p class="body-lg" style="color:#333;line-height:1.75;">
+          Adrian Clements founded AMC to bridge the gap between theoretical risk frameworks and the practical realities of managing risk in complex, fast-moving organisations. With over two decades of hands-on experience spanning banking, asset management, insurance, and industrial risk, he combines deep quantitative expertise with pragmatic governance insight.
+        </p>
+        <p style="font-size:1.5rem;color:#555;line-height:1.75;">
+          Throughout his career Adrian has held senior risk roles in major international institutions, advising boards and executive teams on risk appetite, governance design, and regulatory capital. He is a recognised speaker at leading global risk forums — including FERMA, Mapfre Global Risk, and RiskNet — and has been interviewed by The Economist, Strategic Risk, and Global Risk Magazine on topics ranging from supply chain risk and political risk to captive insurance and Industry 4.0.
+        </p>
+        <p style="font-size:1.5rem;color:#555;line-height:1.75;">
+          Adrian's research interests centre on what he calls the "Lighthouse Effect" — the way well-intentioned risk signals can paradoxically attract rather than deter dangerous behaviour — and on building organisational prosilience: the capacity to adapt, absorb shocks, and recover stronger.
+        </p>
+        <p style="font-size:1.5rem;color:#555;line-height:1.75;">
+          AMC serves both seasoned risk managers seeking advanced perspectives and professionals new to the field who need a structured foundation. Every engagement is grounded in real practitioner experience, not textbook theory.
+        </p>
+      </div>
+
+      <!-- Career timeline -->
+      <div style="margin-bottom:4.8rem;">
+        <p class="label" style="color:#555;margin-bottom:2.4rem;">Career Highlights</p>
+        <div>
+          <div class="timeline-item">
+            <p style="font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#00A651;margin-bottom:0.4rem;">2017 — Present</p>
+            <p style="font-size:1.6rem;font-weight:500;color:#1A1A1A;margin-bottom:0.4rem;">Founder &amp; Principal, AMC</p>
+            <p style="font-size:1.4rem;color:#555;line-height:1.65;">Risk management consulting, education, and research — serving financial institutions and industrial organisations globally.</p>
+          </div>
+          <div class="timeline-item">
+            <p style="font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#00A651;margin-bottom:0.4rem;">2000 — 2017</p>
+            <p style="font-size:1.6rem;font-weight:500;color:#1A1A1A;margin-bottom:0.4rem;">Senior Risk Roles — International Institutions</p>
+            <p style="font-size:1.4rem;color:#555;line-height:1.65;">Including roles at GeneralCologne Re and subsequent leadership positions spanning captive insurance, enterprise risk, and project risk management across Europe and beyond.</p>
+          </div>
+          <div class="timeline-item">
+            <p style="font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#00A651;margin-bottom:0.4rem;">Ongoing</p>
+            <p style="font-size:1.6rem;font-weight:500;color:#1A1A1A;margin-bottom:0.4rem;">Speaker, Author &amp; Industry Commentator</p>
+            <p style="font-size:1.4rem;color:#555;line-height:1.65;">Regular keynote speaker, published author in international risk journals, and trusted commentator for leading financial media.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div style="display:flex;flex-wrap:wrap;gap:1.6rem;align-items:center;">
+        <a href="index.html#contact" class="btn-green">
+          Work with Adrian
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="publications.html" class="arrow-link">
+          View publications &amp; speeches
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ QUICK-LINKS TO OTHER ABOUT SECTIONS ════════ -->
+<section style="background:#1A1A1A;padding:6rem 2.4rem;" aria-label="About sections">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.2rem;" class="about-tiles">
+      <a href="publications.html#publications" style="text-decoration:none;display:block;background:#232323;padding:3.2rem 2.8rem;border-bottom:3px solid transparent;transition:border-color 0.2s,background 0.2s;" class="card-hover" onmouseenter="this.style.borderBottomColor='#00A651';this.style.background='#272727'" onmouseleave="this.style.borderBottomColor='transparent';this.style.background='#232323'">
+        <div style="width:4rem;height:4rem;background:#00A651;display:flex;align-items:center;justify-content:center;margin-bottom:2rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Read</p>
+        <h3 style="font-size:2rem;font-weight:400;color:#fff;margin-bottom:1rem;line-height:1.25;">Articles &amp; Publications</h3>
+        <p style="font-size:1.3rem;color:rgba(255,255,255,0.5);line-height:1.65;">Published articles in Criticaleye, Captive Insurance Company Review, and international risk journals.</p>
+      </a>
+      <a href="publications.html#speeches" style="text-decoration:none;display:block;background:#232323;padding:3.2rem 2.8rem;border-bottom:3px solid transparent;transition:border-color 0.2s,background 0.2s;" class="card-hover" onmouseenter="this.style.borderBottomColor='#00A651';this.style.background='#272727'" onmouseleave="this.style.borderBottomColor='transparent';this.style.background='#232323'">
+        <div style="width:4rem;height:4rem;background:#00A651;display:flex;align-items:center;justify-content:center;margin-bottom:2rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </div>
+        <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Listen</p>
+        <h3 style="font-size:2rem;font-weight:400;color:#fff;margin-bottom:1rem;line-height:1.25;">Speeches</h3>
+        <p style="font-size:1.3rem;color:rgba(255,255,255,0.5);line-height:1.65;">Keynotes and presentations at FERMA, Mapfre Global Risk, RiskNet, MarcusEvans, and more.</p>
+      </a>
+      <a href="publications.html#quotations" style="text-decoration:none;display:block;background:#232323;padding:3.2rem 2.8rem;border-bottom:3px solid transparent;transition:border-color 0.2s,background 0.2s;" class="card-hover" onmouseenter="this.style.borderBottomColor='#00A651';this.style.background='#272727'" onmouseleave="this.style.borderBottomColor='transparent';this.style.background='#232323'">
+        <div style="width:4rem;height:4rem;background:#00A651;display:flex;align-items:center;justify-content:center;margin-bottom:2rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Quoted in</p>
+        <h3 style="font-size:2rem;font-weight:400;color:#fff;margin-bottom:1rem;line-height:1.25;">Quotations &amp; Interviews</h3>
+        <p style="font-size:1.3rem;color:rgba(255,255,255,0.5);line-height:1.65;">Featured in The Economist, Strategic Risk, Global Risk Magazine, Linklaters, AIG, and Euroforum.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FOOTER ════════ -->
+<footer style="background:#1A1A1A;padding:6.4rem 2.4rem 3.2rem;border-top:1px solid rgba(255,255,255,0.06);" aria-label="Site footer">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4.8rem;padding-bottom:4.8rem;border-bottom:1px solid rgba(255,255,255,0.1);" class="footer-grid">
+      <div>
+        <img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:4.8rem;width:auto;margin-bottom:2rem;filter:brightness(0) invert(1);" />
+        <p style="font-size:1.4rem;color:rgba(255,255,255,0.45);line-height:1.65;max-width:28rem;margin-bottom:2.4rem;">Risk management consulting, education, and research — serving risk professionals and organisations across banking, insurance, and asset management globally.</p>
+        <div style="display:flex;gap:1.2rem;">
+          <a href="#" aria-label="LinkedIn" style="width:3.6rem;height:3.6rem;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;transition:background 0.18s;" onmouseenter="this.style.background='#00A651'" onmouseleave="this.style.background='rgba(255,255,255,0.1)'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Services</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="index.html#services" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Risk Assessment</a></li>
+          <li><a href="index.html#services" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Risk Governance</a></li>
+          <li><a href="index.html#services" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Training &amp; Education</a></li>
+          <li><a href="index.html#services" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Model Risk Management</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">About</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="about.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Adrian Clements</a></li>
+          <li><a href="publications.html#publications" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Articles &amp; Publications</a></li>
+          <li><a href="publications.html#speeches" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Speeches</a></li>
+          <li><a href="publications.html#quotations" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Quotations &amp; Interviews</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Company</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="index.html#contact" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Contact</a></li>
+          <li><a href="#" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Privacy Policy</a></li>
+          <li><a href="#" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Legal Notice</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="padding-top:2.8rem;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1.6rem;">
+      <p style="font-size:1.2rem;color:rgba(255,255,255,0.3);">© 2026 AMC — Adrian Clements. All rights reserved.</p>
+      <p style="font-size:1.2rem;color:rgba(255,255,255,0.2);max-width:60rem;text-align:right;">AMC provides risk management consulting and education services. All views are those of Adrian Clements and do not constitute regulated financial advice.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  document.getElementById('site-header').style.boxShadow = window.scrollY > 8 ? '0 2px 20px rgba(0,0,0,0.1)' : 'none';
+}, { passive: true });
+
+document.getElementById('burger').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('open');
+});
+document.querySelectorAll('#mobile-menu .nav-link').forEach(link => {
+  link.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open'));
+});
+
+function applyResponsive() {
+  const w = window.innerWidth;
+  const bioGrid = document.querySelector('.bio-grid');
+  if (bioGrid) bioGrid.style.gridTemplateColumns = w < 900 ? '1fr' : '1fr 1.5fr';
+  const aboutTiles = document.querySelector('.about-tiles');
+  if (aboutTiles) aboutTiles.style.gridTemplateColumns = w < 640 ? '1fr' : w < 900 ? '1fr 1fr' : 'repeat(3,1fr)';
+  const footerGrid = document.querySelector('.footer-grid');
+  if (footerGrid) footerGrid.style.gridTemplateColumns = w < 640 ? '1fr' : w < 900 ? '1fr 1fr' : '2fr 1fr 1fr 1fr';
+}
+applyResponsive();
+window.addEventListener('resize', applyResponsive, { passive: true });
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; observer.unobserve(e.target); }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('section, footer').forEach(el => {
+  el.style.opacity = '0'; el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.55s cubic-bezier(.4,0,.2,1), transform 0.55s cubic-bezier(.4,0,.2,1)';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
