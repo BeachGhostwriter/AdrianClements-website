@@ -26,17 +26,18 @@ const MIME = {
   '.pdf':  'application/pdf',
 };
 
-// Nodemailer transporter — Outlook / Office 365 SMTP
-// Set SMTP_USER and SMTP_PASS as environment variables before starting the server.
+// Nodemailer transporter — cPanel SMTP
+// Set SMTP_USER (full email address) and SMTP_PASS (cPanel email password) as
+// environment variables before starting the server.
+// SMTP_HOST defaults to mail.<your-domain> — override if your cPanel shows a different hostname.
 const transporter = nodemailer.createTransport({
-  host: 'smtp.office365.com',
-  port: 587,
-  secure: false,
+  host: process.env.SMTP_HOST || 'mail.adrian-clements.com',
+  port: parseInt(process.env.SMTP_PORT || '587', 10),
+  secure: process.env.SMTP_PORT === '465',   // true only for port 465 (SSL)
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
-  tls: { ciphers: 'SSLv3' },
 });
 
 async function handleContactPost(req, res) {
@@ -61,7 +62,7 @@ async function handleContactPost(req, res) {
 
   const mailOptions = {
     from: process.env.SMTP_USER,
-    to: 'adrian.m.clements@outlook.com',
+    to: 'Adrian.clements@adrian-clements.com',
     replyTo: email,
     subject: `AMC Website Enquiry — ${firstName} ${lastName || ''}`.trim(),
     text: `Name: ${firstName} ${lastName || ''}\nEmail: ${email}\n\n${message}`,

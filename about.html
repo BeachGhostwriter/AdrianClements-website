@@ -113,7 +113,19 @@
     </a>
     <div style="display:flex;align-items:center;gap:2.8rem;flex-wrap:wrap;">
       <a href="index.html#services"  class="nav-link">Services</a>
-      <a href="index.html#insights"  class="nav-link">Research</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          Research
+          <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" role="menu">
+          <a href="index.html#insights" class="dropdown-item">Research &amp; Insights</a>
+          <div class="dropdown-divider"></div>
+          <a href="paper-core.html" class="dropdown-item">CORE© Framework</a>
+          <a href="paper-radar.html" class="dropdown-item">RADAR© Framework</a>
+          <a href="paper-forge.html" class="dropdown-item">FORGE© Framework</a>
+        </div>
+      </div>
       <a href="publications.html"    class="nav-link">Publications</a>
       <div class="nav-dropdown">
         <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
@@ -293,7 +305,15 @@
 <!-- ════════ QUICK-LINKS TO OTHER ABOUT SECTIONS ════════ -->
 <section style="background:#1A1A1A;padding:6rem 2.4rem;" aria-label="About sections">
   <div style="max-width:1280px;margin:0 auto;">
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.2rem;" class="about-tiles">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.2rem;" class="about-tiles">
+      <a href="paper-core.html" style="text-decoration:none;display:block;background:#232323;padding:3.2rem 2.8rem;border-bottom:3px solid #00A651;transition:border-color 0.2s,background 0.2s;" class="card-hover" onmouseenter="this.style.background='#272727'" onmouseleave="this.style.background='#232323'">
+        <div style="width:4rem;height:4rem;background:#00A651;display:flex;align-items:center;justify-content:center;margin-bottom:2rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Download</p>
+        <h3 style="font-size:2rem;font-weight:400;color:#fff;margin-bottom:1rem;line-height:1.25;">Framework Papers</h3>
+        <p style="font-size:1.3rem;color:rgba(255,255,255,0.5);line-height:1.65;">CORE©, RADAR© and FORGE© — three proprietary white papers on risk decision making.</p>
+      </a>
       <a href="publications.html#publications" style="text-decoration:none;display:block;background:#232323;padding:3.2rem 2.8rem;border-bottom:3px solid transparent;transition:border-color 0.2s,background 0.2s;" class="card-hover" onmouseenter="this.style.borderBottomColor='#00A651';this.style.background='#272727'" onmouseleave="this.style.borderBottomColor='transparent';this.style.background='#232323'">
         <div style="width:4rem;height:4rem;background:#00A651;display:flex;align-items:center;justify-content:center;margin-bottom:2rem;">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
@@ -345,12 +365,12 @@
         </ul>
       </div>
       <div>
-        <p class="label" style="color:#fff;margin-bottom:2rem;">About</p>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Research</p>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
-          <li><a href="about.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Adrian Clements</a></li>
-          <li><a href="publications.html#publications" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Articles &amp; Publications</a></li>
-          <li><a href="publications.html#speeches" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Speeches</a></li>
-          <li><a href="publications.html#quotations" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Quotations &amp; Interviews</a></li>
+          <li><a href="paper-core.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">CORE© Framework</a></li>
+          <li><a href="paper-radar.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">RADAR© Framework</a></li>
+          <li><a href="paper-forge.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">FORGE© Framework</a></li>
+          <li><a href="publications.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">All Publications</a></li>
         </ul>
       </div>
       <div>
@@ -386,7 +406,7 @@ function applyResponsive() {
   const bioGrid = document.querySelector('.bio-grid');
   if (bioGrid) bioGrid.style.gridTemplateColumns = w < 900 ? '1fr' : '1fr 1.5fr';
   const aboutTiles = document.querySelector('.about-tiles');
-  if (aboutTiles) aboutTiles.style.gridTemplateColumns = w < 640 ? '1fr' : w < 900 ? '1fr 1fr' : 'repeat(3,1fr)';
+  if (aboutTiles) aboutTiles.style.gridTemplateColumns = w < 640 ? '1fr' : w < 900 ? '1fr 1fr' : 'repeat(4,1fr)';
   const footerGrid = document.querySelector('.footer-grid');
   if (footerGrid) footerGrid.style.gridTemplateColumns = w < 640 ? '1fr' : w < 900 ? '1fr 1fr' : '2fr 1fr 1fr 1fr';
 }

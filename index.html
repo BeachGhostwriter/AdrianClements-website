@@ -198,7 +198,19 @@
     <!-- Desktop nav links -->
     <div style="display:flex;align-items:center;gap:2.8rem;">
       <a href="#services"  class="nav-link">Services</a>
-      <a href="#insights"  class="nav-link">Research</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          Research
+          <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" role="menu">
+          <a href="#insights" class="dropdown-item">Research &amp; Insights</a>
+          <div class="dropdown-divider"></div>
+          <a href="paper-core.html" class="dropdown-item">CORE© Framework</a>
+          <a href="paper-radar.html" class="dropdown-item">RADAR© Framework</a>
+          <a href="paper-forge.html" class="dropdown-item">FORGE© Framework</a>
+        </div>
+      </div>
       <a href="publications.html" class="nav-link">Publications</a>
       <div class="nav-dropdown">
         <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
@@ -282,15 +294,15 @@
 
     <!-- Side preview cards -->
     <div style="display:flex;flex-direction:column;gap:1rem;max-width:24rem;min-width:20rem;" class="hero-cards">
-      <a href="#insights" style="text-decoration:none;display:block;background:rgba(255,255,255,0.08);backdrop-filter:blur(8px);border-left:3px solid #00A651;padding:1.4rem 1.6rem;transition:background 0.18s;" class="card-hover" onmouseenter="this.style.background='rgba(255,255,255,0.14)'" onmouseleave="this.style.background='rgba(255,255,255,0.08)'">
+      <a href="paper-core.html" style="text-decoration:none;display:block;background:rgba(255,255,255,0.08);backdrop-filter:blur(8px);border-left:3px solid #00A651;padding:1.4rem 1.6rem;transition:background 0.18s;" class="card-hover" onmouseenter="this.style.background='rgba(255,255,255,0.14)'" onmouseleave="this.style.background='rgba(255,255,255,0.08)'">
         <p class="label" style="color:#fff;margin-bottom:0.8rem;">CORE©; - A better way for Decision Making</p>
         <p style="font-size:1.6rem;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.4;">Beyond the traditional: Embedding velocity and acceleration into the calculation. CORE©</p>
       </a>
-      <a href="#insights" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);backdrop-filter:blur(8px);border-left:3px solid rgba(255,255,255,0.25);padding:1.4rem 1.6rem;transition:background 0.18s;" class="card-hover" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'">
+      <a href="paper-radar.html" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);backdrop-filter:blur(8px);border-left:3px solid rgba(255,255,255,0.25);padding:1.4rem 1.6rem;transition:background 0.18s;" class="card-hover" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'">
         <p class="label" style="color:#fff;margin-bottom:0.8rem;">Ambiguity:- What opportunities are coming?</p>
         <p style="font-size:1.6rem;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.4;">Emerging risks: embracing risk ambiguity and capturing opportunity. RADAR©</p>
       </a>
-      <a href="#insights" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);backdrop-filter:blur(8px);border-left:3px solid rgba(255,255,255,0.25);padding:1.4rem 1.6rem;transition:background 0.18s;" class="card-hover" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'">
+      <a href="paper-forge.html" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);backdrop-filter:blur(8px);border-left:3px solid rgba(255,255,255,0.25);padding:1.4rem 1.6rem;transition:background 0.18s;" class="card-hover" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'">
         <p class="label" style="color:#fff;margin-bottom:0.8rem;">When is the Right time?</p>
         <p style="font-size:1.6rem;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.4;">Decision windows: Calculating urgency. FORGE©</p>
       </a>
@@ -394,34 +406,34 @@
           </div>
         </div>
         <div style="padding:2.4rem 0;">
-          <p class="body-lg" style="color:#555;margin-bottom:2rem;">Emerging risks: embracing risk ambiguity and capturing opportunity. RADAR©</p>
-          <a href="#" class="arrow-link">Read more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <p class="body-lg" style="color:#555;margin-bottom:2rem;">Beyond the traditional: embedding velocity and acceleration into the risk calculation for better decision making.</p>
+          <a href="paper-core.html" class="arrow-link">Read more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
       </div>
 
       <!-- Card 2 -->
       <div class="card-hover" style="display:flex;flex-direction:column;cursor:pointer;">
         <div class="img-overlay" style="height:22rem;">
-          <img src="Webpictures/greenworld.png" alt="Sustainable risk illustration" />
+          <img src="Webpictures/20240928_071731.jpg" alt="RADAR Framework emerging risks" />
           <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 60%);"></div>
         </div>
         <div style="padding:2rem 0;flex:1;display:flex;flex-direction:column;">
           <span class="label" style="color:#00A651;display:block;margin-bottom:0.8rem;">Enterprise Risk Management</span>
-          <h3 style="font-size:1.9rem;font-weight:500;line-height:1.25;color:#1A1A1A;margin-bottom:1.2rem;letter-spacing:-0.01em;flex:1;">Decision windows: calculating urgency. FORGE©</h3>
-          <a href="#" class="arrow-link">Read more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <h3 style="font-size:1.9rem;font-weight:500;line-height:1.25;color:#1A1A1A;margin-bottom:1.2rem;letter-spacing:-0.01em;flex:1;">Emerging risks: embracing ambiguity and capturing opportunity. RADAR©</h3>
+          <a href="paper-radar.html" class="arrow-link">Read more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
       </div>
 
       <!-- Card 3 -->
       <div class="card-hover" style="display:flex;flex-direction:column;cursor:pointer;">
         <div class="img-overlay" style="height:22rem;">
-          <img src="https://placehold.co/400x220/162a18/162a18" alt="Retirement planning" />
+          <img src="Webpictures/Lighthouse1.JPG" alt="FORGE Framework decision windows" />
           <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 60%);"></div>
         </div>
         <div style="padding:2rem 0;flex:1;display:flex;flex-direction:column;">
-          <span class="label" style="color:#00A651;display:block;margin-bottom:0.8rem;">Stress Testing</span>
-          <h3 style="font-size:1.9rem;font-weight:500;line-height:1.25;color:#1A1A1A;margin-bottom:1.2rem;letter-spacing:-0.01em;flex:1;">Stress Testing Beyond Compliance: Turning Regulatory Burden into Strategic Insight</h3>
-          <a href="#" class="arrow-link">Read more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <span class="label" style="color:#00A651;display:block;margin-bottom:0.8rem;">Strategic Risk Management</span>
+          <h3 style="font-size:1.9rem;font-weight:500;line-height:1.25;color:#1A1A1A;margin-bottom:1.2rem;letter-spacing:-0.01em;flex:1;">Decision windows: calculating urgency. FORGE©</h3>
+          <a href="paper-forge.html" class="arrow-link">Read more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
       </div>
 
@@ -689,10 +701,10 @@
       <div>
         <p class="label" style="color:#fff;margin-bottom:2rem;">Research</p>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
-          <li><a href="#" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Risk Insights</a></li>
-          <li><a href="#" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Regulatory Updates</a></li>
-          <li><a href="publications.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Publications</a></li>
-          <li><a href="#" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Case Studies</a></li>
+          <li><a href="paper-core.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">CORE© Framework</a></li>
+          <li><a href="paper-radar.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">RADAR© Framework</a></li>
+          <li><a href="paper-forge.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">FORGE© Framework</a></li>
+          <li><a href="publications.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">All Publications</a></li>
         </ul>
       </div>
 

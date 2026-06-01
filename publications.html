@@ -112,7 +112,19 @@
     </a>
     <div style="display:flex;align-items:center;gap:2.8rem;flex-wrap:wrap;">
       <a href="index.html#services"  class="nav-link">Services</a>
-      <a href="index.html#insights"  class="nav-link">Research</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          Research
+          <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" role="menu">
+          <a href="index.html#insights" class="dropdown-item">Research &amp; Insights</a>
+          <div class="dropdown-divider"></div>
+          <a href="paper-core.html" class="dropdown-item">CORE© Framework</a>
+          <a href="paper-radar.html" class="dropdown-item">RADAR© Framework</a>
+          <a href="paper-forge.html" class="dropdown-item">FORGE© Framework</a>
+        </div>
+      </div>
       <a href="publications.html" class="nav-link">Publications</a>
       <div class="nav-dropdown">
         <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
@@ -163,8 +175,8 @@
       <h1 class="display-xl" style="color:#fff;max-width:60rem;margin-bottom:2.4rem;">Research papers, articles, speeches and commentary from Adrian Clements.</h1>
       <p class="body-lg" style="color:rgba(255,255,255,0.84);max-width:52rem;margin-bottom:3.2rem;">Browse the latest thinking in risk governance, model risk, regulation and professional development — with a focus on practical outcomes for banks, insurers and asset managers.</p>
       <div style="display:flex;flex-wrap:wrap;gap:1.2rem;align-items:center;">
-        <a href="#publications" class="btn-green">View publications</a>
-        <a href="#speeches" class="btn-outline-green">See speeches</a>
+        <a href="#framework-papers" class="btn-green">Framework Papers</a>
+        <a href="#publications" class="btn-outline-green">Articles &amp; Speeches</a>
       </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr;gap:1rem;">
@@ -173,9 +185,103 @@
         <div class="overlay-grad"></div>
       </div>
       <div class="img-overlay card-hover" style="height:18rem;">
-        <img src="Webpictures/greenworld.png" alt="Global risk perspective" />
+        <img src="Webpictures/20240928_071731.jpg" alt="Global risk perspective" />
         <div class="overlay-grad"></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     FRAMEWORK PAPERS
+════════════════════════════════════════ -->
+<section id="framework-papers" style="padding:8rem 2.4rem;background:#F4F4F4;" aria-label="Framework white papers">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:2rem;margin-bottom:4.8rem;">
+      <div>
+        <div class="section-rule"></div>
+        <h2 class="display-lg" style="color:#1A1A1A;">Framework White Papers</h2>
+        <p class="body-lg" style="color:#555;margin-top:1.2rem;max-width:52rem;">Three proprietary frameworks developed by Adrian Clements for modern risk management — each available as a downloadable white paper.</p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2.4rem;" class="papers-grid">
+
+      <!-- CORE -->
+      <div style="background:#1A1A1A;display:flex;flex-direction:column;" class="card-hover">
+        <div style="height:20rem;position:relative;overflow:hidden;">
+          <img src="Webpictures/Trees.jpg" alt="CORE Framework" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s cubic-bezier(.4,0,.2,1);" onmouseenter="this.style.transform='scale(1.04)'" onmouseleave="this.style.transform='scale(1)'" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.75) 0%,rgba(0,99,56,0.3) 100%);"></div>
+          <div style="position:absolute;bottom:0;left:0;padding:2rem;">
+            <span style="display:inline-block;background:#00A651;color:#fff;font-size:1.0rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:0.4rem 1rem;margin-bottom:0.8rem;">Risk Management</span>
+          </div>
+        </div>
+        <div style="padding:2.8rem;flex:1;display:flex;flex-direction:column;">
+          <h3 style="font-size:2rem;font-weight:400;color:#fff;line-height:1.25;margin-bottom:1.2rem;">CORE©: A Better Way for Decision Making Under Risk</h3>
+          <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);line-height:1.65;flex:1;margin-bottom:2.4rem;">Beyond the traditional: embedding velocity and acceleration into the risk calculation. Includes the CORE© Translation Guide.</p>
+          <div style="display:flex;flex-direction:column;gap:0.8rem;">
+            <a href="paper-core.html" class="btn-green" style="justify-content:center;">
+              Read More
+              <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a href="Papers/White_Paper_CORE_Framework.pdf" download="White_Paper_CORE_Framework.pdf" style="display:inline-flex;align-items:center;justify-content:center;gap:0.6rem;color:rgba(255,255,255,0.6);font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;padding:0.8rem;border:1px solid rgba(255,255,255,0.15);transition:color 0.15s,border-color 0.15s;" onmouseenter="this.style.color='#00A651';this.style.borderColor='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.6)';this.style.borderColor='rgba(255,255,255,0.15)'">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download PDF
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- RADAR -->
+      <div style="background:#1A1A1A;display:flex;flex-direction:column;" class="card-hover">
+        <div style="height:20rem;position:relative;overflow:hidden;">
+          <img src="Webpictures/20240928_071731.jpg" alt="RADAR Framework" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s cubic-bezier(.4,0,.2,1);" onmouseenter="this.style.transform='scale(1.04)'" onmouseleave="this.style.transform='scale(1)'" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.75) 0%,rgba(0,99,56,0.3) 100%);"></div>
+          <div style="position:absolute;bottom:0;left:0;padding:2rem;">
+            <span style="display:inline-block;background:#00A651;color:#fff;font-size:1.0rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:0.4rem 1rem;margin-bottom:0.8rem;">Enterprise Risk</span>
+          </div>
+        </div>
+        <div style="padding:2.8rem;flex:1;display:flex;flex-direction:column;">
+          <h3 style="font-size:2rem;font-weight:400;color:#fff;line-height:1.25;margin-bottom:1.2rem;">RADAR©: Embracing Ambiguity, Capturing Opportunity</h3>
+          <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);line-height:1.65;flex:1;margin-bottom:2.4rem;">Emerging risks: embracing risk ambiguity and turning uncertainty into strategic opportunity.</p>
+          <div style="display:flex;flex-direction:column;gap:0.8rem;">
+            <a href="paper-radar.html" class="btn-green" style="justify-content:center;">
+              Read More
+              <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a href="Papers/White_Paper_RADAR_Framework.pdf" download="White_Paper_RADAR_Framework.pdf" style="display:inline-flex;align-items:center;justify-content:center;gap:0.6rem;color:rgba(255,255,255,0.6);font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;padding:0.8rem;border:1px solid rgba(255,255,255,0.15);transition:color 0.15s,border-color 0.15s;" onmouseenter="this.style.color='#00A651';this.style.borderColor='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.6)';this.style.borderColor='rgba(255,255,255,0.15)'">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download PDF
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORGE -->
+      <div style="background:#1A1A1A;display:flex;flex-direction:column;" class="card-hover">
+        <div style="height:20rem;position:relative;overflow:hidden;">
+          <img src="Webpictures/Lighthouse1.JPG" alt="FORGE Framework" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s cubic-bezier(.4,0,.2,1);" onmouseenter="this.style.transform='scale(1.04)'" onmouseleave="this.style.transform='scale(1)'" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.75) 0%,rgba(0,99,56,0.3) 100%);"></div>
+          <div style="position:absolute;bottom:0;left:0;padding:2rem;">
+            <span style="display:inline-block;background:#00A651;color:#fff;font-size:1.0rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:0.4rem 1rem;margin-bottom:0.8rem;">Strategic Risk</span>
+          </div>
+        </div>
+        <div style="padding:2.8rem;flex:1;display:flex;flex-direction:column;">
+          <h3 style="font-size:2rem;font-weight:400;color:#fff;line-height:1.25;margin-bottom:1.2rem;">FORGE©: Decision Windows &amp; Urgency Calculation</h3>
+          <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);line-height:1.65;flex:1;margin-bottom:2.4rem;">Calculating decision urgency: when is the right time to act? A framework for timing risk responses.</p>
+          <div style="display:flex;flex-direction:column;gap:0.8rem;">
+            <a href="paper-forge.html" class="btn-green" style="justify-content:center;">
+              Read More
+              <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a href="Papers/White_Paper_FORGE_Framework.pdf" download="White_Paper_FORGE_Framework.pdf" style="display:inline-flex;align-items:center;justify-content:center;gap:0.6rem;color:rgba(255,255,255,0.6);font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;padding:0.8rem;border:1px solid rgba(255,255,255,0.15);transition:color 0.15s,border-color 0.15s;" onmouseenter="this.style.color='#00A651';this.style.borderColor='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.6)';this.style.borderColor='rgba(255,255,255,0.15)'">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15" stroke-width="2"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download PDF
+            </a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -381,10 +487,10 @@
     <div>
       <p class="label" style="color:#fff;margin-bottom:2rem;">Research</p>
       <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
-        <li><a href="index.html#insights" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Risk Insights</a></li>
-        <li><a href="index.html#insights" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Regulatory Updates</a></li>
-        <li><a href="publications.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Publications</a></li>
-        <li><a href="index.html#contact" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Contact</a></li>
+        <li><a href="paper-core.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">CORE© Framework</a></li>
+        <li><a href="paper-radar.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">RADAR© Framework</a></li>
+        <li><a href="paper-forge.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">FORGE© Framework</a></li>
+        <li><a href="index.html#insights" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Research &amp; Insights</a></li>
       </ul>
     </div>
     <div>
@@ -417,6 +523,14 @@ document.querySelectorAll('#mobile-menu .nav-link').forEach(link => {
     document.getElementById('mobile-menu').classList.remove('open');
   });
 });
+
+function applyResponsive() {
+  const w = window.innerWidth;
+  const papersGrid = document.querySelector('.papers-grid');
+  if (papersGrid) papersGrid.style.gridTemplateColumns = w < 640 ? '1fr' : w < 960 ? '1fr 1fr' : 'repeat(3,1fr)';
+}
+applyResponsive();
+window.addEventListener('resize', applyResponsive, { passive: true });
 </script>
 </body>
 </html>
