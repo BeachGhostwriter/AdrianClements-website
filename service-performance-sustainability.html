@@ -5,107 +5,111 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Performance Enhancement &amp; Operational Sustainability — Adrian Clements</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'bcg-green':     '#00A651',
-            'bcg-green-dark':'#006338',
-            'bcg-black':     '#1A1A1A',
-            'bcg-grey':      '#F4F4F4',
-            'bcg-mid':       '#555555',
-          },
-          fontFamily: {
-            sans: ['"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
-          },
-        }
-      }
-    }
-  </script>
+  <script>tailwind.config={theme:{extend:{colors:{'bcg-green':'#00A651','bcg-green-dark':'#006338','bcg-black':'#1A1A1A','bcg-grey':'#F4F4F4','bcg-mid':'#555555'},fontFamily:{sans:['"Helvetica Neue"','Helvetica','Arial','sans-serif']}}}}</script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 10px; scroll-behavior: smooth; }
-    body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 1.4rem; line-height: 1.5; color: #1A1A1A; background: #fff; overflow-x: hidden; }
-
-    .display-xl  { font-size: clamp(2.8rem, 4.5vw, 5.2rem); font-weight: 300; line-height: 1.08; letter-spacing: -0.02em; }
-    .display-lg  { font-size: clamp(2.2rem, 3vw, 3.6rem);   font-weight: 300; line-height: 1.1;  letter-spacing: -0.015em; }
-    .display-md  { font-size: clamp(1.8rem, 2.2vw, 2.6rem); font-weight: 400; line-height: 1.2; }
-    .body-lg     { font-size: 1.6rem; line-height: 1.65; }
-    .body-sm     { font-size: 1.3rem; line-height: 1.55; }
-    .label       { font-size: 1.1rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
-
-    .nav-link { font-size: 1.3rem; font-weight: 500; color: #1A1A1A; text-decoration: none; padding: 0.4rem 0; position: relative; }
-    .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #00A651; transition: width 0.22s cubic-bezier(.4,0,.2,1); }
-    .nav-link:hover::after { width: 100%; }
-    .nav-link:hover { color: #006338; }
-
-    .btn-green { display: inline-flex; align-items: center; gap: 0.6rem; background: #00A651; color: #fff; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 1rem 2.2rem; border: none; cursor: pointer; transition: background 0.18s ease, transform 0.14s ease; text-decoration: none; }
-    .btn-green:hover  { background: #006338; transform: translateY(-1px); }
-    .btn-green:active { background: #004d28; transform: translateY(0); }
-
-    .arrow-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #00A651; text-decoration: none; transition: gap 0.18s ease, color 0.14s ease; }
-    .arrow-link:hover { gap: 1rem; color: #006338; }
-
-    .card-hover { transition: transform 0.22s cubic-bezier(.4,0,.2,1), box-shadow 0.22s cubic-bezier(.4,0,.2,1); }
-    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,166,81,0.08); }
-
-    .section-rule { width: 4rem; height: 3px; background: #00A651; margin-bottom: 1.6rem; }
-
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #f0f0f0; }
-    ::-webkit-scrollbar-thumb { background: #00A651; border-radius: 3px; }
-
-    #mobile-menu { display: none; }
-    #mobile-menu.open { display: flex; }
-
-    .nav-dropdown { position: relative; }
-    .nav-dropdown-menu { position: absolute; top: calc(100% + 1rem); left: 50%; transform: translateX(-50%) translateY(-8px); background: #fff; border: 1px solid #e8e8e8; min-width: 24rem; padding: 0.6rem 0; box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06); opacity: 0; visibility: hidden; transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s; z-index: 200; }
-    .nav-dropdown:hover .nav-dropdown-menu, .nav-dropdown:focus-within .nav-dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s; }
-    .dropdown-item { display: flex; align-items: center; padding: 1rem 2rem; font-size: 1.3rem; font-weight: 500; color: #1A1A1A; text-decoration: none; border-left: 3px solid transparent; transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease; }
-    .dropdown-item:hover { background: #f8f8f8; color: #00A651; border-left-color: #00A651; }
-    .dropdown-divider { height: 1px; background: #f0f0f0; margin: 0.4rem 0; }
-    .nav-dropdown-btn { font-size: 1.3rem; font-weight: 500; color: #1A1A1A; background: none; border: none; cursor: pointer; font-family: inherit; padding: 0.4rem 0; display: inline-flex; align-items: center; gap: 0.4rem; position: relative; }
-    .nav-dropdown-btn::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #00A651; transition: width 0.22s cubic-bezier(.4,0,.2,1); }
-    .nav-dropdown:hover .nav-dropdown-btn::after { width: 100%; }
-    .nav-dropdown:hover .nav-dropdown-btn { color: #006338; }
-    .nav-dropdown-chevron { transition: transform 0.18s ease; }
-    .nav-dropdown:hover .nav-dropdown-chevron { transform: rotate(180deg); }
-
-    @media (max-width: 1024px) {
-      .paper-two-col { grid-template-columns: 1fr !important; gap: 3.2rem !important; }
-      .paper-two-col > div:first-child { position: static !important; }
-      .themes-grid { grid-template-columns: repeat(2,1fr) !important; }
-      .bridge-grid { grid-template-columns: 1fr !important; }
-      .process-grid { grid-template-columns: 1fr !important; }
-      .related-grid { grid-template-columns: 1fr !important; }
-      .dl-grid { grid-template-columns: 1fr !important; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:10px;scroll-behavior:smooth}
+    body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:1.4rem;line-height:1.5;color:#1A1A1A;background:#fff;overflow-x:hidden}
+    .display-xl{font-size:clamp(2.8rem,4.5vw,5.2rem);font-weight:300;line-height:1.08;letter-spacing:-0.02em}
+    .display-lg{font-size:clamp(2.2rem,3vw,3.6rem);font-weight:300;line-height:1.1;letter-spacing:-0.015em}
+    .display-md{font-size:clamp(1.8rem,2.2vw,2.6rem);font-weight:400;line-height:1.2}
+    .body-lg{font-size:1.6rem;line-height:1.65}
+    .body-sm{font-size:1.3rem;line-height:1.55}
+    .label{font-size:1.1rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase}
+    .nav-link{font-size:1.3rem;font-weight:500;color:#1A1A1A;text-decoration:none;padding:0.4rem 0;position:relative}
+    .nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:#00A651;transition:width 0.22s cubic-bezier(.4,0,.2,1)}
+    .nav-link:hover::after{width:100%}
+    .nav-link:hover{color:#006338}
+    .btn-green{display:inline-flex;align-items:center;gap:0.6rem;background:#00A651;color:#fff;font-size:1.3rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:1rem 2.2rem;border:none;cursor:pointer;transition:background 0.18s ease,transform 0.14s ease;text-decoration:none}
+    .btn-green:hover{background:#006338;transform:translateY(-1px)}
+    .btn-green:active{background:#004d28;transform:translateY(0)}
+    .arrow-link{display:inline-flex;align-items:center;gap:0.5rem;font-size:1.3rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#00A651;text-decoration:none;transition:gap 0.18s ease,color 0.14s ease}
+    .arrow-link:hover{gap:1rem;color:#006338}
+    .card-hover{transition:transform 0.22s cubic-bezier(.4,0,.2,1),box-shadow 0.22s cubic-bezier(.4,0,.2,1)}
+    .card-hover:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.12),0 4px 12px rgba(0,166,81,0.08)}
+    .section-rule{width:4rem;height:3px;background:#00A651;margin-bottom:1.6rem}
+    ::-webkit-scrollbar{width:6px}
+    ::-webkit-scrollbar-track{background:#f0f0f0}
+    ::-webkit-scrollbar-thumb{background:#00A651;border-radius:3px}
+    #mobile-menu{display:none}
+    #mobile-menu.open{display:flex}
+    .nav-dropdown{position:relative}
+    .nav-dropdown-menu{position:absolute;top:calc(100% + 1rem);left:50%;transform:translateX(-50%) translateY(-8px);background:#fff;border:1px solid #e8e8e8;min-width:24rem;padding:0.6rem 0;box-shadow:0 8px 32px rgba(0,0,0,0.12),0 2px 8px rgba(0,0,0,0.06);opacity:0;visibility:hidden;transition:opacity 0.18s ease,transform 0.18s ease,visibility 0s linear 0.18s;z-index:200}
+    .nav-dropdown:hover .nav-dropdown-menu,.nav-dropdown:focus-within .nav-dropdown-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);transition:opacity 0.18s ease,transform 0.18s ease,visibility 0s linear 0s}
+    .dropdown-item{display:flex;align-items:center;padding:1rem 2rem;font-size:1.3rem;font-weight:500;color:#1A1A1A;text-decoration:none;border-left:3px solid transparent;transition:background 0.14s ease,color 0.14s ease,border-color 0.14s ease}
+    .dropdown-item:hover{background:#f8f8f8;color:#00A651;border-left-color:#00A651}
+    .dropdown-item.sub{padding:0.7rem 2rem 0.7rem 3rem;font-size:1.2rem;color:#555}
+    .dropdown-item.sub:hover{color:#00A651;border-left-color:#00A651}
+    .dropdown-divider{height:1px;background:#f0f0f0;margin:0.4rem 0}
+    .dropdown-group-label{padding:0.8rem 2rem 0.3rem;font-size:1.0rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#999}
+    .nav-dropdown-btn{font-size:1.3rem;font-weight:500;color:#1A1A1A;background:none;border:none;cursor:pointer;font-family:inherit;padding:0.4rem 0;display:inline-flex;align-items:center;gap:0.4rem;position:relative}
+    .nav-dropdown-btn::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:#00A651;transition:width 0.22s cubic-bezier(.4,0,.2,1)}
+    .nav-dropdown:hover .nav-dropdown-btn::after{width:100%}
+    .nav-dropdown:hover .nav-dropdown-btn{color:#006338}
+    .nav-dropdown-chevron{transition:transform 0.18s ease}
+    .nav-dropdown:hover .nav-dropdown-chevron{transform:rotate(180deg)}
+    /* page sub-nav */
+    #page-nav{background:#F4F4F4;border-bottom:1px solid #e8e8e8;position:sticky;top:9rem;z-index:90;overflow-x:auto;white-space:nowrap}
+    #page-nav a{display:inline-block;padding:1.2rem 2rem;font-size:1.2rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#555;text-decoration:none;border-bottom:2px solid transparent;transition:color 0.15s,border-color 0.15s}
+    #page-nav a:hover,#page-nav a.active{color:#00A651;border-bottom-color:#00A651}
+    /* two-col layout */
+    .two-col{display:grid;grid-template-columns:1fr 2fr;gap:6.4rem;align-items:start}
+    .sticky-col{position:sticky;top:16rem}
+    /* process blocks */
+    .proc-step{display:grid;grid-template-columns:2.8rem 1fr;gap:1.4rem;align-items:start;padding:1.4rem 0;border-bottom:1px solid #eee}
+    .proc-step:last-child{border-bottom:none}
+    .step-num{width:2.8rem;height:2.8rem;background:#00A651;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;color:#fff;flex-shrink:0}
+    /* module grid */
+    .mod-card{background:#fff;border:1px solid #e8e8e8;border-top:3px solid #00A651;padding:2.8rem}
+    @media(max-width:1024px){
+      .two-col{grid-template-columns:1fr!important;gap:3.2rem!important}
+      .sticky-col{position:static!important}
+      .themes-grid{grid-template-columns:repeat(2,1fr)!important}
+      .bridge-grid,.proc-pair{grid-template-columns:1fr!important}
     }
-    @media (max-width: 768px) {
-      .themes-grid { grid-template-columns: 1fr !important; }
-      .nav-desktop { display: none !important; }
+    @media(max-width:768px){
+      .themes-grid{grid-template-columns:1fr!important}
+      .nav-desktop{display:none!important}
+      #page-nav a{padding:1rem 1.4rem;font-size:1.1rem}
     }
   </style>
 </head>
 <body>
 
-<!-- ════════════════════════════════════════
-     NAVIGATION
-════════════════════════════════════════ -->
+<!-- MAIN NAV -->
 <header id="site-header" style="position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #e8e8e8;transition:box-shadow 0.2s ease;">
   <nav style="max-width:1280px;margin:0 auto;padding:1.8rem 2.4rem;min-height:9rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;">
-
-    <a href="index.html" style="flex-shrink:0;" aria-label="AMC Home">
-      <img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:8rem;width:auto;" />
-    </a>
-
+    <a href="index.html" style="flex-shrink:0;" aria-label="AMC Home"><img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:8rem;width:auto;" /></a>
     <div class="nav-desktop" style="display:flex;align-items:center;gap:2.8rem;">
       <a href="index.html#services" class="nav-link" style="color:#00A651;font-weight:600;">Services</a>
       <div class="nav-dropdown">
-        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
-          Research
-          <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
+        <button class="nav-dropdown-btn" aria-haspopup="true">On This Page <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-dropdown-menu" role="menu" style="min-width:28rem;left:0;transform:translateX(0) translateY(-8px);">
+          <a href="#overview" class="dropdown-item">Overview</a>
+          <a href="#performance-enhancement" class="dropdown-item">Performance Enhancement</a>
+          <a href="#operational-sustainability" class="dropdown-item">Operational Sustainability</a>
+          <a href="#highlights" class="dropdown-item">What Makes This Different</a>
+          <a href="#atlas-system" class="dropdown-item">The ATLAS System</a>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-group-label">5 Processes</div>
+          <a href="#process-01" class="dropdown-item sub">01 · Piloting</a>
+          <a href="#process-02" class="dropdown-item sub">02 · Strategic Planning &amp; Alignment</a>
+          <a href="#process-03" class="dropdown-item sub">03 · Consolidation &amp; Review</a>
+          <a href="#process-04" class="dropdown-item sub">04 · Action Valuation &amp; Execution</a>
+          <a href="#process-05" class="dropdown-item sub">05 · Insight</a>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-group-label">7 Modules</div>
+          <a href="#module-01" class="dropdown-item sub">01 · Strategic Direction</a>
+          <a href="#module-02" class="dropdown-item sub">02 · 360° Brainstorming</a>
+          <a href="#module-03" class="dropdown-item sub">03 · Establishing Context</a>
+          <a href="#module-04" class="dropdown-item sub">04 · Stabilising Production</a>
+          <a href="#module-05" class="dropdown-item sub">05 · Aligning with Controlling</a>
+          <a href="#module-06" class="dropdown-item sub">06 · Valorisation</a>
+          <a href="#module-07" class="dropdown-item sub">07 · Lighthouse</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn">Research <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav-dropdown-menu" role="menu">
           <a href="index.html#insights" class="dropdown-item">Research &amp; Insights</a>
           <div class="dropdown-divider"></div>
@@ -115,28 +119,10 @@
         </div>
       </div>
       <a href="publications.html" class="nav-link">Publications</a>
-      <div class="nav-dropdown">
-        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
-          About
-          <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="nav-dropdown-menu" role="menu">
-          <a href="about.html" class="dropdown-item">Adrian Clements</a>
-          <div class="dropdown-divider"></div>
-          <a href="publications.html#publications" class="dropdown-item">Articles &amp; Publications</a>
-          <a href="publications.html#speeches" class="dropdown-item">Speeches</a>
-          <a href="publications.html#quotations" class="dropdown-item">Quotations &amp; Interviews</a>
-        </div>
-      </div>
-      <a href="index.html#expertise" class="nav-link">Expertise</a>
       <a href="index.html#contact" class="nav-link">Contact</a>
     </div>
-
     <div style="display:flex;align-items:center;gap:1.6rem;">
-      <a href="index.html#contact" class="btn-green" style="padding:0.8rem 1.8rem;">
-        Speak to Adrian
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
+      <a href="index.html#contact" class="btn-green" style="padding:0.8rem 1.8rem;">Speak to Adrian <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       <button id="burger" aria-label="Toggle menu" style="display:flex;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;">
         <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
         <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
@@ -144,490 +130,688 @@
       </button>
     </div>
   </nav>
-
-  <div id="mobile-menu" style="background:#fff;border-top:1px solid #e8e8e8;padding:2rem 2.4rem;flex-direction:column;gap:1.6rem;">
-    <a href="index.html#services" class="nav-link" style="font-size:1.6rem;">Services</a>
-    <a href="index.html#insights" class="nav-link" style="font-size:1.6rem;">Research</a>
-    <a href="publications.html" class="nav-link" style="font-size:1.6rem;">Publications</a>
-    <a href="about.html" class="nav-link" style="font-size:1.6rem;">About — Adrian Clements</a>
-    <a href="index.html#expertise" class="nav-link" style="font-size:1.6rem;">Expertise</a>
-    <a href="index.html#contact" class="nav-link" style="font-size:1.6rem;">Contact</a>
+  <div id="mobile-menu" style="background:#fff;border-top:1px solid #e8e8e8;padding:2rem 2.4rem;flex-direction:column;gap:1.2rem;">
+    <a href="#overview" class="nav-link" style="font-size:1.5rem;">Overview</a>
+    <a href="#performance-enhancement" class="nav-link" style="font-size:1.5rem;">Performance Enhancement</a>
+    <a href="#operational-sustainability" class="nav-link" style="font-size:1.5rem;">Operational Sustainability</a>
+    <a href="#processes" class="nav-link" style="font-size:1.5rem;">5 Processes</a>
+    <a href="#modules" class="nav-link" style="font-size:1.5rem;">7 Modules</a>
+    <a href="index.html#contact" class="nav-link" style="font-size:1.5rem;">Contact</a>
   </div>
 </header>
 
-<!-- ════════════════════════════════════════
-     HERO
-════════════════════════════════════════ -->
+<!-- PAGE SUB-NAV -->
+<nav id="page-nav" aria-label="Page sections">
+  <div style="max-width:1280px;margin:0 auto;padding:0 2.4rem;">
+    <a href="#overview">Overview</a>
+    <a href="#performance-enhancement">Performance Enhancement</a>
+    <a href="#operational-sustainability">Operational Sustainability</a>
+    <a href="#processes">5 Processes</a>
+    <a href="#modules">7 Modules</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
 <section style="position:relative;background:#1A1A1A;overflow:hidden;min-height:56vh;display:flex;align-items:flex-end;" aria-label="Service hero">
   <div style="position:absolute;inset:0;">
-    <img src="Webpictures/wallpaperbetter.jpg" alt="Performance and operational landscape" aria-hidden="true" style="width:100%;height:100%;object-fit:cover;display:block;" />
-    <div style="position:absolute;inset:0;background:linear-gradient(105deg, rgba(0,99,56,0.90) 0%, rgba(0,166,81,0.45) 45%, rgba(0,0,0,0.72) 100%);"></div>
+    <img src="Webpictures/wallpaperbetter.jpg" alt="" aria-hidden="true" style="width:100%;height:100%;object-fit:cover;display:block;" />
+    <div style="position:absolute;inset:0;background:linear-gradient(105deg,rgba(0,99,56,0.90) 0%,rgba(0,166,81,0.45) 45%,rgba(0,0,0,0.72) 100%);"></div>
   </div>
-
   <div style="position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:6rem 2.4rem;width:100%;">
     <a href="index.html#services" style="display:inline-flex;align-items:center;gap:0.6rem;color:rgba(255,255,255,0.7);font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;margin-bottom:2.4rem;transition:color 0.15s;" onmouseenter="this.style.color='#fff'" onmouseleave="this.style.color='rgba(255,255,255,0.7)'">
-      <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M13 5H1M6 9L2 5l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Back to Services
+      <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M13 5H1M6 9L2 5l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Back to Services
     </a>
     <p class="label" style="color:#00A651;margin-bottom:1.2rem;">Performance Transformation · ATLAS System</p>
-    <h1 class="display-xl" style="color:#fff;max-width:80rem;margin-bottom:2rem;">
-      Performance Enhancement &amp;<br>Operational Sustainability
-    </h1>
-    <p class="body-lg" style="color:rgba(255,255,255,0.78);max-width:58rem;margin-bottom:3.2rem;">
-      Eliminating EBITDA leakage, stabilising operations, and embedding continuous improvement so that the gains you make are the gains you keep.
-    </p>
-    <a href="index.html#contact" class="btn-green">
-      Discuss your situation
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
+    <h1 class="display-xl" style="color:#fff;max-width:80rem;margin-bottom:2rem;">Performance Enhancement &amp;<br>Operational Sustainability</h1>
+    <p class="body-lg" style="color:rgba(255,255,255,0.78);max-width:58rem;margin-bottom:3.2rem;">Eliminating EBITDA leakage, stabilising operations, and embedding continuous improvement so that the gains you make are the gains you keep.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:1.2rem;">
+      <a href="#processes" class="btn-green">Explore the 5 Processes</a>
+      <a href="index.html#contact" class="btn-green" style="background:transparent;border:2px solid rgba(255,255,255,0.6);">Speak to Adrian</a>
+    </div>
   </div>
 </section>
 
-<!-- ════════════════════════════════════════
-     METADATA STRIP
-════════════════════════════════════════ -->
+<!-- METADATA STRIP -->
 <div style="background:#F4F4F4;border-bottom:1px solid #e8e8e8;">
   <div style="max-width:1280px;margin:0 auto;padding:2rem 2.4rem;display:flex;flex-wrap:wrap;gap:3.2rem;align-items:center;">
-    <div style="display:flex;align-items:center;gap:0.8rem;">
-      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Advisor</span>
-      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">Adrian Clements</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:0.8rem;">
-      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">System</span>
-      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">ATLAS</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:0.8rem;">
-      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Focus</span>
-      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">Execution · Tracking · Measuring · Delivery</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:0.8rem;">
-      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Category</span>
-      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">Operational Performance</span>
-    </div>
+    <div style="display:flex;align-items:center;gap:0.8rem;"><span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Advisor</span><span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">Adrian Clements</span></div>
+    <div style="display:flex;align-items:center;gap:0.8rem;"><span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">System</span><span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">ATLAS</span></div>
+    <div style="display:flex;align-items:center;gap:0.8rem;"><span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Focus</span><span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">Execution · Tracking · Measuring · Delivery</span></div>
+    <div style="display:flex;align-items:center;gap:0.8rem;"><span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Methodology</span><span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;"><a href="#processes" style="color:#00A651;text-decoration:none;">5 Processes</a> · <a href="#modules" style="color:#00A651;text-decoration:none;">7 Modules</a></span></div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     SECTION 1: OVERVIEW
-════════════════════════════════════════ -->
-<section style="padding:8rem 2.4rem;" aria-label="Overview">
-  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 2fr;gap:6.4rem;align-items:start;" class="paper-two-col">
-
-    <div style="position:sticky;top:10rem;">
+<!-- OVERVIEW -->
+<section id="overview" style="padding:8rem 2.4rem;" aria-label="Overview">
+  <div style="max-width:1280px;margin:0 auto;" class="two-col">
+    <div class="sticky-col">
       <div class="section-rule"></div>
       <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Overview</h2>
-      <p class="body-sm" style="color:#555;">Most consulting engagements succeed at identifying opportunity. Far fewer succeed at keeping the value they create. This is where the real work begins.</p>
-      <br>
-      <p class="body-sm" style="color:#555;">We look at where you need to be — not where you are.</p>
+      <p class="body-sm" style="color:#555;margin-bottom:1.6rem;">Most consulting engagements succeed at identifying opportunity. Far fewer succeed at keeping the value they create. This is where the real work begins.</p>
+      <p class="body-sm" style="color:#555;">"We look at where you need to be — not where you are."</p>
     </div>
-
     <div style="display:flex;flex-direction:column;gap:2.8rem;">
-      <p class="body-lg" style="color:#1A1A1A;">
-        Performance Enhancement and Operational Sustainability are not separate disciplines — they are two sides of the same commitment. Performance Enhancement asks: are you capturing the full financial value of your actions? Operational Sustainability asks: will you still be capturing it in three years?
-      </p>
-
-      <p class="body-lg" style="color:#555;">
-        Many organisations operate with a hidden tax on their results. Planned improvement programmes deliver less than expected — not because the strategy was wrong, but because EBITDA leakage, cognitive bias, and execution gaps erode value before it reaches the bottom line. Our Performance Enhancement work identifies and closes these gaps systematically, translating planned gains into actual financial results.
-      </p>
-
-      <p class="body-lg" style="color:#555;">
-        Operational Sustainability addresses the equally common failure mode: the improvement that doesn't hold. Organisations that rely on external interventions to stay competitive are on a treadmill. Our approach embeds LEAN thinking, continuous improvement culture, and self-sustaining performance management directly into the way the business operates — creating capability transfer, not consulting dependency.
-      </p>
-
-      <p class="body-lg" style="color:#555;">
-        Together, these two disciplines form the execution backbone of the ATLAS system: the Tracking, Measuring, and Delivery focus area that connects strategy to realised results. The framework is integrated, not siloed — so the insights from Performance Enhancement feed directly into Operational Sustainability design, and vice versa.
-      </p>
-
+      <p class="body-lg" style="color:#1A1A1A;">Performance Enhancement and Operational Sustainability are two sides of the same commitment. Performance Enhancement asks: are you capturing the full financial value of your actions? Operational Sustainability asks: will you still be capturing it in three years?</p>
+      <p class="body-lg" style="color:#555;">Many organisations operate with a hidden tax on their results. Planned improvement programmes deliver less than expected — not because the strategy was wrong, but because EBITDA leakage, cognitive bias, and execution gaps erode value before it reaches the bottom line. Our Performance Enhancement work identifies and closes these gaps systematically, translating planned gains into actual financial results.</p>
+      <p class="body-lg" style="color:#555;">Operational Sustainability addresses the equally common failure mode: the improvement that doesn't hold. Our approach embeds LEAN thinking, continuous improvement, and self-sustaining performance management directly into how the business operates — creating capability transfer, not consulting dependency.</p>
       <div style="border-left:3px solid #00A651;padding:2rem 2.4rem;background:#F4F4F4;">
-        <p style="font-size:1.6rem;font-weight:400;color:#1A1A1A;line-height:1.6;font-style:italic;">"We do not look at where you are. We look at where you need to be — and build the bridge between the two in a way that holds long after we leave."</p>
+        <p style="font-size:1.6rem;font-weight:400;color:#1A1A1A;line-height:1.6;font-style:italic;">"Change is inevitable… and fast. Our experts use a tested method to identify, roll out and track actions — with full governance and transparency throughout."</p>
         <p class="label" style="color:#00A651;margin-top:1.2rem;">Adrian Clements</p>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- ════════════════════════════════════════
-     SECTION 2: PERFORMANCE ENHANCEMENT
-════════════════════════════════════════ -->
-<section style="padding:8rem 2.4rem;background:#1A1A1A;" aria-label="Performance Enhancement">
-  <div style="max-width:1280px;margin:0 auto;">
-
-    <div style="display:grid;grid-template-columns:1fr 2fr;gap:6.4rem;align-items:start;" class="paper-two-col">
-      <div style="position:sticky;top:10rem;">
-        <div class="section-rule"></div>
-        <h2 class="display-md" style="color:#fff;margin-bottom:1.6rem;">Performance Enhancement</h2>
-        <p class="body-sm" style="color:rgba(255,255,255,0.55);">Closing the gap between the performance you planned and the performance you realise — permanently.</p>
-      </div>
-
-      <div style="display:flex;flex-direction:column;gap:3.2rem;">
-        <p class="body-lg" style="color:rgba(255,255,255,0.78);">
-          The central concern of Performance Enhancement is EBITDA growth and value realisation. The most common finding across organisations is a gap between what improvement programmes were designed to deliver and what actually appears in the financial statements. This gap has three primary sources.
-        </p>
-
-        <!-- Three sources of value loss -->
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;" class="themes-grid">
-
-          <div style="background:#232323;padding:2.4rem;border-top:3px solid #00A651;">
-            <p class="label" style="color:#00A651;margin-bottom:1.2rem;">01</p>
-            <h3 style="font-size:1.7rem;font-weight:500;color:#fff;margin-bottom:1rem;line-height:1.3;">EBITDA Leakage</h3>
-            <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);line-height:1.65;">Value that was genuinely created but was not captured — absorbed by process inefficiency, incomplete implementation, or structural gaps that were never closed. The money was earned; it simply never arrived.</p>
-          </div>
-
-          <div style="background:#232323;padding:2.4rem;border-top:3px solid #00A651;">
-            <p class="label" style="color:#00A651;margin-bottom:1.2rem;">02</p>
-            <h3 style="font-size:1.7rem;font-weight:500;color:#fff;margin-bottom:1rem;line-height:1.3;">Cognitive Bias</h3>
-            <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);line-height:1.65;">Optimistic planning assumptions, anchoring on early estimates, and confirmation bias in progress reviews systematically inflate expected gains and delay recognition of underdelivery until it is too late to course-correct.</p>
-          </div>
-
-          <div style="background:#232323;padding:2.4rem;border-top:3px solid #00A651;">
-            <p class="label" style="color:#00A651;margin-bottom:1.2rem;">03</p>
-            <h3 style="font-size:1.7rem;font-weight:500;color:#fff;margin-bottom:1rem;line-height:1.3;">Execution Gaps</h3>
-            <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);line-height:1.65;">The distance between a decision and its operational consequence. Plans that are agreed in the boardroom but never fully operationalised at the level where value is created or destroyed — the factory floor, the procurement relationship, the customer interaction.</p>
-          </div>
+<!-- PERFORMANCE ENHANCEMENT -->
+<section id="performance-enhancement" style="padding:8rem 2.4rem;background:#1A1A1A;" aria-label="Performance Enhancement">
+  <div style="max-width:1280px;margin:0 auto;" class="two-col">
+    <div class="sticky-col">
+      <div class="section-rule"></div>
+      <h2 class="display-md" style="color:#fff;margin-bottom:1.6rem;">Performance Enhancement</h2>
+      <p class="body-sm" style="color:rgba(255,255,255,0.55);">Closing the gap between the performance you planned and the performance you realise.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:3.2rem;">
+      <p class="body-lg" style="color:rgba(255,255,255,0.78);">The central concern is EBITDA growth and value realisation. The gap between what improvement programmes were designed to deliver and what appears in the financial statements has three primary sources.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;" class="themes-grid">
+        <div style="background:#232323;padding:2.4rem;border-top:3px solid #00A651;">
+          <p class="label" style="color:#00A651;margin-bottom:1.2rem;">01</p>
+          <h3 style="font-size:1.7rem;font-weight:500;color:#fff;margin-bottom:1rem;line-height:1.3;">EBITDA Leakage</h3>
+          <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);line-height:1.65;">Value that was genuinely created but not captured — absorbed by process inefficiency, incomplete implementation, or structural gaps that were never closed. The money was earned; it simply never arrived.</p>
         </div>
-
-        <p class="body-lg" style="color:rgba(255,255,255,0.78);">
-          Our Performance Enhancement work addresses all three sources simultaneously. We use portfolio tracking, industrial controlling methodologies, and innovation funnels to monitor whether value is being captured in real time — not discovered missing at the year-end review.
-        </p>
-
-        <!-- Three-Bridge Framework -->
-        <div style="background:#232323;padding:3.2rem;">
-          <div class="section-rule"></div>
-          <h3 style="font-size:2rem;font-weight:400;color:#fff;margin-bottom:2rem;">The Three-Bridge Analytical Framework</h3>
-          <p style="font-size:1.4rem;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:2.4rem;">
-            Central to our Performance Enhancement methodology is the Three-Bridge Framework — a structured analysis that makes value creation and value loss visible at every level of the organisation.
-          </p>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;" class="bridge-grid">
-            <div style="border-left:3px solid #00A651;padding:1.6rem 2rem;">
-              <p class="label" style="color:#00A651;margin-bottom:0.8rem;">EBITDA Bridge</p>
-              <p style="font-size:1.3rem;color:rgba(255,255,255,0.65);line-height:1.6;">Tracks the movement from planned EBITDA to actual EBITDA, quantifying precisely where leakage occurred and at what point in the value chain.</p>
-            </div>
-            <div style="border-left:3px solid #00A651;padding:1.6rem 2rem;">
-              <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Value Bridge</p>
-              <p style="font-size:1.3rem;color:rgba(255,255,255,0.65);line-height:1.6;">Connects initiative-level activity to financial outcome — making explicit whether completed actions are generating the value they were designed to create.</p>
-            </div>
-            <div style="border-left:3px solid #00A651;padding:1.6rem 2rem;">
-              <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Operational Bridge</p>
-              <p style="font-size:1.3rem;color:rgba(255,255,255,0.65);line-height:1.6;">Translates financial targets into operational parameters — ensuring that the people who create value understand exactly what is required of them and can see whether they are delivering it.</p>
-            </div>
+        <div style="background:#232323;padding:2.4rem;border-top:3px solid #00A651;">
+          <p class="label" style="color:#00A651;margin-bottom:1.2rem;">02</p>
+          <h3 style="font-size:1.7rem;font-weight:500;color:#fff;margin-bottom:1rem;line-height:1.3;">Cognitive Bias</h3>
+          <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);line-height:1.65;">Value plan actions are systematically overestimated while leakage is underestimated — a natural consequence of working inside your own system without external benchmarking or structured challenge.</p>
+        </div>
+        <div style="background:#232323;padding:2.4rem;border-top:3px solid #00A651;">
+          <p class="label" style="color:#00A651;margin-bottom:1.2rem;">03</p>
+          <h3 style="font-size:1.7rem;font-weight:500;color:#fff;margin-bottom:1rem;line-height:1.3;">Execution Gaps</h3>
+          <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);line-height:1.65;">Poor project management and unclear ownership reduce expected gains. Plans agreed in the boardroom but never fully operationalised at the level where value is created or destroyed.</p>
+        </div>
+      </div>
+      <div style="background:#232323;padding:3.2rem;">
+        <div class="section-rule"></div>
+        <h3 style="font-size:2rem;font-weight:400;color:#fff;margin-bottom:2rem;">The Three-Bridge Analytical Framework</h3>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;" class="bridge-grid">
+          <div style="border-left:3px solid #00A651;padding:1.6rem 2rem;">
+            <p class="label" style="color:#00A651;margin-bottom:0.8rem;">EBITDA Bridge</p>
+            <p style="font-size:1.3rem;color:rgba(255,255,255,0.65);line-height:1.6;">Tracks movement from planned EBITDA to actual, quantifying precisely where leakage occurred and at what point in the value chain.</p>
+          </div>
+          <div style="border-left:3px solid #00A651;padding:1.6rem 2rem;">
+            <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Value Bridge</p>
+            <p style="font-size:1.3rem;color:rgba(255,255,255,0.65);line-height:1.6;">Connects initiative-level activity to financial outcome — making explicit whether completed actions are generating the value they were designed to create.</p>
+          </div>
+          <div style="border-left:3px solid #00A651;padding:1.6rem 2rem;">
+            <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Operational Bridge</p>
+            <p style="font-size:1.3rem;color:rgba(255,255,255,0.65);line-height:1.6;">The deepest layer — shows that fixed cost issues stem from operational incident losses, enabling teams to pinpoint performance inefficiencies with precision.</p>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- ════════════════════════════════════════
-     SECTION 3: OPERATIONAL SUSTAINABILITY
-════════════════════════════════════════ -->
-<section style="padding:8rem 2.4rem;background:#fff;" aria-label="Operational Sustainability">
-  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 2fr;gap:6.4rem;align-items:start;" class="paper-two-col">
-
-    <div style="position:sticky;top:10rem;">
+<!-- OPERATIONAL SUSTAINABILITY -->
+<section id="operational-sustainability" style="padding:8rem 2.4rem;background:#fff;" aria-label="Operational Sustainability">
+  <div style="max-width:1280px;margin:0 auto;" class="two-col">
+    <div class="sticky-col">
       <div class="section-rule"></div>
       <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Operational Sustainability</h2>
       <p class="body-sm" style="color:#555;">Embedding the capability to sustain and build on performance gains — without continued external intervention.</p>
     </div>
-
     <div style="display:flex;flex-direction:column;gap:2.8rem;">
-      <p class="body-lg" style="color:#1A1A1A;">
-        The most common trap in operational improvement is the improvement cycle: the organisation improves, loses the gains, then must improve again. This cycle is not the result of poor execution — it is the result of a methodology that creates results without creating the capability to sustain them.
-      </p>
-
-      <p class="body-lg" style="color:#555;">
-        Our Operational Sustainability approach breaks this cycle by embedding continuous improvement into the way the organisation manages itself. This is not a programme that runs alongside operations — it becomes part of operations. The objective is capability transfer: when we leave, the organisation has the tools, the culture, and the measurement systems to continue improving independently.
-      </p>
-
-      <!-- Cycle break illustration -->
+      <p class="body-lg" style="color:#1A1A1A;">The most common trap in operational improvement is the improvement cycle: improve, lose the gains, improve again. Our approach breaks this cycle by embedding continuous improvement into how the organisation manages itself — creating capability transfer, not consulting dependency.</p>
       <div style="background:#F4F4F4;padding:3.2rem;">
         <div class="section-rule"></div>
         <h3 style="font-size:1.8rem;font-weight:500;color:#1A1A1A;margin-bottom:2rem;">Breaking the Cost-Reduction Stagnation Cycle</h3>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;" class="bridge-grid" style="gap:0;">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;" class="bridge-grid">
           <div style="padding:2rem;border-right:1px solid #e8e8e8;text-align:center;">
-            <div style="width:4.8rem;height:4.8rem;background:#e8e8e8;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg>
-            </div>
             <p style="font-size:1.3rem;font-weight:600;color:#1A1A1A;margin-bottom:0.6rem;">Cost Reduction</p>
-            <p style="font-size:1.2rem;color:#888;line-height:1.5;">Headcount cuts, procurement squeezes, capex deferral — the cycle begins</p>
+            <p style="font-size:1.2rem;color:#888;line-height:1.5;">Short-term EBITDA gains that starve investment capacity</p>
           </div>
           <div style="padding:2rem;border-right:1px solid #e8e8e8;text-align:center;">
-            <div style="width:4.8rem;height:4.8rem;background:#e8e8e8;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </div>
             <p style="font-size:1.3rem;font-weight:600;color:#1A1A1A;margin-bottom:0.6rem;">Capability Loss</p>
-            <p style="font-size:1.2rem;color:#888;line-height:1.5;">Knowledge leaves with the people; investment deferred becomes innovation blocked</p>
+            <p style="font-size:1.2rem;color:#888;line-height:1.5;">Expertise leaves; innovation is blocked; growth stalls</p>
           </div>
           <div style="padding:2rem;text-align:center;">
-            <div style="width:4.8rem;height:4.8rem;background:#e8e8e8;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            </div>
             <p style="font-size:1.3rem;font-weight:600;color:#1A1A1A;margin-bottom:0.6rem;">Stagnation</p>
-            <p style="font-size:1.2rem;color:#888;line-height:1.5;">Competitiveness erodes; the next round of cuts is now required to stay viable</p>
+            <p style="font-size:1.2rem;color:#888;line-height:1.5;">Same transformation cycle begins again — at greater cost</p>
           </div>
         </div>
         <div style="margin-top:2.4rem;padding-top:2.4rem;border-top:1px solid #e8e8e8;">
-          <p style="font-size:1.4rem;color:#555;line-height:1.7;">Our approach replaces this cycle with a <strong style="color:#1A1A1A;">Stabilise → Build → Innovate</strong> progression — each phase creating the platform for the next, rather than creating the conditions for the next regression.</p>
+          <p style="font-size:1.4rem;color:#555;line-height:1.7;">Our approach replaces this with a <strong style="color:#1A1A1A;">Stabilise → Build → Innovate</strong> progression — each phase creating the platform for the next.</p>
         </div>
       </div>
-
-      <!-- LEAN and CI -->
-      <p class="body-lg" style="color:#555;">
-        The methodological foundation is LEAN thinking — but applied in the specific context of your business, not as a generic template. We use challenge workshops, structured problem-solving disciplines, and Value Plan initiatives to embed improvement as a daily management practice rather than a periodic project. Stretched targets are set with a clear view of how they connect to the overall value creation agenda; delivery is monitored; lessons are captured; and behaviours are adapted based on what actually works.
-      </p>
-
-      <!-- Lighthouse concept -->
       <div style="border-left:3px solid #00A651;padding:2rem 2.4rem;background:#F4F4F4;">
         <p class="label" style="color:#00A651;margin-bottom:1rem;">The Lighthouse Principle</p>
-        <p class="body-lg" style="color:#1A1A1A;margin-bottom:1.2rem;">
-          Operational Sustainability is not managed like a control tower — reactive, backward-looking, responding to what has already happened. It is managed like a lighthouse: scanning continuously in all directions, identifying what is coming, and directing the organisation's energy before problems crystallise.
-        </p>
-        <p style="font-size:1.3rem;color:#555;line-height:1.65;">
-          The Lighthouse approach consolidates feedback from all operational areas, combines it with forward-looking signals, and creates a transparent, self-correcting system that management can own and operate without external support.
-        </p>
+        <p class="body-lg" style="color:#1A1A1A;margin-bottom:1.2rem;">Operational Sustainability is not managed like a control tower — reactive, backward-looking. It is managed like a lighthouse: scanning continuously in all directions, identifying what is coming before problems crystallise.</p>
+        <p style="font-size:1.3rem;color:#555;line-height:1.65;">The Lighthouse approach consolidates feedback from all operational areas, combines it with forward-looking signals, and creates a transparent, self-correcting system that management can own and operate without external support.</p>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- ════════════════════════════════════════
-     SECTION 4: KEY HIGHLIGHTS
-════════════════════════════════════════ -->
-<section style="padding:8rem 2.4rem;background:#F4F4F4;" aria-label="Key highlights">
+<!-- HIGHLIGHTS -->
+<section id="highlights" style="padding:8rem 2.4rem;background:#F4F4F4;" aria-label="What makes this different">
   <div style="max-width:1280px;margin:0 auto;">
-    <div style="margin-bottom:4.8rem;">
-      <div class="section-rule"></div>
-      <h2 class="display-md" style="color:#1A1A1A;">What Makes This Approach Different</h2>
-    </div>
-
+    <div style="margin-bottom:4.8rem;"><div class="section-rule"></div><h2 class="display-md" style="color:#1A1A1A;">What Makes This Approach Different</h2></div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2.4rem;" class="themes-grid">
-
       <div style="background:#fff;padding:3.2rem;border-bottom:3px solid #00A651;" class="card-hover">
-        <div style="width:4rem;height:4rem;background:#00A651;display:flex;align-items:center;justify-content:center;margin-bottom:2rem;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-        </div>
-        <h3 style="font-size:1.7rem;font-weight:500;color:#1A1A1A;margin-bottom:1rem;line-height:1.3;">Integrated, Not Siloed</h3>
-        <p style="font-size:1.3rem;color:#555;line-height:1.65;">Performance Enhancement and Operational Sustainability are designed as one system within ATLAS — not two separate interventions. Financial insight flows directly into operational design, and operational data validates financial assumptions in real time.</p>
+        <h3 style="font-size:1.7rem;font-weight:500;color:#1A1A1A;margin-bottom:1rem;">Integrated, Not Siloed</h3>
+        <p style="font-size:1.3rem;color:#555;line-height:1.65;">Performance Enhancement and Operational Sustainability are designed as one system within ATLAS. Financial insight flows directly into operational design, and operational data validates financial assumptions in real time.</p>
       </div>
-
       <div style="background:#fff;padding:3.2rem;border-bottom:3px solid #00A651;" class="card-hover">
-        <div style="width:4rem;height:4rem;background:#00A651;display:flex;align-items:center;justify-content:center;margin-bottom:2rem;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-        </div>
-        <h3 style="font-size:1.7rem;font-weight:500;color:#1A1A1A;margin-bottom:1rem;line-height:1.3;">Problems, Not Symptoms</h3>
-        <p style="font-size:1.3rem;color:#555;line-height:1.65;">We look for root causes, not surface indicators. EBITDA leakage and operational drift have identifiable structural origins — and our work does not stop until those origins are addressed, not just the visible effects managed.</p>
+        <h3 style="font-size:1.7rem;font-weight:500;color:#1A1A1A;margin-bottom:1rem;">Problems, Not Symptoms</h3>
+        <p style="font-size:1.3rem;color:#555;line-height:1.65;">EBITDA leakage and operational drift have identifiable structural origins. Our work does not stop until those origins are addressed — not just the visible effects managed.</p>
       </div>
-
       <div style="background:#fff;padding:3.2rem;border-bottom:3px solid #00A651;" class="card-hover">
-        <div style="width:4rem;height:4rem;background:#00A651;display:flex;align-items:center;justify-content:center;margin-bottom:2rem;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-        </div>
-        <h3 style="font-size:1.7rem;font-weight:500;color:#1A1A1A;margin-bottom:1rem;line-height:1.3;">Insight Over Reporting</h3>
-        <p style="font-size:1.3rem;color:#555;line-height:1.65;">Performance data is democratised — made visible and actionable at the operational level, not locked in management dashboards. The people who create value understand the targets, see the results, and adapt their behaviour accordingly.</p>
+        <h3 style="font-size:1.7rem;font-weight:500;color:#1A1A1A;margin-bottom:1rem;">Insight Over Reporting</h3>
+        <p style="font-size:1.3rem;color:#555;line-height:1.65;">Performance data is democratised — made actionable at the operational level, not locked in management dashboards. The people who create value see the targets and adapt accordingly.</p>
       </div>
-
       <div style="background:#fff;padding:3.2rem;border-bottom:3px solid #00A651;" class="card-hover">
-        <div style="width:4rem;height:4rem;background:#00A651;display:flex;align-items:center;justify-content:center;margin-bottom:2rem;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-        </div>
-        <h3 style="font-size:1.7rem;font-weight:500;color:#1A1A1A;margin-bottom:1rem;line-height:1.3;">Holistic Decision Making</h3>
-        <p style="font-size:1.3rem;color:#555;line-height:1.65;">Every recommendation balances three dimensions simultaneously: EBITDA growth, mitigation of performance risk, and the opening of new opportunity windows. A recommendation that solves one at the expense of the others is not a solution — it is a trade-off that will surface later.</p>
+        <h3 style="font-size:1.7rem;font-weight:500;color:#1A1A1A;margin-bottom:1rem;">Holistic Decision Making</h3>
+        <p style="font-size:1.3rem;color:#555;line-height:1.65;">Every recommendation balances EBITDA growth, mitigation of performance risk, and opening of opportunity windows simultaneously — not one at the expense of the others.</p>
       </div>
-
       <div style="background:#fff;padding:3.2rem;border-bottom:3px solid #00A651;" class="card-hover">
-        <div style="width:4rem;height:4rem;background:#00A651;display:flex;align-items:center;justify-content:center;margin-bottom:2rem;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </div>
-        <h3 style="font-size:1.7rem;font-weight:500;color:#1A1A1A;margin-bottom:1rem;line-height:1.3;">Capability Transfer</h3>
-        <p style="font-size:1.3rem;color:#555;line-height:1.65;">The goal is not an organisation that performs well while we are engaged — it is an organisation that performs better after we leave. Every engagement is structured to build internal capability, not create ongoing dependency on external support.</p>
+        <h3 style="font-size:1.7rem;font-weight:500;color:#1A1A1A;margin-bottom:1rem;">Capability Transfer</h3>
+        <p style="font-size:1.3rem;color:#555;line-height:1.65;">The goal is an organisation that performs better after we leave. Every engagement builds internal capability — not ongoing dependency on external support.</p>
       </div>
-
       <div style="background:#fff;padding:3.2rem;border-bottom:3px solid #00A651;" class="card-hover">
-        <div style="width:4rem;height:4rem;background:#00A651;display:flex;align-items:center;justify-content:center;margin-bottom:2rem;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-        </div>
-        <h3 style="font-size:1.7rem;font-weight:500;color:#1A1A1A;margin-bottom:1rem;line-height:1.3;">Long-Term Perspective</h3>
-        <p style="font-size:1.3rem;color:#555;line-height:1.65;">Every recommendation is assessed for its long-term operational impact, not just its short-term financial return. Sustainability is a constraint built into the methodology — not an afterthought added at the end.</p>
+        <h3 style="font-size:1.7rem;font-weight:500;color:#1A1A1A;margin-bottom:1rem;">Long-Term Perspective</h3>
+        <p style="font-size:1.3rem;color:#555;line-height:1.65;">Every recommendation is assessed for its long-term operational impact, not just its short-term financial return. Sustainability is a constraint built into the methodology from the start.</p>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ════════════════════════════════════════
-     SECTION 5: THE ATLAS SYSTEM
-════════════════════════════════════════ -->
-<section style="padding:8rem 2.4rem;background:#fff;" aria-label="ATLAS System">
-  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 2fr;gap:6.4rem;align-items:start;" class="paper-two-col">
-
-    <div style="position:sticky;top:10rem;">
+<!-- ATLAS SYSTEM -->
+<section id="atlas-system" style="padding:8rem 2.4rem;background:#fff;" aria-label="ATLAS System">
+  <div style="max-width:1280px;margin:0 auto;" class="two-col">
+    <div class="sticky-col">
       <div class="section-rule"></div>
       <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">The ATLAS System</h2>
-      <p class="body-sm" style="color:#555;">One integrated management system. Two focus areas. Five processes. Seven modules.</p>
-      <br>
-      <p class="body-sm" style="color:#555;">Performance Enhancement and Operational Sustainability sit within the Execution focus area of ATLAS — but they are informed by, and feed back into, the Planning focus area continuously.</p>
+      <p class="body-sm" style="color:#555;margin-bottom:1.6rem;">1 integrated system · 2 focus areas · 5 processes · 7 modules</p>
+      <div style="display:flex;flex-direction:column;gap:0.8rem;margin-top:2rem;">
+        <a href="#process-01" class="arrow-link" style="font-size:1.2rem;">01 · Piloting</a>
+        <a href="#process-02" class="arrow-link" style="font-size:1.2rem;">02 · Strategic Planning</a>
+        <a href="#process-03" class="arrow-link" style="font-size:1.2rem;">03 · Consolidation &amp; Review</a>
+        <a href="#process-04" class="arrow-link" style="font-size:1.2rem;">04 · Action Valuation</a>
+        <a href="#process-05" class="arrow-link" style="font-size:1.2rem;">05 · Insight</a>
+      </div>
     </div>
-
     <div style="display:flex;flex-direction:column;gap:3.2rem;">
-      <p class="body-lg" style="color:#1A1A1A;">
-        ATLAS is the integrated management system that makes Performance Enhancement and Operational Sustainability possible at scale. Unlike point solutions that address individual problems, ATLAS provides a connected framework where every element of performance — from strategic direction to operational delivery — is visible, measured, and managed as part of one coherent system.
-      </p>
-
-      <!-- Two Focus Areas -->
+      <p class="body-lg" style="color:#1A1A1A;">ATLAS is the integrated management system that makes Performance Enhancement and Operational Sustainability possible at scale. Unlike point solutions, ATLAS provides a connected framework where every element of performance — from strategic direction to operational delivery — is visible, measured, and managed as one coherent system.</p>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;" class="bridge-grid">
         <div style="background:#F4F4F4;padding:2.8rem;border-top:3px solid #006338;">
           <p class="label" style="color:#006338;margin-bottom:1.2rem;">Planning Focus</p>
           <h3 style="font-size:1.6rem;font-weight:500;color:#1A1A1A;margin-bottom:1rem;">Transformation &amp; Opportunity Management</h3>
-          <p style="font-size:1.3rem;color:#555;line-height:1.65;">Where you are going. Strategic direction, stakeholder alignment, and the identification and prioritisation of value creation opportunities — informed by risk-based decision making from the outset.</p>
+          <p style="font-size:1.3rem;color:#555;line-height:1.65;">Strategic direction, stakeholder alignment, and prioritisation of value creation opportunities — informed by risk-based decision making from the outset.</p>
         </div>
         <div style="background:#F4F4F4;padding:2.8rem;border-top:3px solid #00A651;">
           <p class="label" style="color:#00A651;margin-bottom:1.2rem;">Execution Focus</p>
           <h3 style="font-size:1.6rem;font-weight:500;color:#1A1A1A;margin-bottom:1rem;">Tracking, Measuring &amp; Delivery</h3>
-          <p style="font-size:1.3rem;color:#555;line-height:1.65;">How you get there — and how you stay there. The continuous cycle of action valuation, execution monitoring, performance insight, and sustainability embedding that keeps the organisation moving toward its goals.</p>
-        </div>
-      </div>
-
-      <!-- Five Processes relevant to this service -->
-      <div>
-        <h3 style="font-size:1.8rem;font-weight:500;color:#1A1A1A;margin-bottom:2rem;">The Processes That Drive Performance &amp; Sustainability</h3>
-        <div style="display:flex;flex-direction:column;gap:1.2rem;" class="process-grid">
-
-          <div style="display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:start;padding:2rem;background:#F4F4F4;">
-            <div style="min-width:5.6rem;text-align:center;">
-              <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#00A651;">Process</span>
-              <p style="font-size:3rem;font-weight:300;color:#1A1A1A;line-height:1;">02</p>
-            </div>
-            <div>
-              <h4 style="font-size:1.5rem;font-weight:600;color:#1A1A1A;margin-bottom:0.6rem;">Strategic Planning &amp; Alignment</h4>
-              <p style="font-size:1.3rem;color:#555;line-height:1.65;">Transforms the cost-cutting cycle into a growth platform. After stabilising the operation, this process builds the capability for innovation — ensuring that efficiency gains become the foundation for competitive advantage, not just cost reduction.</p>
-            </div>
-          </div>
-
-          <div style="display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:start;padding:2rem;background:#F4F4F4;">
-            <div style="min-width:5.6rem;text-align:center;">
-              <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#00A651;">Process</span>
-              <p style="font-size:3rem;font-weight:300;color:#1A1A1A;line-height:1;">04</p>
-            </div>
-            <div>
-              <h4 style="font-size:1.5rem;font-weight:600;color:#1A1A1A;margin-bottom:0.6rem;">Action Valuation &amp; Execution</h4>
-              <p style="font-size:1.3rem;color:#555;line-height:1.65;">The engine of Performance Enhancement. Translates the plan into realised value by monitoring delivery, identifying and closing execution gaps, and ensuring that the financial results reflect the operational effort invested.</p>
-            </div>
-          </div>
-
-          <div style="display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:start;padding:2rem;background:#F4F4F4;">
-            <div style="min-width:5.6rem;text-align:center;">
-              <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#00A651;">Process</span>
-              <p style="font-size:3rem;font-weight:300;color:#1A1A1A;line-height:1;">05</p>
-            </div>
-            <div>
-              <h4 style="font-size:1.5rem;font-weight:600;color:#1A1A1A;margin-bottom:0.6rem;">Insight</h4>
-              <p style="font-size:1.3rem;color:#555;line-height:1.65;">Democratises performance data — ensuring that cost transparency and production transparency flow to the people who need them, not just to those who report on them. Insight at the operational level is the engine of Operational Sustainability.</p>
-            </div>
-          </div>
-
+          <p style="font-size:1.3rem;color:#555;line-height:1.65;">The continuous cycle of action valuation, execution monitoring, performance insight, and sustainability embedding that keeps the organisation moving toward its goals.</p>
         </div>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- ════════════════════════════════════════
-     CTA — GREEN BAND
+<!-- ═══════════════════════════════════════
+     THE 5 PROCESSES
 ════════════════════════════════════════ -->
+<section id="processes" style="padding:8rem 2.4rem;background:#1A1A1A;" aria-label="The 5 Processes intro">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:2rem;margin-bottom:5.6rem;">
+      <div>
+        <div class="section-rule"></div>
+        <h2 class="display-lg" style="color:#fff;">The 5 Core Processes</h2>
+        <p class="body-lg" style="color:rgba(255,255,255,0.55);max-width:52rem;margin-top:1.6rem;">"Change is inevitable… and fast. Our experts use a tested method to identify, roll out and track actions — with full governance and transparency throughout."</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.8rem;">
+        <a href="#process-01" class="dropdown-item" style="color:rgba(255,255,255,0.7);border-left-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);transition:all 0.15s;" onmouseenter="this.style.color='#00A651';this.style.borderLeftColor='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.7)';this.style.borderLeftColor='rgba(255,255,255,0.2)'">01 · Piloting</a>
+        <a href="#process-02" class="dropdown-item" style="color:rgba(255,255,255,0.7);border-left-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);transition:all 0.15s;" onmouseenter="this.style.color='#00A651';this.style.borderLeftColor='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.7)';this.style.borderLeftColor='rgba(255,255,255,0.2)'">02 · Strategic Planning &amp; Alignment</a>
+        <a href="#process-03" class="dropdown-item" style="color:rgba(255,255,255,0.7);border-left-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);transition:all 0.15s;" onmouseenter="this.style.color='#00A651';this.style.borderLeftColor='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.7)';this.style.borderLeftColor='rgba(255,255,255,0.2)'">03 · Consolidation &amp; Review</a>
+        <a href="#process-04" class="dropdown-item" style="color:rgba(255,255,255,0.7);border-left-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);transition:all 0.15s;" onmouseenter="this.style.color='#00A651';this.style.borderLeftColor='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.7)';this.style.borderLeftColor='rgba(255,255,255,0.2)'">04 · Action Valuation &amp; Execution</a>
+        <a href="#process-05" class="dropdown-item" style="color:rgba(255,255,255,0.7);border-left-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);transition:all 0.15s;" onmouseenter="this.style.color='#00A651';this.style.borderLeftColor='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.7)';this.style.borderLeftColor='rgba(255,255,255,0.2)'">05 · Insight</a>
+      </div>
+    </div>
+    <p class="body-lg" style="color:rgba(255,255,255,0.65);max-width:80rem;">The 5 Processes form the backbone of the ATLAS system. They are continuous and transparent, with different owners but full governance. Decisions are made as needed with full disclosure — and remain dynamic as more data, information, and knowledge is captured.</p>
+  </div>
+</section>
+
+<!-- PROCESS 01 -->
+<section id="process-01" style="padding:8rem 2.4rem;background:#F4F4F4;" aria-label="Process 01 Piloting">
+  <div style="max-width:1280px;margin:0 auto;" class="two-col">
+    <div class="sticky-col">
+      <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Process One</p>
+      <p style="font-size:6rem;font-weight:300;color:#e0e0e0;line-height:1;margin-bottom:1.2rem;">01</p>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Piloting</h2>
+      <p class="body-sm" style="color:#555;">"Where we are going, not where we have been — that is the starting point for every engagement."</p>
+      <div style="margin-top:2.4rem;"><a href="#process-02" class="arrow-link">Next: Strategic Planning</a></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2.8rem;">
+      <p class="body-lg" style="color:#1A1A1A;">Companies seeking differentiation and growth must pursue intentional strategy rather than random direction. Piloting examines your business through a <strong>future-oriented lens</strong> using two proven transitional tools — not because competitors are using them, but because they work for your unique context.</p>
+      <p class="body-lg" style="color:#555;">The process asks three fundamental questions: Where is the future taking us? How fast do we need to move? And where could we fit in? These are explored through structured workshops that challenge assumptions without judgement, with the objectivity of an external perspective and the rigour of a structured methodology.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;" class="bridge-grid">
+        <div style="background:#fff;padding:2.4rem;border-top:3px solid #006338;">
+          <h4 style="font-size:1.5rem;font-weight:600;color:#1A1A1A;margin-bottom:1rem;">Business Model Canvas</h4>
+          <p style="font-size:1.3rem;color:#555;line-height:1.65;">Functional owner workshops in shared settings reveal strengths and weaknesses. The integrated approach breaks silos and develops encompassing strategies that account for real resource allocation and timelines. Stakeholder values are incorporated alongside traditional business logistics.</p>
+        </div>
+        <div style="background:#fff;padding:2.4rem;border-top:3px solid #00A651;">
+          <h4 style="font-size:1.5rem;font-weight:600;color:#1A1A1A;margin-bottom:1rem;">Strategic Mapping</h4>
+          <p style="font-size:1.3rem;color:#555;line-height:1.65;">Extends shareholder perspectives to include the full range of stakeholder views. Where does your business fit in the future landscape? How fast do you need to move? Where are the real opportunities? Strategic mapping makes these questions answerable.</p>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-size:1.4rem;font-weight:600;color:#1A1A1A;margin-bottom:1.6rem;letter-spacing:0.04em;text-transform:uppercase;">Key Steps</h4>
+        <div style="display:flex;flex-direction:column;">
+          <div class="proc-step"><div class="step-num">A</div><p style="font-size:1.3rem;color:#555;line-height:1.65;padding-top:0.4rem;">Assess current business models through functional owner workshops in shared, open settings</p></div>
+          <div class="proc-step"><div class="step-num">B</div><p style="font-size:1.3rem;color:#555;line-height:1.65;padding-top:0.4rem;">Identify strengths and weaknesses through integrated, cross-functional perspectives</p></div>
+          <div class="proc-step"><div class="step-num">C</div><p style="font-size:1.3rem;color:#555;line-height:1.65;padding-top:0.4rem;">Break down organisational silos to develop encompassing, coherent strategies</p></div>
+          <div class="proc-step"><div class="step-num">D</div><p style="font-size:1.3rem;color:#555;line-height:1.65;padding-top:0.4rem;">Extend shareholder perspectives to incorporate full stakeholder views</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS 02 -->
+<section id="process-02" style="padding:8rem 2.4rem;background:#fff;" aria-label="Process 02 Strategic Planning">
+  <div style="max-width:1280px;margin:0 auto;" class="two-col">
+    <div class="sticky-col">
+      <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Process Two</p>
+      <p style="font-size:6rem;font-weight:300;color:#e0e0e0;line-height:1;margin-bottom:1.2rem;">02</p>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Strategic Planning &amp; Alignment</h2>
+      <p class="body-sm" style="color:#555;">"After stabilising operations and improving productivity, we incorporate innovation and strategic direction."</p>
+      <div style="margin-top:2.4rem;"><a href="#process-03" class="arrow-link">Next: Consolidation</a></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2.8rem;">
+      <p class="body-lg" style="color:#1A1A1A;">Most mature businesses implement transformation because markets have shifted. The typical response — staffing reductions, inventory optimisation, operating cost cuts — generates short-term gains but <strong>inhibits innovation and limits revenue growth</strong>. This process goes further.</p>
+      <p class="body-lg" style="color:#555;">Strategic Planning and Alignment ensures that investments align properly with future direction rather than simply protecting last year's results. After stabilising the operation, this process builds the capability for innovation — ensuring that efficiency gains become the foundation for competitive advantage, not just cost reduction.</p>
+      <div style="background:#F4F4F4;padding:2.8rem;">
+        <h4 style="font-size:1.5rem;font-weight:600;color:#1A1A1A;margin-bottom:1.6rem;">The Transformation Progression</h4>
+        <div style="display:flex;flex-direction:column;gap:1.2rem;">
+          <div style="display:flex;align-items:center;gap:1.6rem;padding:1.4rem;background:#fff;border-left:3px solid #006338;">
+            <span style="font-size:1.1rem;font-weight:700;color:#006338;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap;">Stabilise</span>
+            <p style="font-size:1.3rem;color:#555;line-height:1.5;">Create a stable operational base — reduce volatility, address reliability, establish predictable performance</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:1.6rem;padding:1.4rem;background:#fff;border-left:3px solid #00A651;">
+            <span style="font-size:1.1rem;font-weight:700;color:#00A651;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap;">Build</span>
+            <p style="font-size:1.3rem;color:#555;line-height:1.5;">Build on developed processes to reach the target performance state — systematic improvement with measurable milestones</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:1.6rem;padding:1.4rem;background:#fff;border-left:3px solid #1A1A1A;">
+            <span style="font-size:1.1rem;font-weight:700;color:#1A1A1A;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap;">Innovate</span>
+            <p style="font-size:1.3rem;color:#555;line-height:1.5;">Incorporate innovation and strategic direction to move beyond cost-cutting cycles and into genuine competitive differentiation</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-size:1.4rem;font-weight:600;color:#1A1A1A;margin-bottom:1.6rem;letter-spacing:0.04em;text-transform:uppercase;">Key Steps</h4>
+        <div style="display:flex;flex-direction:column;">
+          <div class="proc-step"><div class="step-num">A</div><p style="font-size:1.3rem;color:#555;line-height:1.65;padding-top:0.4rem;">Initial focus on stabilising existing operations to create a reliable base</p></div>
+          <div class="proc-step"><div class="step-num">B</div><p style="font-size:1.3rem;color:#555;line-height:1.65;padding-top:0.4rem;">Build on developed processes to reach the target performance state</p></div>
+          <div class="proc-step"><div class="step-num">C</div><p style="font-size:1.3rem;color:#555;line-height:1.65;padding-top:0.4rem;">Incorporate innovation and direction to move beyond cost-cutting cycles</p></div>
+          <div class="proc-step"><div class="step-num">D</div><p style="font-size:1.3rem;color:#555;line-height:1.65;padding-top:0.4rem;">Active challenge workshops that reduce cognitive bias and stress-test assumptions</p></div>
+          <div class="proc-step"><div class="step-num">E</div><p style="font-size:1.3rem;color:#555;line-height:1.65;padding-top:0.4rem;">Foster the cultural change necessary for sustainable transformation to hold</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS 03 -->
+<section id="process-03" style="padding:8rem 2.4rem;background:#F4F4F4;" aria-label="Process 03 Consolidation">
+  <div style="max-width:1280px;margin:0 auto;" class="two-col">
+    <div class="sticky-col">
+      <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Process Three</p>
+      <p style="font-size:6rem;font-weight:300;color:#e0e0e0;line-height:1;margin-bottom:1.2rem;">03</p>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Consolidation &amp; Review</h2>
+      <p class="body-sm" style="color:#555;">"The costs of implementing new ideas and the costs of mitigating old risks are compared on equal terms — without cognitive bias."</p>
+      <div style="margin-top:2.4rem;"><a href="#process-04" class="arrow-link">Next: Action Valuation</a></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2.8rem;">
+      <p class="body-lg" style="color:#1A1A1A;">AT-IPIC brings a significant advantage through the <strong>Lighthouse concept</strong> — not a control tower that looks inward and reacts, but a lighthouse that continuously scans the horizon in all directions, warning of hazards before they become crises.</p>
+      <p class="body-lg" style="color:#555;">Consolidation and Review performs three essential functions simultaneously: combining new ideas with implementation feedback; providing a transparent platform for strategic review; and directing risks and opportunities to decision makers on equal terms, without the cognitive biases that typically skew investment decisions.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;" class="bridge-grid">
+        <div style="background:#fff;padding:2.4rem;">
+          <h4 style="font-size:1.4rem;font-weight:600;color:#555;margin-bottom:1rem;">Control Tower</h4>
+          <p style="font-size:1.3rem;color:#888;line-height:1.65;">Looks inward. Reacts to what has already happened. Fixed vantage point. Information flows up and is filtered. By the time a problem reaches the top, the cost to respond has escalated.</p>
+        </div>
+        <div style="background:#1A1A1A;padding:2.4rem;">
+          <h4 style="font-size:1.4rem;font-weight:600;color:#00A651;margin-bottom:1rem;">Lighthouse</h4>
+          <p style="font-size:1.3rem;color:rgba(255,255,255,0.65);line-height:1.65;">Scans all directions. Anticipates. Warns early. Information is transparent and actionable at every level. Decision-makers see what is coming before it arrives — not after it has already cost them.</p>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-size:1.4rem;font-weight:600;color:#1A1A1A;margin-bottom:1.6rem;letter-spacing:0.04em;text-transform:uppercase;">Three Functions</h4>
+        <div style="display:flex;flex-direction:column;">
+          <div class="proc-step"><div class="step-num">1</div><p style="font-size:1.3rem;color:#555;line-height:1.65;padding-top:0.4rem;">Consolidates new ideas and implementation feedback for transparent review; prioritises new concepts if cash flow is restricted</p></div>
+          <div class="proc-step"><div class="step-num">2</div><p style="font-size:1.3rem;color:#555;line-height:1.65;padding-top:0.4rem;">Combines implementation feedback with innovation to inform vision and strategy review continuously</p></div>
+          <div class="proc-step"><div class="step-num">3</div><p style="font-size:1.3rem;color:#555;line-height:1.65;padding-top:0.4rem;">Directs risks and opportunities on equal terms — warning of timing issues, volatility, and funding gaps before they become constraints</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS 04 -->
+<section id="process-04" style="padding:8rem 2.4rem;background:#fff;" aria-label="Process 04 Action Valuation">
+  <div style="max-width:1280px;margin:0 auto;" class="two-col">
+    <div class="sticky-col">
+      <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Process Four</p>
+      <p style="font-size:6rem;font-weight:300;color:#e0e0e0;line-height:1;margin-bottom:1.2rem;">04</p>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Action Valuation &amp; Execution</h2>
+      <p class="body-sm" style="color:#555;">"Many clients find that the reported gain is never realised in the actual financial figures. This process is designed to close that gap."</p>
+      <div style="margin-top:2.4rem;"><a href="#process-05" class="arrow-link">Next: Insight</a></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2.8rem;">
+      <p class="body-lg" style="color:#1A1A1A;">Two central concerns drive this process: <strong>EBITDA growth</strong> and <strong>value realisation</strong>. By converting the EBITDA bridge into a genuine managerial tool with transparent metrics, operations teams can act decisively and allocate resources precisely and effectively.</p>
+      <p class="body-lg" style="color:#555;">Value plan actions are overestimated and leakage underestimated — not through dishonesty, but through the cognitive biases that come with proximity to your own operations. An external, structured approach changes this. Portfolio tracking monitors each action and identifies when the window of opportunity is closing. Industrial controlling quantifies leakage through structured tools. Transparency mechanisms show where money is being lost most significantly.</p>
+      <div style="background:#F4F4F4;padding:2.8rem;">
+        <h4 style="font-size:1.5rem;font-weight:600;color:#1A1A1A;margin-bottom:1.6rem;">The Four Execution Tools</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;" class="bridge-grid">
+          <div style="padding:2rem;border-left:3px solid #00A651;background:#fff;">
+            <h5 style="font-size:1.3rem;font-weight:600;color:#1A1A1A;margin-bottom:0.6rem;">Portfolio Tracking</h5>
+            <p style="font-size:1.2rem;color:#555;line-height:1.6;">Monitors each action and discontinues effort when the window of opportunity has closed — preventing resource waste on stale initiatives.</p>
+          </div>
+          <div style="padding:2rem;border-left:3px solid #00A651;background:#fff;">
+            <h5 style="font-size:1.3rem;font-weight:600;color:#1A1A1A;margin-bottom:0.6rem;">Industrial Controlling</h5>
+            <p style="font-size:1.2rem;color:#555;line-height:1.6;">Quantifies leakage precisely through structured "One Pager" tools — making visible exactly where financial losses occur and how large they are.</p>
+          </div>
+          <div style="padding:2rem;border-left:3px solid #00A651;background:#fff;">
+            <h5 style="font-size:1.3rem;font-weight:600;color:#1A1A1A;margin-bottom:0.6rem;">Transparency Mechanisms</h5>
+            <p style="font-size:1.2rem;color:#555;line-height:1.6;">Identify where money is being lost most significantly — connecting financial outcomes to operational reality so corrective action can be targeted.</p>
+          </div>
+          <div style="padding:2rem;border-left:3px solid #00A651;background:#fff;">
+            <h5 style="font-size:1.3rem;font-weight:600;color:#1A1A1A;margin-bottom:0.6rem;">Innovation Funnel</h5>
+            <p style="font-size:1.2rem;color:#555;line-height:1.6;">Manages value creation pipeline while minimising operational losses — ensuring new initiatives are properly evaluated and resourced before commitment.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS 05 -->
+<section id="process-05" style="padding:8rem 2.4rem;background:#F4F4F4;" aria-label="Process 05 Insight">
+  <div style="max-width:1280px;margin:0 auto;" class="two-col">
+    <div class="sticky-col">
+      <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Process Five</p>
+      <p style="font-size:6rem;font-weight:300;color:#e0e0e0;line-height:1;margin-bottom:1.2rem;">05</p>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Insight</h2>
+      <p class="body-sm" style="color:#555;">"We don't draw conclusions… we create insight. The difference is that conclusions are passive and insight is actionable."</p>
+      <div style="margin-top:2.4rem;"><a href="#modules" class="arrow-link">Explore 7 Modules</a></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2.8rem;">
+      <p class="body-lg" style="color:#1A1A1A;">Reporting has a tendency to flow upwards. Information becomes more confidential as it moves through management layers — and smothers the insight that operational teams need to create and preserve value. The Insight process reverses this.</p>
+      <p class="body-lg" style="color:#555;">Performance data is democratised — made visible and actionable at the operational level where value is actually created and lost, giving production and operations teams the analytical capability they need to make informed decisions independently.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;" class="bridge-grid">
+        <div style="background:#fff;padding:2.8rem;border-top:3px solid #00A651;">
+          <h4 style="font-size:1.5rem;font-weight:600;color:#1A1A1A;margin-bottom:1.2rem;">Cost Transparency</h4>
+          <p style="font-size:1.3rem;color:#555;line-height:1.65;">Reveals financial flows across operations — not just at the management level, but at the operational level where cost decisions are actually made. Makes the true cost of every action visible and comparable across the organisation.</p>
+        </div>
+        <div style="background:#fff;padding:2.8rem;border-top:3px solid #00A651;">
+          <h4 style="font-size:1.5rem;font-weight:600;color:#1A1A1A;margin-bottom:1.2rem;">Production Transparency</h4>
+          <p style="font-size:1.3rem;color:#555;line-height:1.65;">Shows where processes occur, where bottlenecks form, and where operational incidents are creating value loss. Connects production reality to financial outcomes in real time — not in the monthly management report.</p>
+        </div>
+      </div>
+      <div style="border-left:3px solid #00A651;padding:2rem 2.4rem;background:#fff;">
+        <p style="font-size:1.4rem;color:#555;line-height:1.7;">Together, these two pillars of transparency enable organisations to identify EBITDA leakage points, make informed investment decisions, and locate cost-benefit opportunities that would otherwise remain invisible in aggregate reporting.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     THE 7 MODULES
+════════════════════════════════════════ -->
+<section id="modules" style="padding:8rem 2.4rem;background:#1A1A1A;" aria-label="The 7 Modules intro">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:2rem;margin-bottom:5.6rem;">
+      <div>
+        <div class="section-rule"></div>
+        <h2 class="display-lg" style="color:#fff;">The 7 Implementation Modules</h2>
+        <p class="body-lg" style="color:rgba(255,255,255,0.55);max-width:52rem;margin-top:1.6rem;">"We have divided the complex business process into smaller, simple modules. Each can be implemented at different speeds, in different locations, at different times."</p>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.2rem;" class="themes-grid">
+      <a href="#module-01" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);padding:2rem;border-top:3px solid #00A651;transition:background 0.15s;" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'"><p class="label" style="color:#00A651;margin-bottom:0.6rem;">01</p><p style="font-size:1.4rem;font-weight:500;color:#fff;">Strategic Direction</p></a>
+      <a href="#module-02" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);padding:2rem;border-top:3px solid #00A651;transition:background 0.15s;" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'"><p class="label" style="color:#00A651;margin-bottom:0.6rem;">02</p><p style="font-size:1.4rem;font-weight:500;color:#fff;">360° Brainstorming</p></a>
+      <a href="#module-03" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);padding:2rem;border-top:3px solid #00A651;transition:background 0.15s;" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'"><p class="label" style="color:#00A651;margin-bottom:0.6rem;">03</p><p style="font-size:1.4rem;font-weight:500;color:#fff;">Establishing Context</p></a>
+      <a href="#module-04" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);padding:2rem;border-top:3px solid #00A651;transition:background 0.15s;" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'"><p class="label" style="color:#00A651;margin-bottom:0.6rem;">04</p><p style="font-size:1.4rem;font-weight:500;color:#fff;">Stabilising Production</p></a>
+      <a href="#module-05" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);padding:2rem;border-top:3px solid rgba(255,255,255,0.2);transition:background 0.15s;" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'"><p class="label" style="color:#00A651;margin-bottom:0.6rem;">05</p><p style="font-size:1.4rem;font-weight:500;color:#fff;">Aligning with Controlling</p></a>
+      <a href="#module-06" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);padding:2rem;border-top:3px solid rgba(255,255,255,0.2);transition:background 0.15s;" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'"><p class="label" style="color:#00A651;margin-bottom:0.6rem;">06</p><p style="font-size:1.4rem;font-weight:500;color:#fff;">Valorisation</p></a>
+      <a href="#module-07" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);padding:2rem;border-top:3px solid rgba(255,255,255,0.2);transition:background 0.15s;" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'"><p class="label" style="color:#00A651;margin-bottom:0.6rem;">07</p><p style="font-size:1.4rem;font-weight:500;color:#fff;">Lighthouse</p></a>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 01 -->
+<section id="module-01" style="padding:7.2rem 2.4rem;background:#fff;" aria-label="Module 01">
+  <div style="max-width:1280px;margin:0 auto;" class="two-col">
+    <div class="sticky-col">
+      <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Module One</p>
+      <p style="font-size:6rem;font-weight:300;color:#e0e0e0;line-height:1;margin-bottom:1.2rem;">01</p>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Strategic Direction</h2>
+      <a href="#module-02" class="arrow-link" style="margin-top:2rem;display:inline-flex;">Next Module</a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2rem;">
+      <p class="body-lg" style="color:#1A1A1A;">A company's vision is distinctive and individual. It is vital to obtain impartial, transparent feedback to help an organisation navigate the unpredictability of future conditions — from someone with no stake in the answer.</p>
+      <div style="border-left:3px solid #00A651;padding:1.6rem 2rem;background:#F4F4F4;"><p style="font-size:1.5rem;font-weight:400;color:#1A1A1A;font-style:italic;">"We look at where you need to be… not where you are."</p></div>
+      <p class="body-lg" style="color:#555;">The vision creation process considers three fundamental questions: Where is the future taking us? How fast do we need to move? And where could we fit in? AT-IPIC facilitates structured workshops exploring potential future business scope, identifying challenges, and recognising organisational strengths — leveraging professional networks, global expertise, and research capabilities, with objectivity rather than recommendation by imitation.</p>
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div class="proc-step"><div class="step-num">→</div><p style="font-size:1.3rem;color:#555;line-height:1.65;padding-top:0.4rem;">Future-oriented assessment of business scope and competitive positioning</p></div>
+        <div class="proc-step"><div class="step-num">→</div><p style="font-size:1.3rem;color:#555;line-height:1.65;padding-top:0.4rem;">Structured workshops that challenge assumptions without judgement</p></div>
+        <div class="proc-step"><div class="step-num">→</div><p style="font-size:1.3rem;color:#555;line-height:1.65;padding-top:0.4rem;">Clear articulation of direction, pace, and investment priorities</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 02 -->
+<section id="module-02" style="padding:7.2rem 2.4rem;background:#F4F4F4;" aria-label="Module 02">
+  <div style="max-width:1280px;margin:0 auto;" class="two-col">
+    <div class="sticky-col">
+      <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Module Two</p>
+      <p style="font-size:6rem;font-weight:300;color:#e0e0e0;line-height:1;margin-bottom:1.2rem;">02</p>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">360° Brainstorming</h2>
+      <a href="#module-03" class="arrow-link" style="margin-top:2rem;display:inline-flex;">Next Module</a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2rem;">
+      <p class="body-lg" style="color:#1A1A1A;">The 360° Brainstorming module helps organisations avoid siloed thinking by examining their business from multiple perspectives simultaneously — ensuring no critical angle is missed.</p>
+      <div style="border-left:3px solid #00A651;padding:1.6rem 2rem;background:#fff;"><p style="font-size:1.5rem;font-weight:400;color:#1A1A1A;font-style:italic;">"Where others define actions based on looking inside… we look outside."</p></div>
+      <div style="display:flex;flex-direction:column;gap:1.6rem;">
+        <div style="background:#fff;padding:2rem;border-left:3px solid #006338;">
+          <h4 style="font-size:1.4rem;font-weight:600;color:#1A1A1A;margin-bottom:0.8rem;">Strategy Mapping</h4>
+          <p style="font-size:1.3rem;color:#555;line-height:1.65;">Examines organisational strengths from multiple viewpoints: what you think you need and actually have, and what your customers and competition think. This extended version incorporates both shareholder and stakeholder value considerations.</p>
+        </div>
+        <div style="background:#fff;padding:2rem;border-left:3px solid #00A651;">
+          <h4 style="font-size:1.4rem;font-weight:600;color:#1A1A1A;margin-bottom:0.8rem;">Business Model Canvas</h4>
+          <p style="font-size:1.3rem;color:#555;line-height:1.65;">Integrates management and operational floor perspectives to provide transparency about resource allocation and timelines. The enhanced version includes stakeholder values alongside traditional business logistics and distribution views.</p>
+        </div>
+        <div style="background:#fff;padding:2rem;border-left:3px solid #1A1A1A;">
+          <h4 style="font-size:1.4rem;font-weight:600;color:#1A1A1A;margin-bottom:0.8rem;">Materiality Index</h4>
+          <p style="font-size:1.3rem;color:#555;line-height:1.65;">Addresses dynamic supplier and customer needs by helping organisations identify where to focus direction and adapt existing systems. Supports decisions about whether to evaluate current business models or prepare for future stages.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 03 -->
+<section id="module-03" style="padding:7.2rem 2.4rem;background:#fff;" aria-label="Module 03">
+  <div style="max-width:1280px;margin:0 auto;" class="two-col">
+    <div class="sticky-col">
+      <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Module Three</p>
+      <p style="font-size:6rem;font-weight:300;color:#e0e0e0;line-height:1;margin-bottom:1.2rem;">03</p>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Establishing Context &amp; Initial Action Prioritisation</h2>
+      <a href="#module-04" class="arrow-link" style="margin-top:2rem;display:inline-flex;">Next Module</a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2rem;">
+      <p class="body-lg" style="color:#1A1A1A;">This module focuses on decision-making through risk management integration — prioritising actions by balancing growth and vulnerability reduction simultaneously, not in opposition.</p>
+      <div style="border-left:3px solid #00A651;padding:1.6rem 2rem;background:#F4F4F4;"><p style="font-size:1.5rem;font-weight:400;color:#1A1A1A;font-style:italic;">"We prioritise actions by integrating growth and vulnerability… making growth sustainable and making investments timely."</p></div>
+      <p class="body-lg" style="color:#555;">Actions are evaluated across two axes simultaneously: <strong>Value creation</strong> (EBITDA impact on the bottom line) and <strong>Risk mitigation</strong> (minimising asset leakage and stabilising operations). This prevents the common failure where organisations pursue growth opportunities while leaving operational vulnerabilities unaddressed.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;" class="bridge-grid">
+        <div style="background:#F4F4F4;padding:2rem;border-top:3px solid #00A651;">
+          <h4 style="font-size:1.4rem;font-weight:600;color:#1A1A1A;margin-bottom:0.8rem;">Value Driver Trees</h4>
+          <p style="font-size:1.3rem;color:#555;line-height:1.65;">Identify which actions most impact incident frequency, distinguishing between hard barriers (computer-controlled systems) and soft barriers (procedures and event-focused actions) — revealing where effort will have the greatest impact.</p>
+        </div>
+        <div style="background:#F4F4F4;padding:2rem;border-top:3px solid #00A651;">
+          <h4 style="font-size:1.4rem;font-weight:600;color:#1A1A1A;margin-bottom:0.8rem;">HERA Analysis</h4>
+          <p style="font-size:1.3rem;color:#555;line-height:1.65;">Supports decisions about deepening the project portfolio, establishing vulnerability reduction strategies, creating operational stability, and fostering growth initiatives — all evaluated on a consistent analytical basis.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 04 -->
+<section id="module-04" style="padding:7.2rem 2.4rem;background:#F4F4F4;" aria-label="Module 04">
+  <div style="max-width:1280px;margin:0 auto;" class="two-col">
+    <div class="sticky-col">
+      <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Module Four</p>
+      <p style="font-size:6rem;font-weight:300;color:#e0e0e0;line-height:1;margin-bottom:1.2rem;">04</p>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Stabilising Production &amp; Capturing Actions</h2>
+      <a href="#module-05" class="arrow-link" style="margin-top:2rem;display:inline-flex;">Next Module</a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2rem;">
+      <p class="body-lg" style="color:#1A1A1A;">This module addresses the three categories of actions that require measurement against a common benchmark — ensuring that all value-creating and risk-mitigating activities are captured, tracked, and given equal analytical treatment.</p>
+      <div style="border-left:3px solid #00A651;padding:1.6rem 2rem;background:#fff;"><p style="font-size:1.5rem;font-weight:400;color:#1A1A1A;font-style:italic;">"We help stabilise productivity… making sure you keep any EBITDA you create… providing the platform for growth."</p></div>
+      <div style="display:flex;flex-direction:column;gap:1.6rem;">
+        <div style="background:#fff;padding:2rem;border-left:3px solid #006338;">
+          <h4 style="font-size:1.4rem;font-weight:600;color:#1A1A1A;margin-bottom:0.8rem;">"One Pager"</h4>
+          <p style="font-size:1.3rem;color:#555;line-height:1.65;">Actions identified following an incident to understand precisely where financial losses occur. Reactive in origin but systematic in capture — each incident creates learning that prevents future loss.</p>
+        </div>
+        <div style="background:#fff;padding:2rem;border-left:3px solid #00A651;">
+          <h4 style="font-size:1.4rem;font-weight:600;color:#1A1A1A;margin-bottom:0.8rem;">"Value Plan"</h4>
+          <p style="font-size:1.3rem;color:#555;line-height:1.65;">Actions identified during the project phase to enhance project viability and success rates. Proactive by nature — building the value that justifies investment before commitment is made.</p>
+        </div>
+        <div style="background:#fff;padding:2rem;border-left:3px solid #1A1A1A;">
+          <h4 style="font-size:1.4rem;font-weight:600;color:#1A1A1A;margin-bottom:0.8rem;">"Leverage"</h4>
+          <p style="font-size:1.3rem;color:#555;line-height:1.65;">Opportunities derived from stimulating staff engagement, sharing knowledge, and applying strategic direction. Often the most valuable category — tapping existing organisational capability that is currently underutilised.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 05 -->
+<section id="module-05" style="padding:7.2rem 2.4rem;background:#fff;" aria-label="Module 05">
+  <div style="max-width:1280px;margin:0 auto;" class="two-col">
+    <div class="sticky-col">
+      <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Module Five</p>
+      <p style="font-size:6rem;font-weight:300;color:#e0e0e0;line-height:1;margin-bottom:1.2rem;">05</p>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Aligning with Controlling &amp; Establishing KPIs</h2>
+      <a href="#module-06" class="arrow-link" style="margin-top:2rem;display:inline-flex;">Next Module</a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2rem;">
+      <p class="body-lg" style="color:#1A1A1A;">This module addresses the bias that typically distorts project funding decisions — creating transparency around which proposed actions genuinely support strategic objectives and which are driven by historical patterns, departmental politics, or short-term thinking.</p>
+      <div style="border-left:3px solid #00A651;padding:1.6rem 2rem;background:#F4F4F4;"><p style="font-size:1.5rem;font-weight:400;color:#1A1A1A;font-style:italic;">"We don't just look at EBITDA growth… we include mitigation cost and window of opportunity… ensuring investment efficiency and sustainability."</p></div>
+      <p class="body-lg" style="color:#555;">The module integrates sales, purchasing, and controlling department perspectives to evaluate how proposed actions align with the company's operational model. Actions are evaluated through <strong>worst, best, and normal case scenarios</strong> — preventing the optimism bias that causes most investment cases to underdeliver. The process documents current risk levels, existing barriers, implementation action plans, and the target future status required.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 06 -->
+<section id="module-06" style="padding:7.2rem 2.4rem;background:#F4F4F4;" aria-label="Module 06">
+  <div style="max-width:1280px;margin:0 auto;" class="two-col">
+    <div class="sticky-col">
+      <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Module Six</p>
+      <p style="font-size:6rem;font-weight:300;color:#e0e0e0;line-height:1;margin-bottom:1.2rem;">06</p>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Valorisation</h2>
+      <a href="#module-07" class="arrow-link" style="margin-top:2rem;display:inline-flex;">Next Module</a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2rem;">
+      <div style="border-left:3px solid #00A651;padding:1.6rem 2rem;background:#fff;"><p style="font-size:1.5rem;font-weight:400;color:#1A1A1A;font-style:italic;">"We don't draw conclusions… we create insight."</p></div>
+      <p class="body-lg" style="color:#1A1A1A;">The Valorisation module integrates insight generation into standard management practices to deliver economically sustainable value — combining short and long-term perspectives while establishing clear action ownership and closing the accountability gaps that cause value to leak between planning and delivery.</p>
+      <div style="display:flex;flex-direction:column;gap:1.6rem;">
+        <div style="background:#fff;padding:2rem;border-left:3px solid #006338;">
+          <h4 style="font-size:1.4rem;font-weight:600;color:#1A1A1A;margin-bottom:0.8rem;">EBITDA Bridge</h4>
+          <p style="font-size:1.3rem;color:#555;line-height:1.65;">Presents operations from a purely financial lens, identifying areas like fixed costs and exchange rate impacts requiring intervention. This is the level most organisations already work at — but it is insufficient on its own.</p>
+        </div>
+        <div style="background:#fff;padding:2rem;border-left:3px solid #00A651;">
+          <h4 style="font-size:1.4rem;font-weight:600;color:#1A1A1A;margin-bottom:0.8rem;">Value Bridge</h4>
+          <p style="font-size:1.3rem;color:#555;line-height:1.65;">Demonstrates project-based actions, revealing that fixed costs remain a critical concern area. Bridges the gap between financial reporting and operational reality — making visible what the EBITDA Bridge obscures.</p>
+        </div>
+        <div style="background:#fff;padding:2rem;border-left:3px solid #1A1A1A;">
+          <h4 style="font-size:1.4rem;font-weight:600;color:#1A1A1A;margin-bottom:0.8rem;">Operational Bridge</h4>
+          <p style="font-size:1.3rem;color:#555;line-height:1.65;">The deepest layer — shows that fixed cost issues stem from operational incident losses, enabling teams to pinpoint performance inefficiencies and value leakage sources with precision. This is where real improvement becomes possible without additional capital expenditure.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 07 -->
+<section id="module-07" style="padding:7.2rem 2.4rem;background:#1A1A1A;" aria-label="Module 07">
+  <div style="max-width:1280px;margin:0 auto;" class="two-col">
+    <div class="sticky-col">
+      <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Module Seven</p>
+      <p style="font-size:6rem;font-weight:300;color:rgba(255,255,255,0.1);line-height:1;margin-bottom:1.2rem;">07</p>
+      <h2 class="display-md" style="color:#fff;margin-bottom:1.6rem;">Lighthouse</h2>
+      <p class="body-sm" style="color:rgba(255,255,255,0.55);">The culmination of the ATLAS system — unique in its simplicity, informative in its decision-making strength.</p>
+      <a href="index.html#contact" class="btn-green" style="margin-top:2.4rem;display:inline-flex;">Start the conversation</a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2.8rem;">
+      <p class="body-lg" style="color:rgba(255,255,255,0.78);">The Lighthouse module represents the final, self-sustaining state of performance transformation. It continuously looks at the horizon in all directions — identifying opportunities and risks, making action ownership transparent, and ensuring that efforts are sustainable and continuous rather than annual and budgeted.</p>
+      <div style="border-left:3px solid #00A651;padding:2rem 2.4rem;background:rgba(255,255,255,0.05);"><p style="font-size:1.5rem;font-weight:400;color:#fff;font-style:italic;">"It continuously looks at the horizon, in all directions, identifying opportunities and risks — making action ownership transparent and ensuring that efforts are sustainable and continuous."</p></div>
+      <div style="display:flex;flex-direction:column;gap:1.6rem;">
+        <div style="background:#232323;padding:2.4rem;border-left:3px solid #00A651;">
+          <h4 style="font-size:1.5rem;font-weight:500;color:#fff;margin-bottom:1rem;">Continuous Horizon Scanning</h4>
+          <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);line-height:1.65;">Continuously scans the horizon in all directions, identifying both opportunities and risks before they become crises. Unlike reactive reporting systems, the Lighthouse is always scanning forward — not cataloguing what has already happened.</p>
+        </div>
+        <div style="background:#232323;padding:2.4rem;border-left:3px solid #00A651;">
+          <h4 style="font-size:1.5rem;font-weight:500;color:#fff;margin-bottom:1rem;">Transparent Accountability</h4>
+          <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);line-height:1.65;">Makes action ownership visible and unambiguous, ensuring that efforts are sustainable and continuous rather than dependent on annual budget cycles or specific individuals. Value that is created becomes embedded knowledge for subsequent improvements.</p>
+        </div>
+        <div style="background:#232323;padding:2.4rem;border-left:3px solid #00A651;">
+          <h4 style="font-size:1.5rem;font-weight:500;color:#fff;margin-bottom:1rem;">Forward-Looking Navigation</h4>
+          <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);line-height:1.65;">Gives early warning of hazards and helps navigate cognitive bias, uneven playing fields, and wants versus genuine needs. Decision quality improves because the basis for decisions is clearer. Once actions deliver confirmed value, they become foundational knowledge for subsequent improvements — creating a continuous cycle of sustainable productivity gains.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
 <section style="background:#006338;padding:7.2rem 2.4rem;position:relative;overflow:hidden;" aria-label="Contact CTA">
   <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 80% 50%,rgba(0,166,81,0.3) 0%,transparent 60%);pointer-events:none;"></div>
   <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:6.4rem;align-items:center;position:relative;z-index:2;" class="dl-grid">
-
     <div>
       <div class="section-rule" style="background:rgba(255,255,255,0.4);"></div>
       <h2 class="display-lg" style="color:#fff;margin-bottom:1.6rem;">Start the Conversation</h2>
-      <p class="body-lg" style="color:rgba(255,255,255,0.78);margin-bottom:3.2rem;">
-        Every engagement begins with a direct conversation about where you are, where you need to be, and what stands between the two. There is no standard proposal — the approach is built around your specific situation.
-      </p>
-      <a href="index.html#contact" class="btn-green" style="background:#00A651;">
-        Speak to Adrian
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
+      <p class="body-lg" style="color:rgba(255,255,255,0.78);margin-bottom:3.2rem;">Every engagement begins with a direct conversation about where you are, where you need to be, and what stands between the two. There is no standard proposal — the approach is built around your specific situation.</p>
+      <a href="index.html#contact" class="btn-green" style="background:#00A651;">Speak to Adrian <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
-
-    <div>
-      <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:2.8rem;">
-        <p class="label" style="color:rgba(255,255,255,0.6);margin-bottom:1.6rem;">What to expect</p>
-        <div style="display:flex;flex-direction:column;gap:1.4rem;">
-          <div style="display:flex;align-items:flex-start;gap:1.2rem;">
-            <div style="width:2rem;height:2rem;background:#00A651;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:0.2rem;">
-              <span style="font-size:1.1rem;font-weight:700;color:#fff;">1</span>
-            </div>
-            <p style="font-size:1.3rem;color:rgba(255,255,255,0.75);line-height:1.6;">An initial conversation about your current performance reality — no preparation required</p>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:1.2rem;">
-            <div style="width:2rem;height:2rem;background:#00A651;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:0.2rem;">
-              <span style="font-size:1.1rem;font-weight:700;color:#fff;">2</span>
-            </div>
-            <p style="font-size:1.3rem;color:rgba(255,255,255,0.75);line-height:1.6;">A clear assessment of where the value gaps are and what is causing them</p>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:1.2rem;">
-            <div style="width:2rem;height:2rem;background:#00A651;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:0.2rem;">
-              <span style="font-size:1.1rem;font-weight:700;color:#fff;">3</span>
-            </div>
-            <p style="font-size:1.3rem;color:rgba(255,255,255,0.75);line-height:1.6;">A bespoke approach designed around your organisation — not a repackaged generic methodology</p>
-          </div>
-        </div>
+    <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:2.8rem;">
+      <p class="label" style="color:rgba(255,255,255,0.6);margin-bottom:1.6rem;">What to expect</p>
+      <div style="display:flex;flex-direction:column;gap:1.4rem;">
+        <div style="display:flex;align-items:flex-start;gap:1.2rem;"><div style="width:2rem;height:2rem;background:#00A651;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:0.2rem;"><span style="font-size:1.1rem;font-weight:700;color:#fff;">1</span></div><p style="font-size:1.3rem;color:rgba(255,255,255,0.75);line-height:1.6;">An initial conversation about your current performance reality — no preparation required</p></div>
+        <div style="display:flex;align-items:flex-start;gap:1.2rem;"><div style="width:2rem;height:2rem;background:#00A651;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:0.2rem;"><span style="font-size:1.1rem;font-weight:700;color:#fff;">2</span></div><p style="font-size:1.3rem;color:rgba(255,255,255,0.75);line-height:1.6;">A clear assessment of where the value gaps are and what is causing them</p></div>
+        <div style="display:flex;align-items:flex-start;gap:1.2rem;"><div style="width:2rem;height:2rem;background:#00A651;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:0.2rem;"><span style="font-size:1.1rem;font-weight:700;color:#fff;">3</span></div><p style="font-size:1.3rem;color:rgba(255,255,255,0.75);line-height:1.6;">A bespoke approach designed around your organisation — not a repackaged generic methodology</p></div>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- ════════════════════════════════════════
-     RELATED SERVICES / RESEARCH
-════════════════════════════════════════ -->
-<section style="padding:7.2rem 2.4rem;background:#fff;" aria-label="Related">
+<!-- RELATED -->
+<section style="padding:7.2rem 2.4rem;background:#fff;" aria-label="Related research">
   <div style="max-width:1280px;margin:0 auto;">
-    <div style="margin-bottom:3.6rem;">
-      <div class="section-rule"></div>
-      <h2 class="display-md" style="color:#1A1A1A;">Related Research &amp; Frameworks</h2>
-    </div>
+    <div style="margin-bottom:3.6rem;"><div class="section-rule"></div><h2 class="display-md" style="color:#1A1A1A;">Related Research &amp; Frameworks</h2></div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2.4rem;" class="themes-grid">
-      <a href="paper-core.html" style="text-decoration:none;" class="card-hover">
-        <div style="background:#1A1A1A;padding:3.2rem;border-bottom:3px solid #00A651;">
-          <p class="label" style="color:#00A651;margin-bottom:1rem;">Risk Management</p>
-          <h3 style="font-size:1.8rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:1.2rem;">CORE©: A Better Way for Decision Making Under Risk</h3>
-          <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);margin-bottom:2rem;">Embedding velocity and acceleration into risk calculation for better performance decisions.</p>
-          <span class="arrow-link" style="color:#00A651;">Read Paper <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </div>
-      </a>
-      <a href="paper-radar.html" style="text-decoration:none;" class="card-hover">
-        <div style="background:#1A1A1A;padding:3.2rem;border-bottom:3px solid #00A651;">
-          <p class="label" style="color:#00A651;margin-bottom:1rem;">Enterprise Risk Management</p>
-          <h3 style="font-size:1.8rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:1.2rem;">RADAR©: Embracing Ambiguity, Capturing Opportunity</h3>
-          <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);margin-bottom:2rem;">Identifying emerging risks and turning uncertainty into sustainable competitive advantage.</p>
-          <span class="arrow-link" style="color:#00A651;">Read Paper <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </div>
-      </a>
-      <a href="paper-forge.html" style="text-decoration:none;" class="card-hover">
-        <div style="background:#1A1A1A;padding:3.2rem;border-bottom:3px solid #00A651;">
-          <p class="label" style="color:#00A651;margin-bottom:1rem;">Strategic Risk Management</p>
-          <h3 style="font-size:1.8rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:1.2rem;">FORGE©: Decision Windows &amp; Urgency Calculation</h3>
-          <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);margin-bottom:2rem;">Calculating decision urgency and timing value capture before the window closes.</p>
-          <span class="arrow-link" style="color:#00A651;">Read Paper <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </div>
-      </a>
+      <a href="paper-core.html" style="text-decoration:none;" class="card-hover"><div style="background:#1A1A1A;padding:3.2rem;border-bottom:3px solid #00A651;"><p class="label" style="color:#00A651;margin-bottom:1rem;">Risk Management</p><h3 style="font-size:1.8rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:1.2rem;">CORE©: A Better Way for Decision Making Under Risk</h3><p style="font-size:1.3rem;color:rgba(255,255,255,0.55);margin-bottom:2rem;">Embedding velocity and acceleration into risk calculation for better performance decisions.</p><span class="arrow-link" style="color:#00A651;">Read Paper <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></a>
+      <a href="paper-radar.html" style="text-decoration:none;" class="card-hover"><div style="background:#1A1A1A;padding:3.2rem;border-bottom:3px solid #00A651;"><p class="label" style="color:#00A651;margin-bottom:1rem;">Enterprise Risk Management</p><h3 style="font-size:1.8rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:1.2rem;">RADAR©: Embracing Ambiguity, Capturing Opportunity</h3><p style="font-size:1.3rem;color:rgba(255,255,255,0.55);margin-bottom:2rem;">Identifying emerging risks and turning uncertainty into sustainable competitive advantage.</p><span class="arrow-link" style="color:#00A651;">Read Paper <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></a>
+      <a href="paper-forge.html" style="text-decoration:none;" class="card-hover"><div style="background:#1A1A1A;padding:3.2rem;border-bottom:3px solid #00A651;"><p class="label" style="color:#00A651;margin-bottom:1rem;">Strategic Risk Management</p><h3 style="font-size:1.8rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:1.2rem;">FORGE©: Decision Windows &amp; Urgency Calculation</h3><p style="font-size:1.3rem;color:rgba(255,255,255,0.55);margin-bottom:2rem;">Calculating decision urgency and timing value capture before the window closes.</p><span class="arrow-link" style="color:#00A651;">Read Paper <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></a>
     </div>
   </div>
 </section>
 
-<!-- ════════════════════════════════════════
-     FOOTER
-════════════════════════════════════════ -->
+<!-- FOOTER -->
 <footer style="background:#1A1A1A;padding:4rem 2.4rem;border-top:1px solid #2a2a2a;">
   <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:2rem;">
-    <a href="index.html" aria-label="AMC Home">
-      <img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:5.6rem;width:auto;opacity:0.85;" />
-    </a>
+    <a href="index.html"><img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:5.6rem;width:auto;opacity:0.85;" /></a>
     <p style="font-size:1.2rem;color:rgba(255,255,255,0.35);">© 2025 Adrian Clements. All rights reserved.</p>
     <div style="display:flex;gap:2rem;">
       <a href="index.html#services" style="font-size:1.2rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Services</a>
@@ -638,19 +822,33 @@
 </footer>
 
 <script>
-  // Nav scroll shadow
   const header = document.getElementById('site-header');
   window.addEventListener('scroll', () => {
-    header.style.boxShadow = window.scrollY > 8
-      ? '0 2px 16px rgba(0,0,0,0.10)'
-      : 'none';
+    header.style.boxShadow = window.scrollY > 8 ? '0 2px 16px rgba(0,0,0,0.10)' : 'none';
   }, { passive: true });
 
-  // Mobile menu
   document.getElementById('burger').addEventListener('click', () => {
     document.getElementById('mobile-menu').classList.toggle('open');
   });
-</script>
 
+  // Active page-nav highlighting
+  const pageNavLinks = document.querySelectorAll('#page-nav a');
+  const sections = ['overview','performance-enhancement','operational-sustainability','processes','modules'];
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        pageNavLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id || (id.startsWith('process') && a.getAttribute('href') === '#processes') || (id.startsWith('module') && a.getAttribute('href') === '#modules'));
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  ['overview','performance-enhancement','operational-sustainability','highlights','atlas-system','processes','modules'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+</script>
 </body>
 </html>
