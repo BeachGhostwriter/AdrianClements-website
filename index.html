@@ -180,6 +180,42 @@
     .nav-dropdown:hover .nav-dropdown-btn { color: #006338; }
     .nav-dropdown-chevron { transition: transform 0.18s ease; }
     .nav-dropdown:hover .nav-dropdown-chevron { transform: rotate(180deg); }
+
+    /* ── Hero search ── */
+    .hero-search { position: relative; max-width: 50rem; }
+    .hero-search input {
+      width: 100%; padding: 1.5rem 5.4rem 1.5rem 1.8rem;
+      background: rgba(255,255,255,0.1); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.3); color: #fff;
+      font-size: 1.4rem; font-family: inherit; outline: none;
+      transition: border-color 0.18s ease, background 0.18s ease;
+    }
+    .hero-search input::placeholder { color: rgba(255,255,255,0.55); }
+    .hero-search input:focus { border-color: #00A651; background: rgba(255,255,255,0.16); }
+    .hero-search .search-submit {
+      position: absolute; right: 0.6rem; top: 0.6rem; bottom: 0.6rem; width: 3.8rem;
+      background: #00A651; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.18s ease;
+    }
+    .hero-search .search-submit:hover { background: #006338; }
+    .search-results {
+      position: absolute; top: calc(100% + 0.8rem); left: 0; right: 0;
+      background: #fff; box-shadow: 0 20px 48px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.12);
+      max-height: 42rem; overflow-y: auto; z-index: 300; display: none;
+    }
+    .search-results.open { display: block; }
+    .search-result-item {
+      display: block; padding: 1.5rem 1.8rem; text-decoration: none;
+      border-bottom: 1px solid #f0f0f0; transition: background 0.12s ease;
+    }
+    .search-result-item:last-child { border-bottom: none; }
+    .search-result-item:hover, .search-result-item.active { background: #f7f9f8; }
+    .search-result-item .src-cat { font-size: 1.0rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #00A651; display: block; margin-bottom: 0.4rem; }
+    .search-result-item .src-title { font-size: 1.45rem; font-weight: 500; color: #1A1A1A; margin-bottom: 0.3rem; line-height: 1.3; }
+    .search-result-item .src-excerpt { font-size: 1.2rem; color: #777; line-height: 1.45; }
+    .search-empty { padding: 2.2rem 1.8rem; font-size: 1.3rem; color: #888; }
+    mark.search-hl { background: rgba(0,166,81,0.25); color: inherit; }
   </style>
 </head>
 <body>
@@ -209,6 +245,8 @@
           <a href="paper-core.html" class="dropdown-item">CORE© Framework</a>
           <a href="paper-radar.html" class="dropdown-item">RADAR© Framework</a>
           <a href="paper-forge.html" class="dropdown-item">FORGE© Framework</a>
+          <div class="dropdown-divider"></div>
+          <a href="publications.html#blog" class="dropdown-item">CORE© Insight Series (Blog)</a>
         </div>
       </div>
       <a href="publications.html" class="nav-link">Publications</a>
@@ -250,6 +288,7 @@
   <div id="mobile-menu" style="background:#fff;border-top:1px solid #e8e8e8;padding:2rem 2.4rem;flex-direction:column;gap:1.6rem;">
     <a href="#services"  class="nav-link" style="font-size:1.6rem;">Services</a>
     <a href="#insights"  class="nav-link" style="font-size:1.6rem;">Research</a>
+    <a href="publications.html#blog" class="nav-link" style="font-size:1.4rem;padding-left:1.6rem;color:#555;">CORE© Insight Series (Blog)</a>
     <a href="publications.html" class="nav-link" style="font-size:1.6rem;">Publications</a>
     <a href="about.html" class="nav-link" style="font-size:1.6rem;">About — Adrian Clements</a>
     <a href="publications.html#publications" class="nav-link" style="font-size:1.4rem;padding-left:1.6rem;color:#555;">Articles &amp; Publications</a>
@@ -284,6 +323,18 @@
       <p class="body-lg" style="color:rgba(255,255,255,0.82);max-width:52rem;margin-bottom:3.2rem;">
         Expert risk management consulting, education, and research — helping professionals and organisations identify, quantify, and govern risk with confidence.
       </p>
+
+      <div class="hero-search" style="margin-bottom:3.2rem;">
+        <label for="site-search-input" style="display:block;font-size:1.1rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:0.9rem;">Search the Site</label>
+        <div style="position:relative;">
+          <input type="text" id="site-search-input" autocomplete="off" placeholder="Search articles, frameworks, services, text..." aria-label="Search articles and text across the site" role="combobox" aria-expanded="false" aria-controls="site-search-results" />
+          <button type="button" id="site-search-btn" class="search-submit" aria-label="Search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+          <div id="site-search-results" class="search-results" role="listbox" aria-label="Search results"></div>
+        </div>
+      </div>
+
       <div style="display:flex;flex-wrap:wrap;gap:1.2rem;align-items:center;">
         <a href="#insights" class="btn-green">Read More
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -498,7 +549,7 @@
   <div style="display:grid;grid-template-columns:1fr 1fr;min-height:52rem;" class="about-grid">
     <!-- Image side -->
     <div style="position:relative;overflow:hidden;min-height:42rem;">
-      <img src="Webpictures/Boat.jpg" alt="Adrian Clements profile" style="width:100%;height:100%;object-fit:cover;display:block;" />
+      <img src="Webpictures/20161108_Clements_Adrian_31.jpg" alt="Adrian Clements profile" style="width:100%;height:100%;object-fit:cover;display:block;" />
       <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,99,56,0.45) 0%,rgba(0,0,0,0.35) 100%);"></div>
       <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,transparent 60%);"></div>
     </div>
@@ -704,6 +755,7 @@
           <li><a href="paper-core.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">CORE© Framework</a></li>
           <li><a href="paper-radar.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">RADAR© Framework</a></li>
           <li><a href="paper-forge.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">FORGE© Framework</a></li>
+          <li><a href="publications.html#blog" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">CORE© Insight Series (Blog)</a></li>
           <li><a href="publications.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">All Publications</a></li>
         </ul>
       </div>
@@ -874,6 +926,113 @@ document.querySelectorAll('section, footer').forEach(el => {
   el.style.transition = 'opacity 0.55s cubic-bezier(.4,0,.2,1), transform 0.55s cubic-bezier(.4,0,.2,1)';
   observer.observe(el);
 });
+
+// ════════════════════════════════════════
+// SITE SEARCH
+// ════════════════════════════════════════
+const SITE_SEARCH_INDEX = [
+  { title: 'CORE© Framework White Paper', url: 'paper-core.html', category: 'Framework', excerpt: "Beyond the traditional: embedding velocity and acceleration into the risk calculation. A better way for decision making under risk.", keywords: 'CORE RiskTime velocity acceleration causal CCORD threat trajectory score TTS' },
+  { title: 'RADAR© Framework White Paper', url: 'paper-radar.html', category: 'Framework', excerpt: 'Emerging risks: embracing risk ambiguity and turning uncertainty into strategic opportunity.', keywords: 'RADAR emerging risk ambiguity opportunity early warning' },
+  { title: 'FORGE© Framework White Paper', url: 'paper-forge.html', category: 'Framework', excerpt: 'Calculating decision urgency: when is the right time to act? A framework for timing risk responses.', keywords: 'FORGE decision windows urgency calculation timing response' },
+  { title: 'RiskTime: The Missing Dimension in Risk Management', url: 'blog-risktime.html', category: 'Blog · CORE© Insight Series', excerpt: 'Why every risk score your organisation produces is missing its most critical variable.', keywords: 'RiskTime velocity decision window response window dashboard causal boundary article 1' },
+  { title: 'Beyond the Heat Map: The Threat-Trajectory Score', url: 'blog-tts.html', category: 'Blog · CORE© Insight Series', excerpt: 'Replacing static risk scoring with a dynamic, formula-driven measure that tells you where risks are going.', keywords: 'TTS threat trajectory score heat map velocity amplification criticality formula article 2' },
+  { title: 'The CCORD: Making the Causal Structure of Risk Visible', url: 'blog-ccord.html', category: 'Blog · CORE© Insight Series', excerpt: 'The diagram that shows whether you still have time to act.', keywords: 'CCORD diagram causal boundary intervention map trajectory plotting article 3' },
+  { title: 'Every Crisis Is Someone’s Opportunity', url: 'blog-dualaxis.html', category: 'Blog · CORE© Insight Series', excerpt: 'How CORE©’s dual-axis model turns risk management into strategic intelligence.', keywords: 'dual axis opportunity trajectory score OTS black phoenix disruptive challenger incumbent defender double exposure quadrant article 4' },
+  { title: 'Embedding CORE© in Your Existing Governance Architecture', url: 'blog-integration.html', category: 'Blog · CORE© Insight Series', excerpt: 'A three-phase implementation roadmap that augments, not replaces, what you have already built.', keywords: 'integration roadmap phase ISO 31000 COSO three lines model governance article 5' },
+  { title: 'Coaching, Facilitation & Mentoring', url: 'index.html#services', category: 'Service', excerpt: 'For leadership teams and directors on ESG, Sustainability, Resilience — identifying the future and empowering change.', keywords: 'coaching facilitation mentoring ESG sustainability resilience leadership directors' },
+  { title: 'Performance Enhancement & Operational Sustainability', url: 'service-performance-sustainability.html', category: 'Service', excerpt: 'Reducing EBITDA leakage, stabilising operations and capturing innovation through continuous improvement and LEAN.', keywords: 'performance enhancement operational sustainability EBITDA leakage LEAN continuous improvement' },
+  { title: 'Value Creation', url: 'index.html#services', category: 'Service', excerpt: 'A tailor-made value plan initiative that sets stretched targets, monitors delivery, and adapts behaviour to build on success.', keywords: 'value creation plan targets delivery lessons learnt' },
+  { title: 'Vision Setting', url: 'index.html#services', category: 'Service', excerpt: 'A lighthouse approach to help management identify weak signals, see opportunities, and embed resilience.', keywords: 'vision setting lighthouse weak signals opportunities resilience' },
+  { title: 'Quantitative Risk Modelling', url: 'index.html#expertise', category: 'Expertise', excerpt: 'Value at Risk (VaR), Expected Shortfall (ES), Monte Carlo simulation, factor models, and counterparty credit exposure.', keywords: 'quantitative risk modelling VaR expected shortfall monte carlo factor models counterparty credit' },
+  { title: 'Regulatory Capital & Basel Frameworks', url: 'index.html#expertise', category: 'Expertise', excerpt: 'Basel III/IV, FRTB, CRD VI, Solvency II, and IFRS 9 — supporting institutions through capital regime transitions.', keywords: 'regulatory capital basel FRTB CRD solvency IFRS ICAAP ILAAP pillar 2' },
+  { title: 'Operational & Non-Financial Risk', url: 'index.html#expertise', category: 'Expertise', excerpt: 'Operational risk capital modelling, RCSA design, Key Risk Indicators, scenario analysis, and Business Continuity Planning.', keywords: 'operational risk RCSA key risk indicators scenario analysis business continuity cyber conduct' },
+  { title: 'Climate & ESG Risk', url: 'index.html#expertise', category: 'Expertise', excerpt: 'Transition and physical risk assessment, TCFD and TNFD reporting, and climate stress testing aligned to NGFS scenarios.', keywords: 'climate ESG risk TCFD TNFD stress testing NGFS transition physical risk' },
+  { title: 'Risk Culture & Behavioural Risk', url: 'index.html#expertise', category: 'Expertise', excerpt: 'Tone-from-the-top assessment, risk appetite articulation, and incentive structure review.', keywords: 'risk culture behavioural risk tone from the top appetite incentive structure' },
+  { title: 'About Adrian Clements', url: 'about.html', category: 'About', excerpt: 'Practitioner-led risk intelligence — three decades of hands-on experience across banking, asset management, and reinsurance.', keywords: 'about adrian clements biography practitioner banking asset management reinsurance' },
+  { title: 'Articles & Publications', url: 'publications.html#publications', category: 'Publications', excerpt: 'Articles and internal papers including "Captive Risk Management" and the "C10 Approach to Risk Management".', keywords: 'articles publications captive risk management C10 approach criticaleye' },
+  { title: 'Speeches', url: 'publications.html#speeches', category: 'Publications', excerpt: 'Keynotes and speeches including "Risk Management — Because Change is Faster Than Our Understanding of the Consequences".', keywords: 'speeches keynotes risknet summit FERMA mapfre supply chain' },
+  { title: 'Quotations & Interviews', url: 'publications.html#quotations', category: 'Publications', excerpt: 'Interviews and quotations including The Economist "View From the Top" and Strategic Risk magazine.', keywords: 'quotations interviews the economist strategic risk magazine view from the top' },
+  { title: 'Contact AMC', url: 'index.html#contact', category: 'Contact', excerpt: 'Book a confidential, no-obligation consultation with Adrian Clements.', keywords: 'contact consultation enquiry book a call' },
+];
+
+function searchHighlight(text, query) {
+  if (!query) return text;
+  const idx = text.toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1) return text;
+  return text.slice(0, idx) + '<mark class="search-hl">' + text.slice(idx, idx + query.length) + '</mark>' + text.slice(idx + query.length);
+}
+
+function runSiteSearch(rawQuery) {
+  const query = rawQuery.trim().toLowerCase();
+  if (!query) return [];
+  const terms = query.split(/\s+/).filter(Boolean);
+  return SITE_SEARCH_INDEX
+    .map(item => {
+      const haystack = (item.title + ' ' + item.excerpt + ' ' + item.category + ' ' + item.keywords).toLowerCase();
+      if (!terms.every(t => haystack.includes(t))) return null;
+      const titleMatch = item.title.toLowerCase().includes(query);
+      return { item, score: titleMatch ? 2 : 1 };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 8)
+    .map(r => r.item);
+}
+
+function renderSearchResults(results, query) {
+  const panel = document.getElementById('site-search-results');
+  const input = document.getElementById('site-search-input');
+  if (!query.trim()) {
+    panel.classList.remove('open');
+    panel.innerHTML = '';
+    input.setAttribute('aria-expanded', 'false');
+    return;
+  }
+  if (!results.length) {
+    panel.innerHTML = '<div class="search-empty">No matches for "' + query.replace(/</g, '&lt;') + '". Try a framework name, service, or topic.</div>';
+  } else {
+    panel.innerHTML = results.map(r =>
+      '<a class="search-result-item" href="' + r.url + '" role="option">' +
+        '<span class="src-cat">' + r.category + '</span>' +
+        '<span class="src-title">' + searchHighlight(r.title, query) + '</span>' +
+        '<span class="src-excerpt">' + searchHighlight(r.excerpt, query) + '</span>' +
+      '</a>'
+    ).join('');
+  }
+  panel.classList.add('open');
+  input.setAttribute('aria-expanded', 'true');
+}
+
+(function initSiteSearch() {
+  const input = document.getElementById('site-search-input');
+  const panel = document.getElementById('site-search-results');
+  const btn = document.getElementById('site-search-btn');
+  if (!input || !panel) return;
+
+  input.addEventListener('input', () => {
+    renderSearchResults(runSiteSearch(input.value), input.value);
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const first = panel.querySelector('.search-result-item');
+      if (first) { window.location.href = first.getAttribute('href'); }
+    } else if (e.key === 'Escape') {
+      panel.classList.remove('open');
+      input.blur();
+    }
+  });
+
+  btn.addEventListener('click', () => {
+    const first = panel.querySelector('.search-result-item');
+    if (first) window.location.href = first.getAttribute('href');
+    else input.focus();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.hero-search')) panel.classList.remove('open');
+  });
+})();
 </script>
 
 </body>

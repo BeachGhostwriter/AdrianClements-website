@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beyond the Heat Map: The Threat-Trajectory Score — AMC Adrian Clements</title>
+  <meta name="description" content="Replacing static risk scoring with a dynamic, formula-driven measure that tells you where risks are going. Article 2 of 5 in the CORE© Insight Series." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'bcg-green':     '#00A651',
+            'bcg-green-dark':'#006338',
+            'bcg-black':     '#1A1A1A',
+            'bcg-grey':      '#F4F4F4',
+            'bcg-mid':       '#555555',
+          },
+          fontFamily: {
+            sans: ['"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 10px; scroll-behavior: smooth; }
+    body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 1.4rem; line-height: 1.5; color: #1A1A1A; background: #fff; overflow-x: hidden; }
+
+    .display-xl  { font-size: clamp(2.8rem, 4.5vw, 5.2rem); font-weight: 300; line-height: 1.08; letter-spacing: -0.02em; }
+    .display-lg  { font-size: clamp(2.2rem, 3vw, 3.6rem);   font-weight: 300; line-height: 1.1;  letter-spacing: -0.015em; }
+    .display-md  { font-size: clamp(1.8rem, 2.2vw, 2.6rem); font-weight: 400; line-height: 1.2; }
+    .body-lg     { font-size: 1.6rem; line-height: 1.65; }
+    .body-sm     { font-size: 1.3rem; line-height: 1.55; }
+    .label       { font-size: 1.1rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    .nav-link { font-size: 1.3rem; font-weight: 500; color: #1A1A1A; text-decoration: none; padding: 0.4rem 0; position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #00A651; transition: width 0.22s cubic-bezier(.4,0,.2,1); }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link:hover { color: #006338; }
+
+    .btn-green { display: inline-flex; align-items: center; gap: 0.6rem; background: #00A651; color: #fff; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 1rem 2.2rem; border: none; cursor: pointer; transition: background 0.18s ease, transform 0.14s ease; text-decoration: none; }
+    .btn-green:hover  { background: #006338; transform: translateY(-1px); }
+    .btn-green:active { background: #004d28; transform: translateY(0); }
+    .btn-green:focus-visible { outline: 2px solid #00A651; outline-offset: 3px; }
+
+    .btn-outline-green { display: inline-flex; align-items: center; gap: 0.6rem; background: transparent; color: #00A651; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.9rem 2.2rem; border: 2px solid #00A651; cursor: pointer; transition: background 0.18s ease, color 0.18s ease, transform 0.14s ease; text-decoration: none; }
+    .btn-outline-green:hover  { background: #00A651; color: #fff; transform: translateY(-1px); }
+
+    .btn-outline-white { display: inline-flex; align-items: center; gap: 0.6rem; background: transparent; color: #fff; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.9rem 2.2rem; border: 2px solid #fff; cursor: pointer; transition: background 0.18s ease, color 0.18s ease, transform 0.14s ease; text-decoration: none; }
+    .btn-outline-white:hover  { background: #fff; color: #1A1A1A; transform: translateY(-1px); }
+
+    .arrow-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #00A651; text-decoration: none; transition: gap 0.18s ease, color 0.14s ease; }
+    .arrow-link:hover { gap: 1rem; color: #006338; }
+
+    .card-hover { transition: transform 0.22s cubic-bezier(.4,0,.2,1), box-shadow 0.22s cubic-bezier(.4,0,.2,1); }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,166,81,0.08); }
+
+    .section-rule { width: 4rem; height: 3px; background: #00A651; margin-bottom: 1.6rem; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f0f0f0; }
+    ::-webkit-scrollbar-thumb { background: #00A651; border-radius: 3px; }
+
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-menu { position: absolute; top: calc(100% + 1rem); left: 50%; transform: translateX(-50%) translateY(-8px); background: #fff; border: 1px solid #e8e8e8; min-width: 24rem; padding: 0.6rem 0; box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06); opacity: 0; visibility: hidden; transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s; z-index: 200; }
+    .nav-dropdown:hover .nav-dropdown-menu, .nav-dropdown:focus-within .nav-dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s; }
+    .dropdown-item { display: flex; align-items: center; padding: 1rem 2rem; font-size: 1.3rem; font-weight: 500; color: #1A1A1A; text-decoration: none; border-left: 3px solid transparent; transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease; }
+    .dropdown-item:hover { background: #f8f8f8; color: #00A651; border-left-color: #00A651; }
+    .dropdown-divider { height: 1px; background: #f0f0f0; margin: 0.4rem 0; }
+    .nav-dropdown-btn { font-size: 1.3rem; font-weight: 500; color: #1A1A1A; background: none; border: none; cursor: pointer; font-family: inherit; padding: 0.4rem 0; display: inline-flex; align-items: center; gap: 0.4rem; position: relative; }
+    .nav-dropdown-btn::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #00A651; transition: width 0.22s cubic-bezier(.4,0,.2,1); }
+    .nav-dropdown:hover .nav-dropdown-btn::after { width: 100%; }
+    .nav-dropdown:hover .nav-dropdown-btn { color: #006338; }
+    .nav-dropdown-chevron { transition: transform 0.18s ease; }
+    .nav-dropdown:hover .nav-dropdown-chevron { transform: rotate(180deg); }
+
+    .article-body p { font-size: 1.55rem; color: #3d3d3d; line-height: 1.85; margin-bottom: 1.8rem; }
+    .article-body h3 { font-size: 2rem; font-weight: 500; color: #1A1A1A; letter-spacing: -0.01em; margin-bottom: 1.4rem; }
+    .article-body h4 { font-size: 1.6rem; font-weight: 700; color: #006338; letter-spacing: 0.01em; margin-bottom: 1rem; }
+    .bullet-list { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; margin: 0 0 2rem; }
+    .bullet-list li { padding-left: 1.8rem; position: relative; font-size: 1.55rem; color: #3d3d3d; line-height: 1.75; }
+    .bullet-list li::before { content: ''; position: absolute; left: 0; top: 0.75rem; width: 0.7rem; height: 0.7rem; background: #00A651; }
+    .bullet-list strong { color: #1A1A1A; }
+    .callout { background: #F4F4F4; border-left: 4px solid #00A651; padding: 2.6rem 3rem; margin: 0 0 2.4rem; }
+    .callout .label { color: #006338; margin-bottom: 1rem; }
+    .callout p { font-size: 1.5rem; color: #333; line-height: 1.75; margin: 0; }
+    .callout-dark { background: #1A1A1A; border-left: 4px solid #00A651; padding: 2.6rem 3rem; margin: 0 0 2.4rem; }
+    .callout-dark .label { color: #00A651; margin-bottom: 1rem; }
+    .callout-dark p { font-size: 1.5rem; color: rgba(255,255,255,0.82); line-height: 1.75; margin: 0; }
+    .formula-box { background: #1A1A1A; color: #fff; padding: 2.4rem 2.8rem; margin: 0 0 2.4rem; overflow-x: auto; }
+    .formula-box .label { color: #00A651; margin-bottom: 1.2rem; }
+    .formula-box code { font-family: "Courier New", monospace; font-size: 1.5rem; color: #fff; white-space: nowrap; }
+    .takeaway-list { list-style: none; display: flex; flex-direction: column; gap: 1.6rem; }
+    .takeaway-list li { display: flex; align-items: flex-start; gap: 1.4rem; font-size: 1.5rem; color: #3d3d3d; line-height: 1.7; }
+    .takeaway-list svg { flex-shrink: 0; margin-top: 0.3rem; }
+    .series-row { display: flex; align-items: flex-start; gap: 2rem; padding: 2.4rem 0; border-top: 1px solid #e8e8e8; text-decoration: none; }
+    .series-row:hover .series-title { color: #00A651; }
+    .series-num { font-size: 1.6rem; font-weight: 700; color: #00A651; flex-shrink: 0; width: 3.2rem; }
+    .series-title { font-size: 1.7rem; font-weight: 500; color: #1A1A1A; transition: color 0.15s; margin-bottom: 0.4rem; }
+    .series-msg { font-size: 1.3rem; color: #777; line-height: 1.6; }
+    .series-current { background: #F4F4F4; }
+  </style>
+</head>
+<body>
+<header id="site-header" style="position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #e8e8e8;transition:box-shadow 0.2s ease;">
+  <nav style="max-width:1280px;margin:0 auto;padding:1.8rem 2.4rem;min-height:9rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;">
+
+    <a href="index.html" style="flex-shrink:0;" aria-label="AMC Home">
+      <img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:8rem;width:auto;" />
+    </a>
+
+    <div style="display:flex;align-items:center;gap:2.8rem;">
+      <a href="index.html#services"  class="nav-link">Services</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          Research
+          <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" role="menu">
+          <a href="index.html#insights" class="dropdown-item">Research &amp; Insights</a>
+          <div class="dropdown-divider"></div>
+          <a href="paper-core.html" class="dropdown-item">CORE© Framework</a>
+          <a href="paper-radar.html" class="dropdown-item">RADAR© Framework</a>
+          <a href="paper-forge.html" class="dropdown-item">FORGE© Framework</a>
+          <div class="dropdown-divider"></div>
+          <a href="publications.html#blog" class="dropdown-item" style="color:#00A651;font-weight:600;">CORE© Insight Series (Blog)</a>
+        </div>
+      </div>
+      <a href="publications.html" class="nav-link">Publications</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          About
+          <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" role="menu">
+          <a href="about.html" class="dropdown-item">Adrian Clements</a>
+          <div class="dropdown-divider"></div>
+          <a href="publications.html#publications" class="dropdown-item">Articles &amp; Publications</a>
+          <a href="publications.html#speeches" class="dropdown-item">Speeches</a>
+          <a href="publications.html#quotations" class="dropdown-item">Quotations &amp; Interviews</a>
+        </div>
+      </div>
+      <a href="index.html#expertise" class="nav-link">Expertise</a>
+      <a href="index.html#contact"   class="nav-link">Contact</a>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:1.6rem;">
+      <a href="index.html#contact" class="btn-green" style="padding:0.8rem 1.8rem;">
+        Speak to Adrian
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <button id="burger" aria-label="Toggle menu" style="display:flex;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;">
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+      </button>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" style="background:#fff;border-top:1px solid #e8e8e8;padding:2rem 2.4rem;flex-direction:column;gap:1.6rem;">
+    <a href="index.html#services"  class="nav-link" style="font-size:1.6rem;">Services</a>
+    <a href="index.html#insights"  class="nav-link" style="font-size:1.6rem;">Research</a>
+    <a href="publications.html#blog" class="nav-link" style="font-size:1.4rem;padding-left:1.6rem;color:#555;">CORE© Insight Series (Blog)</a>
+    <a href="publications.html" class="nav-link" style="font-size:1.6rem;">Publications</a>
+    <a href="about.html" class="nav-link" style="font-size:1.6rem;">About — Adrian Clements</a>
+    <a href="index.html#expertise" class="nav-link" style="font-size:1.6rem;">Expertise</a>
+    <a href="index.html#contact"   class="nav-link" style="font-size:1.6rem;">Contact</a>
+  </div>
+</header>
+<!-- ════════════════════════════════════════
+     ARTICLE HERO
+════════════════════════════════════════ -->
+<section style="position:relative;background:#1A1A1A;overflow:hidden;min-height:54vh;display:flex;align-items:flex-end;" aria-label="Article hero">
+  <div style="position:absolute;inset:0;">
+    <img src="Webpictures/business.jpg" alt="Blurred motion of crowds in a stairwell, evoking velocity and trajectory" aria-hidden="true" style="width:100%;height:100%;object-fit:cover;display:block;" />
+    <div style="position:absolute;inset:0;background:linear-gradient(105deg, rgba(0,99,56,0.88) 0%, rgba(0,166,81,0.4) 50%, rgba(0,0,0,0.68) 100%);"></div>
+  </div>
+  <div style="position:relative;z-index:2;max-width:920px;margin:0 auto;padding:6rem 2.4rem 6rem;width:100%;">
+    <a href="publications.html#blog" style="display:inline-flex;align-items:center;gap:0.6rem;color:rgba(255,255,255,0.7);font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;margin-bottom:2.4rem;transition:color 0.15s;" onmouseenter="this.style.color='#fff'" onmouseleave="this.style.color='rgba(255,255,255,0.7)'">
+      <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M13 5H1M6 9L2 5l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to the Blog
+    </a>
+    <p class="label" style="color:#00A651;margin-bottom:1.2rem;">CORE© Insight Series · Article 2 of 5 · Enterprise Risk Management</p>
+    <h1 class="display-xl" style="color:#fff;margin-bottom:2rem;">Beyond the Heat Map: The Threat-Trajectory Score</h1>
+    <p class="body-lg" style="color:rgba(255,255,255,0.8);max-width:64rem;">Replacing static risk scoring with a dynamic, formula-driven measure that tells you where risks are going.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     METADATA STRIP
+════════════════════════════════════════ -->
+<div style="background:#F4F4F4;border-bottom:1px solid #e8e8e8;">
+  <div style="max-width:920px;margin:0 auto;padding:2rem 2.4rem;display:flex;flex-wrap:wrap;gap:3.2rem;align-items:center;">
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Author</span>
+      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">Adrian Clements</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Series</span>
+      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">CORE© Insight Series — June 2026</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Read</span>
+      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">~6 minutes</span>
+    </div>
+    <a href="Articles/CORE_Article_2_ThreatTrajectoryScore.pdf" download="CORE_Article_2_ThreatTrajectoryScore.pdf" style="margin-left:auto;display:inline-flex;align-items:center;gap:0.6rem;color:#006338;font-size:1.2rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='#006338'">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download this article (PDF)
+    </a>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ARTICLE BODY
+════════════════════════════════════════ -->
+<article class="article-body" style="padding:7.2rem 2.4rem;">
+  <div style="max-width:920px;margin:0 auto;">
+
+    <div class="callout">
+      <p class="label">The Problem This Article Addresses</p>
+      <p>The risk heat map is the dominant output of enterprise risk management. It is also, demonstrably, inadequate. Two risks with identical heat map positions may be moving in completely opposite directions — one improving, one accelerating toward crisis. Boards and risk committees are making escalation and resource allocation decisions on information that is systematically stripped of its most critical signal: momentum. This article introduces the Threat-Trajectory Score — a direct replacement for static scoring that adds the directional, dynamic information that risk decisions actually require.</p>
+    </div>
+
+    <p>The heat map has served enterprise risk management for thirty years. In that time, business environments have become faster, more interconnected, and more prone to non-linear disruption. The heat map has not kept pace. The Threat-Trajectory Score (TTS) — the mathematical engine of CORE© — is a direct replacement: a dynamic, multi-dimensional risk score that incorporates velocity, systemic amplification, information processing limits, and criticality proximity into a single auditable number.</p>
+
+    <h3>1. The Problem with Static Risk Scoring</h3>
+    <h4>Failure Mode 1: The Stable-Looking Accelerating Risk</h4>
+    <p>A risk that is deteriorating between review cycles — moving from background concern to operational threat — scores identically at consecutive risk committee meetings until someone manually upgrades it. By the time the score changes, the response window may have narrowed significantly. This is not a process failure; it is a structural limitation of a model with no velocity term.</p>
+    <h4>Failure Mode 2: The False Equivalence</h4>
+    <p>Two risks sitting in the same heat map cell may have completely different systemic profiles. One is an isolated operational risk with no cascade potential. The other is embedded in a network of interdependencies that will amplify it rapidly once it crosses a threshold. The heat map cannot distinguish them. The TTS can.</p>
+    <h4>Failure Mode 3: The Crossed Threshold</h4>
+    <p>All complex systems have phase-transition thresholds: points at which incremental deterioration produces sudden, qualitative change. The 2008 financial crisis, the COVID supply chain collapse, and virtually every major corporate failure exhibit this pattern. A scoring model without a criticality term cannot detect proximity to these thresholds. The TTS does.</p>
+
+    <h3>2. The Threat-Trajectory Score Framework</h3>
+    <h4>2.1 The Formula</h4>
+    <div class="formula-box">
+      <p class="label">The TTS Formula</p>
+      <code>TTS(t) = { [L(t) &times; I(t) &times; V(t) &times; (1 + A &times; exp(&alpha;&middot;t))] / &radic;(1&minus;(v/v_max)&sup2;) } &times; [1 + &beta; &times; (&psi;/&psi;_c)^&gamma;]</code>
+    </div>
+    <p>The formula has four multiplicative components, each capturing a distinct dimension of risk dynamics. It looks complicated. It's not. We already have all the information needed.</p>
+    <h4>2.2 The Four Components</h4>
+    <h4 style="color:#1A1A1A;">Base Risk Score: L(t) &times; I(t) &times; V(t)</h4>
+    <p>The conventional Likelihood and Impact terms, now time-indexed, multiplied by Velocity V(t) — the rate of change of risk magnitude. Positive velocity means the risk is deteriorating. Negative velocity means it is improving. This single addition converts the score from a photograph into a trend. The data for velocity estimation comes from the same lead indicator monitoring that currently feeds the likelihood assessment.</p>
+    <h4 style="color:#1A1A1A;">Amplification: (1 + A &times; exp(&alpha;&middot;t))</h4>
+    <p>The amplification factor captures the self-reinforcing dynamics that characterise systemic risks — financial contagion, supply chain cascades, reputational spirals. Parameter A sets initial amplification magnitude; &alpha; is the rate of acceleration. Both are calibrated from sector incident data and the organisation's own historical record in a one-time workshop exercise.</p>
+    <h4 style="color:#1A1A1A;">Information Inertia: 1 / &radic;(1&minus;(v/v_max)&sup2;)</h4>
+    <p>How resistant to change are we? How fast are decisions actually implemented? This term captures a phenomenon every senior manager recognises: when a crisis is moving very fast, the organisation's ability to process information and make decisions becomes the binding constraint. As risk velocity approaches the maximum rate at which the organisation can effectively respond, the TTS inflates to reflect this decision-making compression. It's a reflection of company culture, if you will.</p>
+    <h4 style="color:#1A1A1A;">Criticality: [1 + &beta; &times; (&psi;/&psi;_c)^&gamma;]</h4>
+    <p>The criticality multiplier activates as a risk approaches the threshold &psi;_c — the point at which the system transitions from recoverable deterioration to phase change (catastrophe, in a worst case). Below this threshold the multiplier is near unity; above it, it amplifies sharply, providing an automatic escalation signal grounded in system dynamics rather than management judgement.</p>
+
+    <h3>3. What the TTS Provides That the Heat Map Cannot</h3>
+    <h4>An Escalation Signal with an Objective Trigger</h4>
+    <p>In conventional ERM, escalation is a judgement call made by a committee. The TTS criticality multiplier provides an objective, formula-driven escalation trigger: when the multiplier exceeds a pre-agreed threshold, the risk automatically elevates to the next governance level. This removes a significant source of escalation latency from the risk management process.</p>
+    <h4>A Directional Risk Register</h4>
+    <p>A TTS-scored risk register carries directional information: each entry has a current score, a velocity indicator, and an amplification status. The CFO can read, at a glance, not just which risks are rated highest but which are deteriorating fastest and which are approaching systemic amplification.</p>
+    <h4>Auditability</h4>
+    <p>Every TTS calculation has a traceable parameter source, a calibration date, and a validation statistic. Regulatory bodies in financial services, energy, and critical infrastructure are moving toward quantitative requirements for risk methodologies. A TTS-scored risk register is auditable and defensible in a way that a heat map is not.</p>
+
+    <h3>4. How to Initiate This in Your Organisation</h3>
+    <p>The practical entry point is a parameter augmentation exercise applied to the existing risk register. The recommended initiation sequence:</p>
+    <ul class="bullet-list">
+      <li><strong>Step 1 — Velocity tagging:</strong> in the next risk assessment cycle, add a velocity estimate (improving / stable / deteriorating / accelerating) to each of the top ten risks. This immediately produces a velocity-weighted priority ranking.</li>
+      <li><strong>Step 2 — Amplification calibration:</strong> run a half-day calibration workshop with the risk function, using the organisation’s own incident history to set amplification parameters A and &alpha; for the highest-priority risk categories. This is a one-time exercise, reviewed annually.</li>
+      <li><strong>Step 3 — Criticality threshold setting:</strong> work with the risk committee to define criticality thresholds &psi;_c for each major risk category, using the risk appetite statement as the anchor. These become the objective escalation triggers in the revised governance protocol.</li>
+    </ul>
+
+    <div class="callout">
+      <p class="label">First Step for the Risk Committee</p>
+      <p>At the next risk committee meeting, select the three risks currently rated High and ask: what is each one’s velocity — is it stable, deteriorating, or accelerating? Present the velocity-adjusted ranking alongside the conventional heat map. The divergences between the two rankings are exactly where the heat map is misleading you.</p>
+    </div>
+
+    <h3>5. Conclusions</h3>
+    <p>The heat map has reached the limit of what two dimensions and a colour palette can communicate. The TTS extends the existing model across four additional dimensions while remaining directly compatible with ISO 31000 and COSO risk assessment infrastructure. The transition is incremental and the improvement in decision quality is immediate.</p>
+    <h3 style="font-size:2.2rem;font-weight:500;color:#1A1A1A;margin:4.8rem 0 2.4rem;">Key Takeaways</h3>
+    <ul class="takeaway-list">
+      <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00A651" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span>The heat map’s fundamental limitation is the absence of a velocity term — it cannot distinguish a stable risk from an accelerating one.</span></li>
+      <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00A651" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span>TTS adds velocity, amplification, information inertia, and criticality to the existing L &times; I model — producing a directional, dynamic score.</span></li>
+      <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00A651" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span>The criticality multiplier provides an objective, formula-driven escalation trigger, replacing committee judgement with a calibrated system signal.</span></li>
+      <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00A651" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span>Implementation begins with velocity tagging of existing risk records — one additional field, applied in the next assessment cycle.</span></li>
+      <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00A651" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span>For boards and audit committees, TTS produces a register that is auditable, defensible, and directionally informative.</span></li>
+    </ul>
+
+  </div>
+</article>
+<section style="padding:7.2rem 2.4rem;background:#fff;" aria-label="CORE Insight Series navigation">
+  <div style="max-width:1000px;margin:0 auto;">
+    <div style="margin-bottom:1.6rem;">
+      <div class="section-rule"></div>
+      <h2 class="display-md" style="color:#1A1A1A;">CORE© Insight Series — Five Articles for Business Leaders</h2>
+      <p class="body-lg" style="color:#777;margin-top:1.2rem;">Your organisation makes risk decisions daily with tools designed thirty years ago. They score severity. They do not measure direction. CORE© changes that.</p>
+    </div>
+    <div style="border-bottom:1px solid #e8e8e8;">
+      <a href="blog-risktime.html" class="series-row" style="">
+        <span class="series-num">01</span>
+        <div>
+          <p class="series-title">RiskTime — The Missing Dimension</p>
+          <p class="series-msg">RiskTime quantifies the effective decision window: how long the organisation has before a risk becomes causally locked in.</p>
+        </div>
+      </a>
+      <a href="blog-tts.html" class="series-row series-current" style="pointer-events:none;">
+        <span class="series-num">02</span>
+        <div>
+          <p class="series-title">The Threat-Trajectory Score — Beyond the Heat Map <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;color:#00A651;text-transform:uppercase;">— You Are Here</span></p>
+          <p class="series-msg">TTS replaces the heat map with a dynamic, formula-driven score measuring direction, velocity, and systemic amplification.</p>
+        </div>
+      </a>
+      <a href="blog-ccord.html" class="series-row" style="">
+        <span class="series-num">03</span>
+        <div>
+          <p class="series-title">The CCORD — Making Causal Structure Visible</p>
+          <p class="series-msg">The CCORD makes the intervention boundary explicit, distinguishing risks that can be managed from those already locked in.</p>
+        </div>
+      </a>
+      <a href="blog-dualaxis.html" class="series-row" style="">
+        <span class="series-num">04</span>
+        <div>
+          <p class="series-title">Every Crisis Is Someone’s Opportunity — The Dual-Axis Model</p>
+          <p class="series-msg">CORE© computes opportunity and threat simultaneously, enabling boards to allocate resources across defence and growth.</p>
+        </div>
+      </a>
+      <a href="blog-integration.html" class="series-row" style="">
+        <span class="series-num">05</span>
+        <div>
+          <p class="series-title">Integration — Embedding CORE© in Your Existing Governance</p>
+          <p class="series-msg">CORE© is an augmentation, not a replacement. A three-phase roadmap embeds it into ISO 31000, COSO, and the Three Lines Model.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+<!-- ════════════════════════════════════════
+     CTA — READ THE FULL FRAMEWORK
+════════════════════════════════════════ -->
+<section style="background:#006338;padding:6.4rem 2.4rem;position:relative;overflow:hidden;" aria-label="Read the full CORE framework">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 80% 50%,rgba(0,166,81,0.3) 0%,transparent 60%);pointer-events:none;"></div>
+  <div style="max-width:1000px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:3.2rem;position:relative;z-index:2;">
+    <div style="max-width:56rem;">
+      <p class="label" style="color:rgba(255,255,255,0.6);margin-bottom:1rem;">Go deeper</p>
+      <h2 class="display-md" style="color:#fff;margin-bottom:1rem;">Read the full CORE© white paper for the complete mathematics and methodology.</h2>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:1.2rem;">
+      <a href="paper-core.html" class="btn-green" style="background:#00A651;">
+        Read the CORE© Paper
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="index.html#contact" class="btn-outline-white">Speak to Adrian</a>
+    </div>
+  </div>
+</section>
+<footer style="background:#1A1A1A;padding:6.4rem 2.4rem 3.2rem;" aria-label="Site footer">
+  <div style="max-width:1280px;margin:0 auto;">
+
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4.8rem;padding-bottom:4.8rem;border-bottom:1px solid rgba(255,255,255,0.1);" class="footer-grid">
+      <div>
+        <img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:4.8rem;width:auto;margin-bottom:2rem;filter:brightness(0) invert(1);" />
+        <p style="font-size:1.4rem;color:rgba(255,255,255,0.45);line-height:1.65;max-width:28rem;margin-bottom:2.4rem;">
+          Risk management consulting, education, and research — serving risk professionals and organisations across banking, insurance, and asset management globally.
+        </p>
+        <div style="display:flex;gap:1.2rem;">
+          <a href="#" aria-label="LinkedIn" style="width:3.6rem;height:3.6rem;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;transition:background 0.18s;" onmouseenter="this.style.background='#00A651'" onmouseleave="this.style.background='rgba(255,255,255,0.1)'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Services</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="index.html#services" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Risk Assessment</a></li>
+          <li><a href="index.html#services" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Training &amp; Education</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Research</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="paper-core.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">CORE© Framework</a></li>
+          <li><a href="paper-radar.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">RADAR© Framework</a></li>
+          <li><a href="paper-forge.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">FORGE© Framework</a></li>
+          <li><a href="publications.html#blog" style="font-size:1.3rem;color:#00A651;text-decoration:none;">CORE© Insight Series (Blog)</a></li>
+          <li><a href="publications.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">All Publications</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Company</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="about.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">About AMC</a></li>
+          <li><a href="index.html#contact" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="padding-top:2.8rem;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1.6rem;">
+      <p style="font-size:1.2rem;color:rgba(255,255,255,0.3);">© 2026 AMC — Adrian Clements. All rights reserved.</p>
+      <p style="font-size:1.2rem;color:rgba(255,255,255,0.2);max-width:60rem;text-align:right;">AMC provides risk management consulting and education services. All views are those of Adrian Clements and do not constitute regulated financial advice.</p>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  document.getElementById('site-header').style.boxShadow = window.scrollY > 8 ? '0 2px 20px rgba(0,0,0,0.1)' : 'none';
+}, { passive: true });
+
+document.getElementById('burger').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('open');
+});
+
+document.querySelectorAll('#mobile-menu .nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.remove('open');
+  });
+});
+
+function applyResponsive() {
+  const w = window.innerWidth;
+  const footerGrid = document.querySelector('.footer-grid');
+  if (footerGrid) footerGrid.style.gridTemplateColumns = w < 640 ? '1fr' : w < 900 ? '1fr 1fr' : '2fr 1fr 1fr 1fr';
+  const quadGrid = document.querySelector('.quad-grid');
+  if (quadGrid) quadGrid.style.gridTemplateColumns = w < 640 ? '1fr' : '1fr 1fr';
+}
+applyResponsive();
+window.addEventListener('resize', applyResponsive, { passive: true });
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('section, footer').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.55s cubic-bezier(.4,0,.2,1), transform 0.55s cubic-bezier(.4,0,.2,1)';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>
