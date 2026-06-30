@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adrian Clements | Strategic Risk, Learning and Advisory</title>
+    <meta name="description" content="Adrian Clements' professional website with core documents, insights and protected software applications." />
+    <style>
+      :root {
+        --green-900: #163b26;
+        --green-700: #2f6b3d;
+        --green-500: #4d8c5a;
+        --green-200: #e7f3ea;
+        --text: #223127;
+        --muted: #5d6d5f;
+        --border: #d6e6da;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: var(--text);
+        background: #f8fbf8;
+        line-height: 1.6;
+      }
+      a { color: inherit; text-decoration: none; }
+      header {
+        background: linear-gradient(135deg, var(--green-900), var(--green-700));
+        color: white;
+        padding: 22px 0 64px;
+      }
+      nav {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .brand { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.04em; }
+      .nav-links { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+      .nav-item { position: relative; }
+      .nav-item:hover .nav-dropdown { display: block; }
+      .nav-dropdown {
+        display: none;
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        background: white;
+        color: var(--green-900);
+        min-width: 190px;
+        border-radius: 10px;
+        box-shadow: 0 10px 24px rgba(0,0,0,0.14);
+        overflow: hidden;
+        z-index: 10;
+      }
+      .nav-dropdown a { display: block; padding: 10px 12px; border-bottom: 1px solid #eef6ef; }
+      .nav-dropdown a:last-child { border-bottom: none; }
+      .nav-dropdown a:hover { background: var(--green-200); }
+      .hero {
+        max-width: 1120px;
+        margin: 32px auto 0;
+        padding: 0 24px;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 24px;
+        align-items: center;
+      }
+      .hero h1 { font-size: clamp(2rem, 3.7vw, 3.1rem); margin: 0 0 12px; }
+      .hero p { color: rgba(255,255,255,0.92); max-width: 720px; }
+      .hero-card {
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.22);
+        border-radius: 16px;
+        padding: 20px;
+        backdrop-filter: blur(6px);
+      }
+      .hero-card h3 { margin-top: 0; margin-bottom: 8px; }
+      .hero-card ul { margin: 0; padding-left: 18px; }
+      main { max-width: 1120px; margin: 0 auto; padding: 40px 24px 64px; }
+      section { margin-top: 28px; }
+      .section-title { font-size: 1.35rem; margin: 0 0 12px; }
+      .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+      .card {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: 0 8px 24px rgba(11, 43, 77, 0.04);
+      }
+      .card h3 { margin-top: 0; margin-bottom: 8px; font-size: 1.05rem; }
+      .card p { color: var(--muted); margin: 0 0 8px; }
+      .pill {
+        display: inline-block;
+        margin: 6px 6px 0 0;
+        padding: 4px 9px;
+        border-radius: 999px;
+        background: var(--green-200);
+        color: var(--green-700);
+        font-size: 0.85rem;
+      }
+      .doc-list { display: grid; gap: 10px; }
+      .doc-link {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px 12px;
+        background: #fcfefc;
+      }
+      footer {
+        background: var(--green-900);
+        color: rgba(255,255,255,0.85);
+        padding: 24px;
+        text-align: center;
+      }
+      @media (max-width: 900px) {
+        .hero, .grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="brand">Adrian Clements | Strategic Risk and Advisory</div>
+        <div class="nav-links">
+          <a href="#home">Home</a>
+          <a href="#documents">Core Documents</a>
+          <a href="#blog">Blog</a>
+          <div class="nav-item">
+            <a href="#">Software / Applications ▾</a>
+            <div class="nav-dropdown">
+              <a href="neptune1/index.html">Neptune 1</a>
+              <a href="core/index.html">Core</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div class="hero" id="home">
+        <div>
+          <h1>Helping organisations navigate risk, performance and change</h1>
+          <p>This site brings together core documents, practical insights and protected application access in a green-toned professional layout.</p>
+        </div>
+        <div class="hero-card">
+          <h3>What you will find here</h3>
+          <ul>
+            <li>Core documents and reference material</li>
+            <li>Thought leadership and blog-style updates</li>
+            <li>Protected access to Neptune and Core applications</li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="documents">
+        <h2 class="section-title">Core Documents</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Strategic risk and advisory</h3>
+            <div class="doc-list">
+              <a class="doc-link" href="../2017-strategic-risk-waging-war-on-big-business.pdf" target="_blank" rel="noreferrer">Strategic Risk Report <span>PDF</span></a>
+              <a class="doc-link" href="../aig-stratrisk-report_manufacturing.pdf" target="_blank" rel="noreferrer">Manufacturing Risk Report <span>PDF</span></a>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Operational and project management</h3>
+            <div class="doc-list">
+              <a class="doc-link" href="../AM Visual Management ARM -Mining.docx" target="_blank" rel="noreferrer">Visual Management - Mining <span>DOCX</span></a>
+              <a class="doc-link" href="../ARM process safety November 2012_ForApprova v1l.docx" target="_blank" rel="noreferrer">Process Safety Update <span>DOCX</span></a>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Executive thinking</h3>
+            <p>These pages are intended to support a polished professional presence while preserving access to the broader document set you already assembled.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="blog">
+        <h2 class="section-title">From the blog</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Risk as a business enabler</h3>
+            <p>Practical thinking on how leaders can use risk management to support growth, resilience and better decisions.</p>
+            <span class="pill">Strategy</span><span class="pill">Leadership</span>
+          </div>
+          <div class="card">
+            <h3>Designing control systems that work</h3>
+            <p>How process discipline, governance and communication can improve the reliability of major change initiatives.</p>
+            <span class="pill">Operations</span><span class="pill">Governance</span>
+          </div>
+          <div class="card">
+            <h3>Making value visible</h3>
+            <p>Why clear value stories are often the missing link between technical improvement and executive support.</p>
+            <span class="pill">Value</span><span class="pill">Communication</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>Adrian Clements — strategic risk, learning and advisory</div>
+    </footer>
+  </body>
+</html>
