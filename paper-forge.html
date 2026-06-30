@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FORGE© Framework — AMC Adrian Clements</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'bcg-green':     '#00A651',
+            'bcg-green-dark':'#006338',
+            'bcg-black':     '#1A1A1A',
+            'bcg-grey':      '#F4F4F4',
+            'bcg-mid':       '#555555',
+          },
+          fontFamily: {
+            sans: ['"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 10px; scroll-behavior: smooth; }
+    body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 1.4rem; line-height: 1.5; color: #1A1A1A; background: #fff; overflow-x: hidden; }
+
+    .display-xl  { font-size: clamp(2.8rem, 4.5vw, 5.2rem); font-weight: 300; line-height: 1.08; letter-spacing: -0.02em; }
+    .display-lg  { font-size: clamp(2.2rem, 3vw, 3.6rem);   font-weight: 300; line-height: 1.1;  letter-spacing: -0.015em; }
+    .display-md  { font-size: clamp(1.8rem, 2.2vw, 2.6rem); font-weight: 400; line-height: 1.2; }
+    .body-lg     { font-size: 1.6rem; line-height: 1.65; }
+    .body-sm     { font-size: 1.3rem; line-height: 1.55; }
+    .label       { font-size: 1.1rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    .nav-link { font-size: 1.3rem; font-weight: 500; color: #1A1A1A; text-decoration: none; padding: 0.4rem 0; position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #00A651; transition: width 0.22s cubic-bezier(.4,0,.2,1); }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link:hover { color: #006338; }
+
+    .btn-green { display: inline-flex; align-items: center; gap: 0.6rem; background: #00A651; color: #fff; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 1rem 2.2rem; border: none; cursor: pointer; transition: background 0.18s ease, transform 0.14s ease; text-decoration: none; }
+    .btn-green:hover  { background: #006338; transform: translateY(-1px); }
+    .btn-green:active { background: #004d28; transform: translateY(0); }
+
+    .btn-outline-white { display: inline-flex; align-items: center; gap: 0.6rem; background: transparent; color: #fff; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.9rem 2.2rem; border: 2px solid #fff; cursor: pointer; transition: background 0.18s ease, color 0.18s ease, transform 0.14s ease; text-decoration: none; }
+    .btn-outline-white:hover  { background: #fff; color: #1A1A1A; transform: translateY(-1px); }
+
+    .arrow-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #00A651; text-decoration: none; transition: gap 0.18s ease, color 0.14s ease; }
+    .arrow-link:hover { gap: 1rem; color: #006338; }
+
+    .card-hover { transition: transform 0.22s cubic-bezier(.4,0,.2,1), box-shadow 0.22s cubic-bezier(.4,0,.2,1); }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,166,81,0.08); }
+
+    .section-rule { width: 4rem; height: 3px; background: #00A651; margin-bottom: 1.6rem; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f0f0f0; }
+    ::-webkit-scrollbar-thumb { background: #00A651; border-radius: 3px; }
+
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-menu { position: absolute; top: calc(100% + 1rem); left: 50%; transform: translateX(-50%) translateY(-8px); background: #fff; border: 1px solid #e8e8e8; min-width: 24rem; padding: 0.6rem 0; box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06); opacity: 0; visibility: hidden; transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s; z-index: 200; }
+    .nav-dropdown:hover .nav-dropdown-menu, .nav-dropdown:focus-within .nav-dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s; }
+    .dropdown-item { display: flex; align-items: center; padding: 1rem 2rem; font-size: 1.3rem; font-weight: 500; color: #1A1A1A; text-decoration: none; border-left: 3px solid transparent; transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease; }
+    .dropdown-item:hover { background: #f8f8f8; color: #00A651; border-left-color: #00A651; }
+    .dropdown-divider { height: 1px; background: #f0f0f0; margin: 0.4rem 0; }
+    .nav-dropdown-btn { font-size: 1.3rem; font-weight: 500; color: #1A1A1A; background: none; border: none; cursor: pointer; font-family: inherit; padding: 0.4rem 0; display: inline-flex; align-items: center; gap: 0.4rem; position: relative; }
+    .nav-dropdown-btn::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #00A651; transition: width 0.22s cubic-bezier(.4,0,.2,1); }
+    .nav-dropdown:hover .nav-dropdown-btn::after { width: 100%; }
+    .nav-dropdown:hover .nav-dropdown-btn { color: #006338; }
+    .nav-dropdown-chevron { transition: transform 0.18s ease; }
+    .nav-dropdown:hover .nav-dropdown-chevron { transform: rotate(180deg); }
+
+    .placeholder-zone {
+      border: 2px dashed #00A651;
+      background: rgba(0,166,81,0.04);
+      padding: 2.8rem 3.2rem;
+      margin-bottom: 0;
+    }
+    .placeholder-zone .pz-label {
+      font-size: 1.0rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: #00A651; margin-bottom: 1.2rem; display: block;
+    }
+    .placeholder-zone p {
+      color: #555; font-style: italic; font-size: 1.4rem; line-height: 1.7;
+    }
+    .placeholder-card {
+      border: 2px dashed rgba(0,166,81,0.5);
+      background: rgba(0,166,81,0.03);
+      padding: 2.4rem;
+    }
+    .placeholder-card .pz-label {
+      font-size: 1.0rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: #00A651; margin-bottom: 1rem; display: block;
+    }
+    .placeholder-card p {
+      color: #888; font-style: italic; font-size: 1.3rem; line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════ -->
+<header id="site-header" style="position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #e8e8e8;transition:box-shadow 0.2s ease;">
+  <nav style="max-width:1280px;margin:0 auto;padding:1.8rem 2.4rem;min-height:9rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;">
+
+    <a href="index.html" style="flex-shrink:0;" aria-label="AMC Home">
+      <img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:8rem;width:auto;" />
+    </a>
+
+    <div style="display:flex;align-items:center;gap:2.8rem;">
+      <a href="index.html#services"  class="nav-link">Services</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          Research
+          <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" role="menu">
+          <a href="index.html#insights" class="dropdown-item">Research &amp; Insights</a>
+          <div class="dropdown-divider"></div>
+          <a href="paper-core.html" class="dropdown-item">CORE© Framework</a>
+          <a href="paper-radar.html" class="dropdown-item">RADAR© Framework</a>
+          <a href="paper-forge.html" class="dropdown-item" style="color:#00A651;font-weight:600;">FORGE© Framework</a>
+          <div class="dropdown-divider"></div>
+          <a href="publications.html#blog" class="dropdown-item">CORE© Insight Series (Blog)</a>
+        </div>
+      </div>
+      <a href="publications.html" class="nav-link">Publications</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          About
+          <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" role="menu">
+          <a href="about.html" class="dropdown-item">Adrian Clements</a>
+          <div class="dropdown-divider"></div>
+          <a href="publications.html#publications" class="dropdown-item">Articles &amp; Publications</a>
+          <a href="publications.html#speeches" class="dropdown-item">Speeches</a>
+          <a href="publications.html#quotations" class="dropdown-item">Quotations &amp; Interviews</a>
+        </div>
+      </div>
+      <a href="index.html#expertise" class="nav-link">Expertise</a>
+      <a href="index.html#contact"   class="nav-link">Contact</a>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:1.6rem;">
+      <a href="index.html#contact" class="btn-green" style="padding:0.8rem 1.8rem;">
+        Speak to Adrian
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <button id="burger" aria-label="Toggle menu" style="display:flex;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;">
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+      </button>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" style="background:#fff;border-top:1px solid #e8e8e8;padding:2rem 2.4rem;flex-direction:column;gap:1.6rem;">
+    <a href="index.html#services"  class="nav-link" style="font-size:1.6rem;">Services</a>
+    <a href="index.html#insights"  class="nav-link" style="font-size:1.6rem;">Research</a>
+    <a href="publications.html#blog" class="nav-link" style="font-size:1.4rem;padding-left:1.6rem;color:#555;">CORE© Insight Series (Blog)</a>
+    <a href="publications.html" class="nav-link" style="font-size:1.6rem;">Publications</a>
+    <a href="about.html" class="nav-link" style="font-size:1.6rem;">About — Adrian Clements</a>
+    <a href="index.html#expertise" class="nav-link" style="font-size:1.6rem;">Expertise</a>
+    <a href="index.html#contact"   class="nav-link" style="font-size:1.6rem;">Contact</a>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════
+     PAPER HERO
+════════════════════════════════════════ -->
+<section style="position:relative;background:#1A1A1A;overflow:hidden;min-height:56vh;display:flex;align-items:flex-end;" aria-label="Paper hero">
+  <div style="position:absolute;inset:0;">
+    <img src="Webpictures/Lighthouse1.JPG" alt="FORGE Framework" aria-hidden="true" style="width:100%;height:100%;object-fit:cover;display:block;" />
+    <div style="position:absolute;inset:0;background:linear-gradient(105deg, rgba(0,99,56,0.88) 0%, rgba(0,166,81,0.4) 50%, rgba(0,0,0,0.65) 100%);"></div>
+  </div>
+
+  <div style="position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:6rem 2.4rem 6rem;width:100%;">
+    <a href="index.html#insights" style="display:inline-flex;align-items:center;gap:0.6rem;color:rgba(255,255,255,0.7);font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;margin-bottom:2.4rem;transition:color 0.15s;" onmouseenter="this.style.color='#fff'" onmouseleave="this.style.color='rgba(255,255,255,0.7)'">
+      <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M13 5H1M6 9L2 5l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to Research
+    </a>
+    <p class="label" style="color:#00A651;margin-bottom:1.2rem;">Strategic Risk Management · White Paper</p>
+    <h1 class="display-xl" style="color:#fff;max-width:72rem;margin-bottom:2rem;">
+      FORGE©: Decision Windows &amp; Urgency Calculation
+    </h1>
+    <p class="body-lg" style="color:rgba(255,255,255,0.78);max-width:56rem;margin-bottom:3.2rem;">
+      Calculating decision urgency: when is the right time to act?
+    </p>
+    <div style="display:flex;flex-wrap:wrap;gap:1.2rem;">
+      <a href="Papers/White_Paper_FORGE_Framework.pdf" download="White_Paper_FORGE_Framework.pdf" class="btn-green">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download White Paper (PDF)
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     PAPER METADATA STRIP
+════════════════════════════════════════ -->
+<div style="background:#F4F4F4;border-bottom:1px solid #e8e8e8;">
+  <div style="max-width:1280px;margin:0 auto;padding:2rem 2.4rem;display:flex;flex-wrap:wrap;gap:3.2rem;align-items:center;">
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Author</span>
+      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">Adrian Clements</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Framework</span>
+      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">FORGE©</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Type</span>
+      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">White Paper</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Category</span>
+      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">Strategic Risk Management</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SECTION 1: ABSTRACT / OVERVIEW
+════════════════════════════════════════ -->
+<section style="padding:8rem 2.4rem;" aria-label="Overview">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 2fr;gap:6.4rem;align-items:start;" class="paper-two-col">
+
+    <div style="position:sticky;top:10rem;">
+      <div class="section-rule"></div>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Overview</h2>
+      <p class="body-sm" style="color:#555;">Focused Organisational Response, Growth and Exploitation
+         An introduction to the FORGE© Framework and its approach to calculating decision urgency and windows of opportunity.</p>
+         <br>
+         <p>Part 3 of the CORE© Framework Series.</p>
+    </div>
+
+    <div>
+      <!-- ═══════════════════════════════════════════════════════════════
+           FILL IN: Replace the placeholder below with your overview /
+           abstract text. Describe what the FORGE Framework is and the
+           problem it solves. Suggested length: 3–5 paragraphs.
+      ═══════════════════════════════════════════════════════════════ -->
+      <div class="placeholder-zone">
+        <span class="pz-label">✏ Overview / Abstract</span>
+        <p>Once a risk has crystallised — once uncertainty has resolved into a clear and present threat — the management context changes completely. The question is no longer "Is this a real risk?" but "What do we do, how fast, with what resources, measured against what milestones?"</p>
+        <br>
+        <p>FORGE© (Focused Organisational Response, Growth and Exploitation) is Part 3 of the CORE© trilogy. It operates in the domain of clarity and execution — the traditional arena of Enterprise Risk Management — but enhanced with the temporal dynamics and quantitative rigour of the CORE© mathematical foundation.</p>
+        <br>
+        <p>The transition from RADAR© to FORGE© represents a fundamental shift in management posture: from probabilistic detection in ambiguity to deterministic response in clarity. FORGE© introduces bounded variants of the CORE© functions, replacing the sensitivity-amplifying calculations of early warning detection with numerically stable functions designed for extended crisis management. The logarithmic velocity compression, capped amplification, soft-capped Lorentz factor, and sigmoid criticality are not computational conveniences — they reflect the changed management requirement.</p>
+        <br>
+        <p>FORGE© introduces six capabilities absent from the base CORE© framework: the Response TTS (R-TTS) bounded formula; the Urgency Index for calibrated response intensity; the Resilience Index as a measurable single-number representation of organisational defensive capacity; Backcasting Integration for milestone generation working backward from the desired future state; Accountability Metrics for measurable response governance; and Antifragility (Prosilience) for offensive opportunity capture capacity.</p>
+        <br>
+        <p>Together with CORE© and RADAR©, FORGE© provides a complete lifecycle framework — from theoretical foundation through early warning detection to deterministic crisis response and strategic opportunity capture.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     SECTION 2: KEY THEMES
+════════════════════════════════════════ -->
+<section style="padding:8rem 2.4rem;background:#F4F4F4;" aria-label="Key themes">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="margin-bottom:4.8rem;">
+      <div class="section-rule"></div>
+      <h2 class="display-md" style="color:#1A1A1A;">Key Themes &amp; Highlights</h2>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         FILL IN: Replace each placeholder card below with a key theme,
+         finding, or highlight from the FORGE© paper.
+    ═══════════════════════════════════════════════════════════════ -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2.4rem;" class="themes-grid">
+
+      <div class="placeholder-card">
+        <span class="pz-label">✏ Bounded Functions</span>
+        <p style="font-size:1.6rem;font-weight:500;color:#1A1A1A;margin-bottom:0.8rem;font-style:normal;">Why FORGE© Calculates Differently</p>
+        <p>RADAR© uses unbounded, sensitivity-amplifying functions because emerging risk detection requires weak signals to be amplified. FORGE© uses bounded functions because crisis management requires stable, calibrated calculations that support resource allocation and milestone planning — not amplification. The four key differences: velocity is logarithmically compressed (log₂(1+V)) to prevent single-parameter dominance; amplification is capped at 20× to prevent numerical overflow in extended crises; the Lorentz inertia factor is soft-capped at 0.95 of v_max to prevent singularity; and criticality uses a sigmoid function for smooth, predictable resource escalation rather than sharp phase-transition behaviour.</p>
+      </div>
+
+      <div class="placeholder-card">
+        <span class="pz-label">✏ Decision Horizons</span>
+        <p style="font-size:1.6rem;font-weight:500;color:#1A1A1A;margin-bottom:0.8rem;font-style:normal;">Decision Horizons Become Commitments</p>
+        <p>The three decision horizons introduced in CORE© — Detection, Prevention, and Crisis — are reinterpreted in FORGE© as commitment points. The inclusion of velocity and acceleration in the CORE© RiskTime foundation delivers, as a direct consequence, three calculable dates: when the event is crystallising; when the appetite boundary will be reached; and the last date when resources must be committed. These are not estimates — they are mathematically derived from the R-TTS trajectory.</p>
+      </div>
+
+      <div class="placeholder-card">
+        <span class="pz-label">✏ Resilience</span>
+        <p style="font-size:1.6rem;font-weight:500;color:#1A1A1A;margin-bottom:0.8rem;font-style:normal;">The Resilience Index: Organisational Capacity as a Number</p>
+        <p>Resilience is a company-level property, not a risk-level one. FORGE© introduces the first quantitative single-number measure of organisational defensive capacity, combining four independently measurable dimensions: Control Effectiveness (the compound protective value of deployed controls, accounting for both nominal strength and actual implementation quality); Response Capacity (budget adequacy, mobilisation speed, and historical track record together); Team Capability (expertise level combined with staffing adequacy); and System Redundancy (redundant pathways penalised if actual recovery time routinely exceeds stated objectives). The combined formula RI = 0.35×CE + 0.30×TC + 0.25×RC + 0.10×SR produces a single number from 0 to 1 that can be tracked, targeted, and improved.</p>
+      </div>
+
+      <div class="placeholder-card">
+        <span class="pz-label">✏ Backcasting</span>
+        <p style="font-size:1.6rem;font-weight:500;color:#1A1A1A;margin-bottom:0.8rem;font-style:normal;">From Reactive to Governed</p>
+        <p>Traditional crisis response is reactive and best-efforts. FORGE© transforms it into a governed programme through backcasting — working backward from the desired future state to generate four standard milestones with TTS targets: Containment (stop spread, TTS at 70% of peak); Stabilisation (halt deterioration, TTS at 30% of peak); Recovery (restore operations, TTS at 2× baseline); and Resilience (exceed previous baseline, TTS at 1.2× baseline). The Required Reduction Rate provides a mathematical benchmark against which actual progress is measured each period.</p>
+      </div>
+
+      <div class="placeholder-card">
+        <span class="pz-label">✏ Strategy</span>
+        <p style="font-size:1.6rem;font-weight:500;color:#1A1A1A;margin-bottom:0.8rem;font-style:normal;">Strategic Profiling: Four Quadrants</p>
+        <p>The combination of Resilience Index and Prosilience (the opportunity-side counterpart) creates four strategic profiles with distinct implications. Black Phoenix (high RI, high Prosilience) is the ideal: absorbs the disruption, then captures the strategic opportunity the disruption creates. Disruptive Challenger (low RI, high Prosilience) captures the opportunity but remains exposed to the next shock. Incumbent Defender (high RI, low Prosilience) survives intact but exits no stronger. Double Exposure (low RI, low Prosilience) is the worst position: takes the full damage and misses the opportunity. FORGE© quantifies which quadrant an organisation occupies — and what it would take to move.</p>
+      </div>
+
+      <div class="placeholder-card">
+        <span class="pz-label">✏ Opportunity</span>
+        <p style="font-size:1.6rem;font-weight:500;color:#1A1A1A;margin-bottom:0.8rem;font-style:normal;">Opportunity Capture as Risk Management Output</p>
+        <p>FORGE© extends beyond crisis management into strategic value creation through the Antifragility (Prosilience) framework and the Value Capture Management Index. Capture Status measures how much of an opportunity has been secured (0–1). Value Capture Rate measures how fast value is being converted. Unrealised Potential quantifies what remains on the table. Temporal Opportunity Freedom Index measures how quickly strategic flexibility is closing non-linearly as time elapses. This addresses the longstanding criticism that enterprise risk management is purely defensive and disconnected from strategy.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     SECTION 3: FRAMEWORK DETAIL
+════════════════════════════════════════ -->
+<section style="padding:8rem 2.4rem;" aria-label="Framework detail">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 2fr;gap:6.4rem;align-items:start;" class="paper-two-col">
+
+    <div style="position:sticky;top:10rem;">
+      <div class="section-rule"></div>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Framework Detail</h2>
+      <p class="body-sm" style="color:#555;">A deeper look at the mechanics and methodology of the FORGE© Framework.</p>
+      <br
+      <p>This is the equivalent of what most risk managers do in their everyday life. Its the Enterprise Risk Management, or simply, Risk Management approach. The FORGE methodology takes the CORE calculation as a starting point. It uses, in addition to the normal severity and frequency, the acceleration and velcity key in todays world. </p>
+<br>
+<p>We then adapt the result to take into consideration the variables that are inherent within each company. Namely information inertia causes by each managers personal objectives and messaging, we include the idea of urgency which goes beyond velocity and we bring into the calculation the ideas put forward many years ago, those of antifragility.</p>
+<br>
+<p>An aspect brought into the negotiating room and which provides a measurable element in the overall company culture is that if the ability to capture value. Or not lose value depending on view point. This goes much further than many traditional risk management approaches but is where the risk manager can play a significant role in compny startegy achievement, an area striven for but missed by many.</p>
+      
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:3.2rem;">
+      <!-- ═══════════════════════════════════════════════════════════════
+           FILL IN: Replace the placeholder below with detailed content
+           about how the FORGE© Framework works.
+      ═══════════════════════════════════════════════════════════════ -->
+      <div class="placeholder-zone">
+        <span class="pz-label">✏ Framework Mechanics / Methodology</span>
+        <p>The CORE© base components (L, I, and the four-step TTS sequence from Part 1, Section 3) are calculated identically, with the four bounded substitutions applied in the FORGE© context.</p>
+        <br>
+        <p>Moderate velocities are minimally affected; extreme velocities are significantly dampened. In FORGE©, extreme velocity informs urgency but does not distort the management calculation.</p>
+        <br>
+        <p>Bounded Amplification min(exp(αt), 20): Preserves full amplification dynamics for initial periods, then caps at 20× to maintain meaningful interpretation in extended crises.</p>
+        <br>
+        <p>Sigmoid Criticality σ((ψ−ψ_c)/δ): Provides a smooth S-curve transition around the critical threshold, enabling calibrated resource escalation rather than the sharp phase-transition amplification used for early warning detection. The transition width parameter δ allows calibration to sector-specific sensitivity.</p>
+        <br>
+
+        <P style="font-weight:bold;">Urgency Index</P>
+        U(t) = R-TTS(t) × (1 + V(t)) × (1 − T_remain/T_total)</p>
+        <br>
+       Combines severity, velocity, and time pressure. A moderately severe risk with little time remaining scores higher than a severe risk with ample response time. Urgency ranges: below 10 — Standard, days to weeks; 10–50 — Accelerated, hours to days; 50–200 — Crisis, immediate to hours; above 200 — Emergency, all resources deployed.
+        </p>
+        <br>
+
+        <P style="font-weight:bold;">Resilience Index</P>
+        RI = 0.35×CE + 0.30×TC + 0.25×RC + 0.10×SR</p>
+        <br>
+        Control Effectiveness CE = 1 − ∏(1 − sᵢ × qᵢ): Each control's nominal strength (s) multiplied by implementation quality (q). A control rated 0.80 strength but only 0.40 quality contributes 0.32, not 0.80.</p>
+        <br>
+Response Capacity RC = (Budget_Available/Budget_Required) × (1/Decision_Lag_days) × Historical_Success_Rate: A large budget with a 90-day approval cycle is worth far less than a smaller budget committable in a week.</p>
+<br>
+Team Capability TC = (Expertise/5) × (FTE_Deployed/FTE_Required): Quantifies the execution gap directly.</p>
+<br>
+System Redundancy SR = (1 − 1/R_factor) × MIN(1, RTO/ART): Single point of failure gives SR = 0; three independent pathways give SR = 0.67, further penalised if actual recovery time routinely exceeds the stated objective.
+        </p>
+        <br>
+
+        <P style="font-weight:bold;">Backcasting Milestones</P>
+        TTS_peak × 0.70 — Stop spread, limit growth.</p>
+
+Stabilisation: TTS_peak × 0.30 — Halt deterioration.</p>
+Recovery: TTS_baseline × 2.0 — Restore operations.</p>
+Resilience: TTS_baseline × 1.2 — Exceed previous baseline, emerge stronger.</p>
+Required Reduction Rate = (TTS_current − TTS_target) / Periods_Remaining. Rates above 5 TTS/period are classified as aggressive. This rate is the quantitative basis for resource allocation and timeline commitment.
+        </p>
+        <br>
+
+        <P style="font-weight:bold;">Accountability Metrics</P>
+        Response Efficiency = Actual_Time / Required_Time (target below 1.0). Consistent scores above 1.0 across multiple incidents indicate structural decision-making inertia requiring process, authority, or cultural intervention — not just individual performance management.
+Decision Quality = Outcome_Score / R-TTS_at_decision (target above 0.8). Rewards good decisions made under genuine pressure; penalises poor decisions made when the situation was still manageable.
+Resource Utilisation = Deployed / Available (target 0.70–0.90). Below 0.70 suggests over-resourcing or ineffective deployment; above 0.90 leaves no margin for deterioration.
+Milestone Achievement = Achieved / Total (target above 0.85). A rate below 0.85 is a mathematical warning that the final TTS target will not be reached on the committed timeline.
+        </p>
+        <br>
+
+        <P style="font-weight:bold;">Antifragility (Prosilience) — Strategic Momentum Index</P>
+        SMI combines four components: Market Positioning Strength (proximity to the disruption as the necessary precondition for opportunity capture); Strategic Capital Availability (capital ratio × mobilisation speed × track record); Innovation and Execution Capability (speed and quality of delivery against the opportunity requirements); and Strategic Flexibility (organisational ability to change direction when the opportunity requires it). Prosilience measures kinetic energy — capacity already in directed motion toward value creation — as distinct from Resilience's potential energy.
+        </p>
+        <br>
+
+        <P style="font-weight:bold;">Value Capture Management</P>
+        Capture Status ∈ [0,1]: Proportion of opportunity secured.
+Value Capture Rate = d(Capture_Status)/dt: A high Status combined with declining Rate is the most dangerous combination — apparent progress masking stalling execution.
+Unrealised Potential = OTS_expected × (1 − Capture_Status): What remains on the table.
+Temporal Opportunity Freedom F_opportunity_temporal = 1 − (time_elapsed/window) × (1−capture_progress)²: A 30-day delay in the second month costs more strategic optionality than a 30-day delay in the first month — the squared term makes this explicit."
+        </p>
+        <br>
+        
+
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════
+           FILL IN: Optional second subsection. Delete if not needed.
+      ═══════════════════════════════════════════════════════════════ -->
+      <div class="placeholder-zone">
+        <span class="pz-label">✏ Practical Application</span>
+        <p>FORGE© is designed for risk managers who are managing a confirmed, active risk or opportunity — where the question has shifted from detection to execution. The practical implementation follows four stages:</p>
+        <br>
+         <p>- On handoff from RADAR©, calculate the initial R-TTS using the bounded formula and establish the four backcasting milestones. These milestones are the programme governance structure — not aspirations.</p>
+        <br>
+         <p>- Monitor the Resilience Index as a company-level diagnostic that is independent of any individual risk. RI movements reveal whether the organisation's defensive capacity is increasing or eroding, regardless of the specific crisis being managed. A declining RI during a crisis is a second-order warning.</p>
+        <br>
+         <p>- Use the Urgency Index to calibrate response intensity — not just priority. The combination of severity, velocity, and time pressure produces the correct response posture for the specific moment, preventing both under-reaction (treating a Crisis-mode risk as Standard) and over-reaction (deploying Emergency resources for an Accelerated situation).</p>
+        <br>
+         <p>- Use the strategic profile quadrant (RI vs Prosilience) to frame the board conversation not just around loss containment but around strategic positioning. The question for leadership is not only "Will we survive this?" but "Which quadrant do we want to be in when it is over, and what does that require?"</p>
+        <br>
+        <p>- The accountability metrics transform post-incident review from narrative judgement into quantitative learning. Response Efficiency, Decision Quality, Resource Utilisation, and Milestone Achievement create a measurable track record of response capability that improves over time. </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     SECTION 4: CONCLUSIONS / KEY TAKEAWAYS
+════════════════════════════════════════ -->
+<section style="padding:8rem 2.4rem;background:#F4F4F4;" aria-label="Conclusions">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 2fr;gap:6.4rem;align-items:start;" class="paper-two-col">
+
+    <div style="position:sticky;top:10rem;">
+      <div class="section-rule"></div>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Conclusions &amp; Key Takeaways</h2>
+      <p class="body-sm" style="color:#555;">What practitioners and organisations should take away from this research.</p>
+    </div>
+
+    <div>
+      <!-- ═══════════════════════════════════════════════════════════════
+           FILL IN: Replace the placeholder below with conclusions and
+           key takeaways from the FORGE© paper.
+      ═══════════════════════════════════════════════════════════════ -->
+      <div class="placeholder-zone">
+        <span class="pz-label">✏ Conclusions &amp; Key Takeaways</span>
+        <p>FORGE© completes the CORE© trilogy by providing the execution layer that translates intelligence into action. The key conclusions are:</p>
+        <br>
+        <p>- Bounded functions are not a limitation — they are the correct design for crisis management. Once a risk has crystallised, the management requirement changes from amplifying weak signals to providing stable calculations for resource allocation and milestone planning. The four bounded substitutions reflect this change precisely.</p>
+        <br>
+        <p>- The Resilience Index provides, for the first time, a quantifiable single-number measure of organisational defensive capacity. It is a company property — not a risk property — and it can be tracked, targeted, and demonstrably improved. This gives risk management a KPI that leadership can understand and own.</p>
+        <br>
+        <p>- Backcasting transforms risk response from a reactive, best-efforts activity into a governed programme. Milestones, Required Reduction Rates, and accountability metrics make "we are on track" a mathematical statement rather than a reassurance.</p>
+        <br>
+        <p>- The Prosilience framework connects risk management to strategy in a way that resolves the longstanding disconnect between the two disciplines. Every crisis creates a strategic opening. Whether the organisation captures it or merely survives it depends on Prosilience. The four strategic profiles give boards a language for discussing this that is both precise and actionable.</p>
+        <br>
+        <p>- The opportunity capture framework — Capture Status, Value Capture Rate, Unrealised Potential, and Temporal Opportunity Freedom — extends enterprise risk management beyond the defensive mandate and into measurable value creation. Risk management that can demonstrate captured opportunity value has a fundamentally different conversation with the board.</p>
+        <br>
+        <p>- Together, CORE©, RADAR©, and FORGE© provide a complete lifecycle framework: from the theoretical foundation of RiskTime (CORE), through probabilistic early warning detection (RADAR), to deterministic crisis response and opportunity capture (FORGE). No risk falls into the gap between detection and action. Every stage of the risk lifecycle is supported by rigorous, calibrated mathematics translated into practical decision support.</p>
+        <br>
+        <p>- The framework is calibrated, not prescribed. Parameters are tuned to specific organisational contexts and sectors. The calibration process itself is a diagnostic — revealing the organisation's own risk dynamics, decision-making patterns, and resilience profile. That knowledge is part of the value.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     DOWNLOAD CTA — GREEN BAND
+════════════════════════════════════════ -->
+<section style="background:#006338;padding:7.2rem 2.4rem;position:relative;overflow:hidden;" aria-label="Download the paper">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 80% 50%,rgba(0,166,81,0.3) 0%,transparent 60%);pointer-events:none;"></div>
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:6.4rem;align-items:center;position:relative;z-index:2;" class="dl-grid">
+
+    <div>
+      <div class="section-rule" style="background:rgba(255,255,255,0.4);"></div>
+      <h2 class="display-lg" style="color:#fff;margin-bottom:1.6rem;">Read the Full FORGE© Paper</h2>
+      <p class="body-lg" style="color:rgba(255,255,255,0.78);margin-bottom:3.2rem;">
+        Download the complete white paper to explore the full methodology, case examples, and implications of the FORGE© Framework for strategic risk decision making.
+      </p>
+      <a href="Papers/White_Paper_FORGE_Framework.pdf" download="White_Paper_FORGE_Framework.pdf" class="btn-green" style="background:#00A651;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download White Paper
+      </a>
+    </div>
+
+    <div>
+      <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:2.4rem;">
+        <p class="label" style="color:rgba(255,255,255,0.6);margin-bottom:0.8rem;">White Paper</p>
+        <p style="font-size:1.4rem;color:#fff;font-weight:500;margin-bottom:0.4rem;">FORGE© Framework</p>
+        <p style="font-size:1.2rem;color:rgba(255,255,255,0.55);">White_Paper_FORGE_Framework.pdf</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     RELATED PAPERS
+════════════════════════════════════════ -->
+<section style="padding:7.2rem 2.4rem;background:#fff;" aria-label="Related papers">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="margin-bottom:3.6rem;">
+      <div class="section-rule"></div>
+      <h2 class="display-md" style="color:#1A1A1A;">Related Framework Papers</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:2.4rem;" class="related-grid">
+      <a href="paper-core.html" style="text-decoration:none;" class="card-hover">
+        <div style="background:#1A1A1A;padding:3.2rem;border-bottom:3px solid #00A651;">
+          <p class="label" style="color:#00A651;margin-bottom:1rem;">Risk Management</p>
+          <h3 style="font-size:2rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:1.2rem;">CORE©: A Better Way for Decision Making Under Risk</h3>
+          <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);margin-bottom:2rem;">Beyond the traditional: embedding velocity and acceleration into the risk calculation.</p>
+          <span class="arrow-link" style="color:#00A651;">Read Paper <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </a>
+      <a href="paper-radar.html" style="text-decoration:none;" class="card-hover">
+        <div style="background:#1A1A1A;padding:3.2rem;border-bottom:3px solid #00A651;">
+          <p class="label" style="color:#00A651;margin-bottom:1rem;">Enterprise Risk Management</p>
+          <h3 style="font-size:2rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:1.2rem;">RADAR©: Embracing Ambiguity, Capturing Opportunity</h3>
+          <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);margin-bottom:2rem;">Emerging risks: embracing risk ambiguity and turning uncertainty into opportunity.</p>
+          <span class="arrow-link" style="color:#00A651;">Read Paper <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer style="background:#1A1A1A;padding:6.4rem 2.4rem 3.2rem;" aria-label="Site footer">
+  <div style="max-width:1280px;margin:0 auto;">
+
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4.8rem;padding-bottom:4.8rem;border-bottom:1px solid rgba(255,255,255,0.1);" class="footer-grid">
+      <div>
+        <img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:4.8rem;width:auto;margin-bottom:2rem;filter:brightness(0) invert(1);" />
+        <p style="font-size:1.4rem;color:rgba(255,255,255,0.45);line-height:1.65;max-width:28rem;">Risk management consulting, education, and research — serving risk professionals and organisations globally.</p>
+      </div>
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Services</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="index.html#services" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Risk Assessment</a></li>
+          <li><a href="index.html#services" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Training &amp; Education</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Research</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="paper-core.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">CORE© Framework</a></li>
+          <li><a href="paper-radar.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">RADAR© Framework</a></li>
+          <li><a href="paper-forge.html" style="font-size:1.3rem;color:#00A651;text-decoration:none;">FORGE© Framework</a></li>
+          <li><a href="publications.html#blog" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">CORE© Insight Series (Blog)</a></li>
+          <li><a href="publications.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">All Publications</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Company</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="about.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">About AMC</a></li>
+          <li><a href="index.html#contact" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="padding-top:2.8rem;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1.6rem;">
+      <p style="font-size:1.2rem;color:rgba(255,255,255,0.3);">© 2026 AMC — Adrian Clements. All rights reserved.</p>
+      <p style="font-size:1.2rem;color:rgba(255,255,255,0.2);max-width:60rem;text-align:right;">AMC provides risk management consulting and education services. All views are those of Adrian Clements and do not constitute regulated financial advice.</p>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  document.getElementById('site-header').style.boxShadow =
+    window.scrollY > 8 ? '0 2px 20px rgba(0,0,0,0.1)' : 'none';
+}, { passive: true });
+
+document.getElementById('burger').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('open');
+});
+
+function applyResponsive() {
+  const w = window.innerWidth;
+  document.querySelectorAll('.paper-two-col').forEach(el => {
+    el.style.gridTemplateColumns = w < 960 ? '1fr' : '1fr 2fr';
+  });
+  const themesGrid = document.querySelector('.themes-grid');
+  if (themesGrid) themesGrid.style.gridTemplateColumns = w < 640 ? '1fr' : w < 900 ? '1fr 1fr' : 'repeat(3,1fr)';
+  const relatedGrid = document.querySelector('.related-grid');
+  if (relatedGrid) relatedGrid.style.gridTemplateColumns = w < 768 ? '1fr' : '1fr 1fr';
+  const dlGrid = document.querySelector('.dl-grid');
+  if (dlGrid) dlGrid.style.gridTemplateColumns = w < 900 ? '1fr' : '1.2fr 1fr';
+  const footerGrid = document.querySelector('.footer-grid');
+  if (footerGrid) footerGrid.style.gridTemplateColumns = w < 640 ? '1fr' : w < 900 ? '1fr 1fr' : '2fr 1fr 1fr 1fr';
+}
+applyResponsive();
+window.addEventListener('resize', applyResponsive, { passive: true });
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('section, footer').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.55s cubic-bezier(.4,0,.2,1), transform 0.55s cubic-bezier(.4,0,.2,1)';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,548 @@
+// prisma/schema.prisma — CORE v7 Risk Management Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── AUTH & ACCESS ──────────────────────────────────────────
+
+enum UserRole {
+  ADMIN
+  DIVISION_HEAD
+  RISK_OWNER
+  VIEWER
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         UserRole
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  businessUnitMemberships BusinessUnitMember[]
+  ownedRisks              Risk[]               @relation("RiskOwner")
+  ownedCrises             Crisis[]             @relation("CrisisOwner")
+  auditLogs               AuditLog[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model BusinessUnit {
+  id                  String   @id @default(cuid())
+  name                String
+  code                String   @unique
+  group               String?
+  region              String?
+  segment             String?
+  subsegment          String?
+  countryCode         String?
+  consolidationStatus String?
+  isActive            Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  members       BusinessUnitMember[]
+  risks         Risk[]
+  crises        Crisis[]
+  opportunities Opportunity[]
+  calibration   Calibration?
+  objectives    Objective[]
+  parameters    Parameters?
+  resilience    ResilienceSnapshot[]
+
+  @@index([group])
+}
+
+model BusinessUnitMember {
+  id                String   @id @default(cuid())
+  userId            String
+  businessUnitId    String
+  isCEO             Boolean  @default(false)
+  isRiskCoordinator Boolean  @default(false)
+  createdAt         DateTime @default(now())
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessUnit BusinessUnit @relation(fields: [businessUnitId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, businessUnitId])
+}
+
+// ── CALIBRATION ─────────────────────────────────────────────
+// Maps to: Calibration + CORE + Parameters sheets
+
+model Calibration {
+  id              String       @id @default(cuid())
+  businessUnitId  String       @unique
+  reportingPeriod String?
+  timeHorizon     String?
+
+  // CORE global parameters
+  vMax            Float  @default(1.0)   // Max propagation velocity
+  psiC            Float  @default(5.0)   // Critical threshold ψ_c
+  beta            Float  @default(2.0)   // Criticality amplification β
+  gamma           Float  @default(3.0)   // Criticality exponent γ
+  alpha           Float  @default(0.15)  // Acceleration rate α
+  delta           Float  @default(1.0)   // FORGE sigmoid width δ
+  ttsHorizon      Float  @default(16.67) // Risk appetite TTS horizon
+  kappaCoh        Float  @default(0.2)   // Coherence coupling κ_coh
+  alphaWeight     Float  @default(0.5)   // Industry/maturity balance α
+  asymmetryFactor Float  @default(1.4)   // Opportunity threshold multiplier
+
+  // Org profile
+  orgSize         String?
+  sector          String?
+  riskMaturity    String?
+
+  // Resilience weights (must sum to 1.0)
+  ceWeight        Float  @default(0.35)
+  tcWeight        Float  @default(0.30)
+  rcWeight        Float  @default(0.25)
+  srWeight        Float  @default(0.10)
+
+  updatedAt    DateTime     @updatedAt
+  businessUnit BusinessUnit @relation(fields: [businessUnitId], references: [id])
+}
+
+model Parameters {
+  id              String       @id @default(cuid())
+  businessUnitId  String       @unique
+  ceoName         String?
+  riskCoordinator String?
+  reportingPeriod String?
+  updatedAt       DateTime     @updatedAt
+
+  businessUnit BusinessUnit @relation(fields: [businessUnitId], references: [id])
+}
+
+model Objective {
+  id             String       @id @default(cuid())
+  businessUnitId String
+  title          String
+  description    String?
+  category       String?
+  priority       Int?
+  targetDate     DateTime?
+  status         String       @default("active")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  businessUnit   BusinessUnit  @relation(fields: [businessUnitId], references: [id])
+  riskObjectives RiskObjective[]
+}
+
+// ── RISKS — RADAR ENGINE ────────────────────────────────────
+
+enum RiskCategory {
+  OPS
+  REG
+  TECH
+  FIN
+  STR
+  REP
+  ENV
+  HR
+  LEGAL
+  OTHER
+}
+
+enum RiskPriority {
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+  MONITOR
+}
+
+enum RiskStatus {
+  ACTIVE
+  MONITORING
+  MITIGATED
+  CLOSED
+  TRANSFERRED_TO_FORGE
+}
+
+model Risk {
+  id              String       @id @default(cuid())
+  businessUnitId  String
+  ownerId         String?
+  riskId          String       // Display ID e.g. "R-001"
+  name            String
+  description     String?
+  category        RiskCategory
+
+  // Core RADAR inputs
+  probability     Float        // L(t) ∈ [0,1]
+  impactEur       Float        // I(t) in €M
+  velocity        Float        // V = 1/TTI
+  amplification   Float        @default(1.0)
+  accelerationRate Float       @default(0.1)
+  propagationRatio Float       @default(0.5) // v/v_max
+
+  // Computed RADAR outputs (cached from engine)
+  impactScore     Float?       // MIN(10, MAX(1, 2×LN(€M+1)))
+  expectedLoss    Float?       // P × I_€M
+  lorentzFactor   Float?       // γ = 1/√(1-(v/v_max)²)
+  ttsMonths       Float?       // Time-to-stability months
+  phaseProximity  Float?       // Φ
+  cohFactor       Float?       // C
+  ewTts           Float?       // EW-TTS
+  ewTtsLorentz    Float?       // Lorentz-adjusted EW-TTS
+  phaseIndex      Float?       // |d²⟨TTS⟩/dt²| + σ/μ
+  freedomIndex    Float?       // F(t)
+  entropyS        Float?       // Von Neumann entropy S(ρ)
+  entropyRatio    Float?       // S/S_max
+  urgencyIndex    Float?
+  palmerNoise     Float?       // η
+  mcP10           Float?
+  mcP50           Float?
+  mcP90           Float?
+
+  priority        RiskPriority?
+  signalStrength  Float?
+  detectionConf   Float?
+  status          RiskStatus   @default(ACTIVE)
+  isTop10         Boolean      @default(false)
+  isLongTerm      Boolean      @default(false)
+  horizon         String?
+  notes           String?
+  reportingPeriod String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  businessUnit   BusinessUnit @relation(fields: [businessUnitId], references: [id])
+  owner          User?        @relation("RiskOwner", fields: [ownerId], references: [id])
+  objectives     RiskObjective[]
+  controls       RiskControl[]
+  interactions   RiskInteraction[] @relation("SourceRisk")
+  interactedBy   RiskInteraction[] @relation("TargetRisk")
+  correlations   RiskCorrelation[] @relation("RiskA")
+  correlatedWith RiskCorrelation[] @relation("RiskB")
+  trajectories   RiskTrajectory[]
+  aggregations   RiskAggregationItem[]
+
+  @@index([businessUnitId])
+  @@index([ownerId])
+  @@index([category])
+  @@index([status])
+}
+
+model RiskObjective {
+  id          String    @id @default(cuid())
+  riskId      String
+  objectiveId String
+  impact      String?
+
+  risk      Risk      @relation(fields: [riskId], references: [id], onDelete: Cascade)
+  objective Objective @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
+
+  @@unique([riskId, objectiveId])
+}
+
+model RiskInteraction {
+  id           String @id @default(cuid())
+  sourceRiskId String
+  targetRiskId String
+  strength     Float  @default(0.5)
+  direction    String @default("unidirectional")
+
+  sourceRisk Risk @relation("SourceRisk", fields: [sourceRiskId], references: [id])
+  targetRisk Risk @relation("TargetRisk", fields: [targetRiskId], references: [id])
+
+  @@unique([sourceRiskId, targetRiskId])
+}
+
+model RiskCorrelation {
+  id      String @id @default(cuid())
+  riskAId String
+  riskBId String
+  rho     Float  // ρ_ij ∈ [-1,1]
+
+  riskA Risk @relation("RiskA", fields: [riskAId], references: [id])
+  riskB Risk @relation("RiskB", fields: [riskBId], references: [id])
+
+  @@unique([riskAId, riskBId])
+}
+
+model RiskControl {
+  id          String   @id @default(cuid())
+  riskId      String
+  title       String
+  description String?
+  strength    Float    // s ∈ [0,1]
+  quality     Float    // q ∈ [0,1]
+  controlType String?
+  owner       String?
+  status      String   @default("active")
+  ownership   String?
+  limits      Boolean  @default(false)
+  assessment  Boolean  @default(false)
+  assurance   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  risk Risk @relation(fields: [riskId], references: [id], onDelete: Cascade)
+}
+
+model RiskTrajectory {
+  id          String  @id @default(cuid())
+  riskId      String
+  quarter     String
+  tConf       Float
+  xConf       Float
+  impactEur   Float
+  type        String  @default("RISK")
+  boundary    String?
+  tRaw        Float?
+  prob        Float?
+  impactScore Float?
+  phaseProx   Float?
+  ewTts       Float?
+  phaseIdx    Float?
+
+  risk Risk @relation(fields: [riskId], references: [id], onDelete: Cascade)
+
+  @@index([riskId, quarter])
+}
+
+// ── CRISES — FORGE ENGINE ──────────────────────────────────
+
+enum CrisisStatus {
+  ACTIVE
+  CONTAINMENT
+  STABILISATION
+  RECOVERY
+  RESILIENCE
+  CLOSED
+}
+
+model Crisis {
+  id              String       @id @default(cuid())
+  businessUnitId  String
+  ownerId         String?
+  crisisId        String
+  name            String
+  description     String?
+  category        RiskCategory
+
+  // FORGE inputs
+  probability     Float
+  impactEur       Float
+  velocity        Float
+  amplification   Float  @default(1.0)
+  accelerationRate Float @default(0.1)
+  propagationRatio Float @default(0.5)
+  severity        Float          // 1-10 severity score
+  decisionQuality Float @default(5.0)
+
+  // FORGE computed outputs (cached)
+  rTts            Float?         // R-TTS (bounded)
+  residualEur     Float?
+  residualScore   Float?
+  responseEffectiveness Float?
+  resourceFactor  Float?
+  containmentIndex Float?
+  rTtsMonths      Float?
+  recoveryMonths  Float?
+  recoveryDays    Float?
+  urgencyIndex    Float?
+  urgencyClass    String?
+  palmerNoise     Float?
+  mcRLow          Float?
+  mcRMid          Float?
+  mcRHigh         Float?
+  mitigROI        Float?
+  backcast25      Float?
+  backcast50      Float?
+  backcast75      Float?
+  backcast95      Float?
+
+  status          CrisisStatus @default(ACTIVE)
+  notes           String?
+  reportingPeriod String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  businessUnit BusinessUnit       @relation(fields: [businessUnitId], references: [id])
+  owner        User?              @relation("CrisisOwner", fields: [ownerId], references: [id])
+  trajectories CrisisTrajectory[]
+
+  @@index([businessUnitId])
+  @@index([status])
+}
+
+model CrisisTrajectory {
+  id            String  @id @default(cuid())
+  crisisId      String
+  quarter       String
+  tConf         Float
+  xConf         Float
+  severity      Float
+  impactEur     Float
+  impactScore   Float?
+  responseEff   Float?
+  residualEur   Float?
+  residualScore Float?
+  boundary      String?
+  tRaw          Float?
+
+  crisis Crisis @relation(fields: [crisisId], references: [id], onDelete: Cascade)
+
+  @@index([crisisId, quarter])
+}
+
+// ── OPPORTUNITIES ──────────────────────────────────────────
+
+model Opportunity {
+  id              String       @id @default(cuid())
+  businessUnitId  String
+  oppId           String
+  name            String
+  description     String?
+  category        String?
+
+  probability     Float
+  upsideEur       Float
+  windowMonths    Float
+  stratFit        Float   @default(0.5)
+  smiAlign        Float   @default(0.5)
+  investEur       Float   @default(0)
+  readiness       Float   @default(0.5)
+  captureStatus   Float   @default(0)
+
+  // Computed
+  upsideScore     Float?
+  expectedValue   Float?
+  captureIdx      Float?
+  otsAmplified    Float?
+  roi             Float?
+  priority        String?
+  notes           String?
+  reportingPeriod String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  businessUnit BusinessUnit            @relation(fields: [businessUnitId], references: [id])
+  trajectories OpportunityTrajectory[]
+
+  @@index([businessUnitId])
+}
+
+model OpportunityTrajectory {
+  id            String      @id @default(cuid())
+  opportunityId String
+  quarter       String
+  tConf         Float
+  xConf         Float
+  prob          Float?
+  upsideEur     Float?
+  upScore       Float?
+  windowMonths  Float?
+  urgency       Float?
+  captureIdx    Float?
+  boundary      String?
+  tRaw          Float?
+
+  opportunity Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  @@index([opportunityId, quarter])
+}
+
+// ── RESILIENCE SNAPSHOTS ───────────────────────────────────
+// Maps to: Company_RI + Company_SMI sheets
+
+model ResilienceSnapshot {
+  id              String       @id @default(cuid())
+  businessUnitId  String
+  reportingPeriod String
+
+  // RI components (FORGE 4.2)
+  controlEffectiveness Float
+  responseCapacity     Float
+  teamCapability       Float
+  systemRedundancy     Float
+  resilienceIndex      Float
+
+  // SMI components (Company_SMI)
+  marketPositioning    Float?
+  strategicCapital     Float?
+  innovationCapability Float?
+  strategicFlexibility Float?
+  smi                  Float?
+
+  strategicPosture String?  // BLACK_PHOENIX / DISRUPTIVE_CHALLENGER / DOUBLE_EXPOSURE / INCUMBENT_DEFENDER
+  createdAt        DateTime @default(now())
+
+  businessUnit BusinessUnit @relation(fields: [businessUnitId], references: [id])
+
+  @@unique([businessUnitId, reportingPeriod])
+}
+
+// ── RISK AGGREGATION ───────────────────────────────────────
+
+model RiskAggregation {
+  id              String  @id @default(cuid())
+  businessUnitId  String
+  reportingPeriod String
+
+  totalExpectedLoss Float?
+  cashFlowAtRisk    Float?
+  coherenceDensity  Float?
+  phaseIndexSystem  Float?
+  p10               Float?
+  p50               Float?
+  p90               Float?
+  createdAt         DateTime @default(now())
+
+  items RiskAggregationItem[]
+
+  @@unique([businessUnitId, reportingPeriod])
+}
+
+model RiskAggregationItem {
+  id            String          @id @default(cuid())
+  aggregationId String
+  riskId        String
+
+  prMin        Float?
+  prMostLikely Float?
+  prMax        Float?
+  imMin        Float?
+  imMostLikely Float?
+  imMax        Float?
+  pxi          Float?
+  cfar         Float?
+
+  aggregation RiskAggregation @relation(fields: [aggregationId], references: [id], onDelete: Cascade)
+  risk        Risk            @relation(fields: [riskId], references: [id])
+
+  @@unique([aggregationId, riskId])
+}
+
+// ── AUDIT LOG ──────────────────────────────────────────────
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String
+  entity    String
+  entityId  String?
+  changes   Json?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([entity, entityId])
+  @@index([createdAt])
+}

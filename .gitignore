@@ -1,2 +1,9 @@
+<<<<<<< HEAD
 .vercel
 node_modules
+=======
+Node_modules/
+temporary screenshots/
+.claude/
+.vscode/
+>>>>>>> b0ef753bc0325de45ed85529959616f1820102cc

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The CCORD: Making the Causal Structure of Risk Visible — AMC Adrian Clements</title>
+  <meta name="description" content="The diagram that shows whether you still have time to act. Article 3 of 5 in the CORE© Insight Series." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'bcg-green':     '#00A651',
+            'bcg-green-dark':'#006338',
+            'bcg-black':     '#1A1A1A',
+            'bcg-grey':      '#F4F4F4',
+            'bcg-mid':       '#555555',
+          },
+          fontFamily: {
+            sans: ['"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 10px; scroll-behavior: smooth; }
+    body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 1.4rem; line-height: 1.5; color: #1A1A1A; background: #fff; overflow-x: hidden; }
+
+    .display-xl  { font-size: clamp(2.8rem, 4.5vw, 5.2rem); font-weight: 300; line-height: 1.08; letter-spacing: -0.02em; }
+    .display-lg  { font-size: clamp(2.2rem, 3vw, 3.6rem);   font-weight: 300; line-height: 1.1;  letter-spacing: -0.015em; }
+    .display-md  { font-size: clamp(1.8rem, 2.2vw, 2.6rem); font-weight: 400; line-height: 1.2; }
+    .body-lg     { font-size: 1.6rem; line-height: 1.65; }
+    .body-sm     { font-size: 1.3rem; line-height: 1.55; }
+    .label       { font-size: 1.1rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    .nav-link { font-size: 1.3rem; font-weight: 500; color: #1A1A1A; text-decoration: none; padding: 0.4rem 0; position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #00A651; transition: width 0.22s cubic-bezier(.4,0,.2,1); }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link:hover { color: #006338; }
+
+    .btn-green { display: inline-flex; align-items: center; gap: 0.6rem; background: #00A651; color: #fff; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 1rem 2.2rem; border: none; cursor: pointer; transition: background 0.18s ease, transform 0.14s ease; text-decoration: none; }
+    .btn-green:hover  { background: #006338; transform: translateY(-1px); }
+    .btn-green:active { background: #004d28; transform: translateY(0); }
+    .btn-green:focus-visible { outline: 2px solid #00A651; outline-offset: 3px; }
+
+    .btn-outline-green { display: inline-flex; align-items: center; gap: 0.6rem; background: transparent; color: #00A651; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.9rem 2.2rem; border: 2px solid #00A651; cursor: pointer; transition: background 0.18s ease, color 0.18s ease, transform 0.14s ease; text-decoration: none; }
+    .btn-outline-green:hover  { background: #00A651; color: #fff; transform: translateY(-1px); }
+
+    .btn-outline-white { display: inline-flex; align-items: center; gap: 0.6rem; background: transparent; color: #fff; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.9rem 2.2rem; border: 2px solid #fff; cursor: pointer; transition: background 0.18s ease, color 0.18s ease, transform 0.14s ease; text-decoration: none; }
+    .btn-outline-white:hover  { background: #fff; color: #1A1A1A; transform: translateY(-1px); }
+
+    .arrow-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #00A651; text-decoration: none; transition: gap 0.18s ease, color 0.14s ease; }
+    .arrow-link:hover { gap: 1rem; color: #006338; }
+
+    .card-hover { transition: transform 0.22s cubic-bezier(.4,0,.2,1), box-shadow 0.22s cubic-bezier(.4,0,.2,1); }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,166,81,0.08); }
+
+    .section-rule { width: 4rem; height: 3px; background: #00A651; margin-bottom: 1.6rem; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f0f0f0; }
+    ::-webkit-scrollbar-thumb { background: #00A651; border-radius: 3px; }
+
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-menu { position: absolute; top: calc(100% + 1rem); left: 50%; transform: translateX(-50%) translateY(-8px); background: #fff; border: 1px solid #e8e8e8; min-width: 24rem; padding: 0.6rem 0; box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06); opacity: 0; visibility: hidden; transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s; z-index: 200; }
+    .nav-dropdown:hover .nav-dropdown-menu, .nav-dropdown:focus-within .nav-dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s; }
+    .dropdown-item { display: flex; align-items: center; padding: 1rem 2rem; font-size: 1.3rem; font-weight: 500; color: #1A1A1A; text-decoration: none; border-left: 3px solid transparent; transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease; }
+    .dropdown-item:hover { background: #f8f8f8; color: #00A651; border-left-color: #00A651; }
+    .dropdown-divider { height: 1px; background: #f0f0f0; margin: 0.4rem 0; }
+    .nav-dropdown-btn { font-size: 1.3rem; font-weight: 500; color: #1A1A1A; background: none; border: none; cursor: pointer; font-family: inherit; padding: 0.4rem 0; display: inline-flex; align-items: center; gap: 0.4rem; position: relative; }
+    .nav-dropdown-btn::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #00A651; transition: width 0.22s cubic-bezier(.4,0,.2,1); }
+    .nav-dropdown:hover .nav-dropdown-btn::after { width: 100%; }
+    .nav-dropdown:hover .nav-dropdown-btn { color: #006338; }
+    .nav-dropdown-chevron { transition: transform 0.18s ease; }
+    .nav-dropdown:hover .nav-dropdown-chevron { transform: rotate(180deg); }
+
+    .article-body p { font-size: 1.55rem; color: #3d3d3d; line-height: 1.85; margin-bottom: 1.8rem; }
+    .article-body h3 { font-size: 2rem; font-weight: 500; color: #1A1A1A; letter-spacing: -0.01em; margin-bottom: 1.4rem; }
+    .article-body h4 { font-size: 1.6rem; font-weight: 700; color: #006338; letter-spacing: 0.01em; margin-bottom: 1rem; }
+    .bullet-list { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; margin: 0 0 2rem; }
+    .bullet-list li { padding-left: 1.8rem; position: relative; font-size: 1.55rem; color: #3d3d3d; line-height: 1.75; }
+    .bullet-list li::before { content: ''; position: absolute; left: 0; top: 0.75rem; width: 0.7rem; height: 0.7rem; background: #00A651; }
+    .bullet-list strong { color: #1A1A1A; }
+    .callout { background: #F4F4F4; border-left: 4px solid #00A651; padding: 2.6rem 3rem; margin: 0 0 2.4rem; }
+    .callout .label { color: #006338; margin-bottom: 1rem; }
+    .callout p { font-size: 1.5rem; color: #333; line-height: 1.75; margin: 0; }
+    .callout-dark { background: #1A1A1A; border-left: 4px solid #00A651; padding: 2.6rem 3rem; margin: 0 0 2.4rem; }
+    .callout-dark .label { color: #00A651; margin-bottom: 1rem; }
+    .callout-dark p { font-size: 1.5rem; color: rgba(255,255,255,0.82); line-height: 1.75; margin: 0; }
+    .formula-box { background: #1A1A1A; color: #fff; padding: 2.4rem 2.8rem; margin: 0 0 2.4rem; overflow-x: auto; }
+    .formula-box .label { color: #00A651; margin-bottom: 1.2rem; }
+    .formula-box code { font-family: "Courier New", monospace; font-size: 1.5rem; color: #fff; white-space: nowrap; }
+    .takeaway-list { list-style: none; display: flex; flex-direction: column; gap: 1.6rem; }
+    .takeaway-list li { display: flex; align-items: flex-start; gap: 1.4rem; font-size: 1.5rem; color: #3d3d3d; line-height: 1.7; }
+    .takeaway-list svg { flex-shrink: 0; margin-top: 0.3rem; }
+    .series-row { display: flex; align-items: flex-start; gap: 2rem; padding: 2.4rem 0; border-top: 1px solid #e8e8e8; text-decoration: none; }
+    .series-row:hover .series-title { color: #00A651; }
+    .series-num { font-size: 1.6rem; font-weight: 700; color: #00A651; flex-shrink: 0; width: 3.2rem; }
+    .series-title { font-size: 1.7rem; font-weight: 500; color: #1A1A1A; transition: color 0.15s; margin-bottom: 0.4rem; }
+    .series-msg { font-size: 1.3rem; color: #777; line-height: 1.6; }
+    .series-current { background: #F4F4F4; }
+  </style>
+</head>
+<body>
+<header id="site-header" style="position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #e8e8e8;transition:box-shadow 0.2s ease;">
+  <nav style="max-width:1280px;margin:0 auto;padding:1.8rem 2.4rem;min-height:9rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;">
+
+    <a href="index.html" style="flex-shrink:0;" aria-label="AMC Home">
+      <img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:8rem;width:auto;" />
+    </a>
+
+    <div style="display:flex;align-items:center;gap:2.8rem;">
+      <a href="index.html#services"  class="nav-link">Services</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          Research
+          <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" role="menu">
+          <a href="index.html#insights" class="dropdown-item">Research &amp; Insights</a>
+          <div class="dropdown-divider"></div>
+          <a href="paper-core.html" class="dropdown-item">CORE© Framework</a>
+          <a href="paper-radar.html" class="dropdown-item">RADAR© Framework</a>
+          <a href="paper-forge.html" class="dropdown-item">FORGE© Framework</a>
+          <div class="dropdown-divider"></div>
+          <a href="publications.html#blog" class="dropdown-item" style="color:#00A651;font-weight:600;">CORE© Insight Series (Blog)</a>
+        </div>
+      </div>
+      <a href="publications.html" class="nav-link">Publications</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          About
+          <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" role="menu">
+          <a href="about.html" class="dropdown-item">Adrian Clements</a>
+          <div class="dropdown-divider"></div>
+          <a href="publications.html#publications" class="dropdown-item">Articles &amp; Publications</a>
+          <a href="publications.html#speeches" class="dropdown-item">Speeches</a>
+          <a href="publications.html#quotations" class="dropdown-item">Quotations &amp; Interviews</a>
+        </div>
+      </div>
+      <a href="index.html#expertise" class="nav-link">Expertise</a>
+      <a href="index.html#contact"   class="nav-link">Contact</a>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:1.6rem;">
+      <a href="index.html#contact" class="btn-green" style="padding:0.8rem 1.8rem;">
+        Speak to Adrian
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <button id="burger" aria-label="Toggle menu" style="display:flex;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;">
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+      </button>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" style="background:#fff;border-top:1px solid #e8e8e8;padding:2rem 2.4rem;flex-direction:column;gap:1.6rem;">
+    <a href="index.html#services"  class="nav-link" style="font-size:1.6rem;">Services</a>
+    <a href="index.html#insights"  class="nav-link" style="font-size:1.6rem;">Research</a>
+    <a href="publications.html#blog" class="nav-link" style="font-size:1.4rem;padding-left:1.6rem;color:#555;">CORE© Insight Series (Blog)</a>
+    <a href="publications.html" class="nav-link" style="font-size:1.6rem;">Publications</a>
+    <a href="about.html" class="nav-link" style="font-size:1.6rem;">About — Adrian Clements</a>
+    <a href="index.html#expertise" class="nav-link" style="font-size:1.6rem;">Expertise</a>
+    <a href="index.html#contact"   class="nav-link" style="font-size:1.6rem;">Contact</a>
+  </div>
+</header>
+<!-- ════════════════════════════════════════
+     ARTICLE HERO
+════════════════════════════════════════ -->
+<section style="position:relative;background:#1A1A1A;overflow:hidden;min-height:54vh;display:flex;align-items:flex-end;" aria-label="Article hero">
+  <div style="position:absolute;inset:0;">
+    <img src="Webpictures/space station.jpg" alt="View through a station window onto Earth, evoking a bounded frame for seeing structure" aria-hidden="true" style="width:100%;height:100%;object-fit:cover;display:block;" />
+    <div style="position:absolute;inset:0;background:linear-gradient(105deg, rgba(0,99,56,0.88) 0%, rgba(0,166,81,0.4) 50%, rgba(0,0,0,0.68) 100%);"></div>
+  </div>
+  <div style="position:relative;z-index:2;max-width:920px;margin:0 auto;padding:6rem 2.4rem 6rem;width:100%;">
+    <a href="publications.html#blog" style="display:inline-flex;align-items:center;gap:0.6rem;color:rgba(255,255,255,0.7);font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;margin-bottom:2.4rem;transition:color 0.15s;" onmouseenter="this.style.color='#fff'" onmouseleave="this.style.color='rgba(255,255,255,0.7)'">
+      <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M13 5H1M6 9L2 5l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to the Blog
+    </a>
+    <p class="label" style="color:#00A651;margin-bottom:1.2rem;">CORE© Insight Series · Article 3 of 5 · Risk Visualisation</p>
+    <h1 class="display-xl" style="color:#fff;margin-bottom:2rem;">The CCORD: Making the Causal Structure of Risk Visible</h1>
+    <p class="body-lg" style="color:rgba(255,255,255,0.8);max-width:64rem;">The diagram that shows whether you still have time to act.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     METADATA STRIP
+════════════════════════════════════════ -->
+<div style="background:#F4F4F4;border-bottom:1px solid #e8e8e8;">
+  <div style="max-width:920px;margin:0 auto;padding:2rem 2.4rem;display:flex;flex-wrap:wrap;gap:3.2rem;align-items:center;">
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Author</span>
+      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">Adrian Clements</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Series</span>
+      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">CORE© Insight Series — June 2026</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Read</span>
+      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">~6 minutes</span>
+    </div>
+    <a href="Articles/CORE_Article_3_CCORD.pdf" download="CORE_Article_3_CCORD.pdf" style="margin-left:auto;display:inline-flex;align-items:center;gap:0.6rem;color:#006338;font-size:1.2rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='#006338'">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download this article (PDF)
+    </a>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ARTICLE BODY
+════════════════════════════════════════ -->
+<article class="article-body" style="padding:7.2rem 2.4rem;">
+  <div style="max-width:920px;margin:0 auto;">
+
+    <div class="callout">
+      <p class="label">The Problem This Article Addresses</p>
+      <p>Every risk diagram used in enterprise governance — the heat map, the bow-tie, the risk matrix — is a position diagram. It shows how severe a risk is at a given moment. None of them shows whether the organisation can still do anything about it. In any complex risk environment, some risks are fully interceptable; others have already crossed the causal boundary and can only be managed in their consequences. Boards and executives who cannot see that distinction are making response investment decisions without knowing which of their risks are still inside the intervention window. This article introduces the CCORD — the diagram that makes that boundary visible.</p>
+    </div>
+
+    <p>The Clements-Causal-Opportunity-Risk-Diagram (CCORD) is the visual centrepiece of CORE©. It is used to map the complete causal structure of RiskTime — the CCORD maps the organisation's entire risk-opportunity landscape onto a single, geometrically constrained diagram. Its defining feature is the causal boundary: a diamond-shaped limit that separates risks still within the organisation's power to prevent from risks that have already become structurally unavoidable.</p>
+
+    <h3>1. What Conventional Risk Diagrams Cannot Show</h3>
+    <p>The limitations of conventional risk visualisation are structural, not cosmetic.</p>
+    <ul class="bullet-list">
+      <li><strong>Heat maps</strong> show the magnitude of risk at a single point in time. They do not show whether that magnitude is increasing or decreasing.</li>
+      <li><strong>Bow-tie diagrams</strong> show the logical structure of cause and consequence. They do not show the temporal relationship between current decisions and future outcomes.</li>
+      <li><strong>Risk matrices</strong> rank risks by combined severity. They do not show whether the organisation still has the causal capacity to intervene.</li>
+    </ul>
+
+    <p>Every conventional risk diagram presents the organisation's risk landscape as if all risks were equally accessible to management intervention. This causes risk committees to invest response resources in risks that have already passed the intervention horizon, and to underinvest in risks that are still fully interceptable but do not appear severe enough to trigger action.</p>
+
+    <h3>2. The CCORD Framework</h3>
+    <h4>2.1 Mathematical Foundations</h4>
+    <p>The CCORD adapts conformal diagrams to the risk-opportunity world. The original diagrams map a complete causal structure in a finite, bounded form — making it possible to represent, in a single image, every causal relationship between events, including which events are still reachable from a given point and which lie beyond any possible causal connection.</p>
+    <p>CORE© applies this structure to the organisational risk domain. The conformal coordinates are replaced by a risk-opportunity spectrum (horizontal) and time (vertical). The causal boundary — derived from the maximum velocity of risk propagation relative to the organisation's response capacity — is preserved as the diamond-shaped constraint defining the intervention horizon.</p>
+    <h4>2.2 Axis Construction</h4>
+    <p>The horizontal axis runs from maximum risk magnitude on the left (negative values) to maximum opportunity magnitude on the right (positive values), crossing zero at the organisation's current equilibrium. The vertical axis represents time flowing upward from the present (or from the past, if results have been recorded — for example, emerging opportunities). Decision horizons are drawn as curves that bow toward the past at higher magnitudes — reflecting the compression of decision windows as risk severity increases.</p>
+    <div class="callout">
+      <p class="label">The Causal Boundary Principle</p>
+      <p>A risk positioned within the CCORD diamond can still be intercepted by management action. A risk that has crossed the boundary cannot be prevented — only its consequences can be managed. This distinction — interceptable versus locked-in — is the single most operationally important piece of information in strategic risk management, and it is invisible to every conventional risk diagram.</p>
+    </div>
+
+
+    <div style="background:#1A1A1A;padding:4rem 3.2rem;margin:0 0 2.4rem;display:flex;flex-direction:column;align-items:center;">
+      <svg width="100%" viewBox="0 0 600 420" style="max-width:46rem;height:auto;">
+        <polygon points="300,20 560,210 300,400 40,210" fill="rgba(0,166,81,0.07)" stroke="#00A651" stroke-width="2"/>
+        <line x1="40" y1="210" x2="560" y2="210" stroke="rgba(255,255,255,0.25)" stroke-width="1.4"/>
+        <line x1="300" y1="20" x2="300" y2="400" stroke="rgba(255,255,255,0.25)" stroke-width="1.4"/>
+        <path d="M300,360 C260,320 250,260 280,210 C305,170 290,110 320,55" fill="none" stroke="#00A651" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="300" cy="360" r="6" fill="#00A651"/>
+        <path d="M320,55 l-10,16 m10,-16 l16,8" fill="none" stroke="#00A651" stroke-width="3" stroke-linecap="round"/>
+        <text x="300" y="14" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="13" font-family="Helvetica, Arial, sans-serif" letter-spacing="1">TIME &#8594;</text>
+        <text x="300" y="414" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="13" font-family="Helvetica, Arial, sans-serif" letter-spacing="1">PAST</text>
+        <text x="30" y="206" text-anchor="end" fill="rgba(255,255,255,0.65)" font-size="13" font-family="Helvetica, Arial, sans-serif" letter-spacing="1">RISK</text>
+        <text x="570" y="206" text-anchor="start" fill="rgba(255,255,255,0.65)" font-size="13" font-family="Helvetica, Arial, sans-serif" letter-spacing="1">OPPORTUNITY</text>
+        <text x="320" y="48" text-anchor="start" fill="#00A651" font-size="13" font-weight="700" font-family="Helvetica, Arial, sans-serif">crosses causal boundary</text>
+        <text x="300" y="380" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="12" font-family="Helvetica, Arial, sans-serif">t&#8320; signal</text>
+      </svg>
+      <p style="font-size:1.2rem;color:rgba(255,255,255,0.45);margin-top:1.6rem;text-align:center;max-width:48rem;">Illustrative CCORD frame: a risk trajectory plotted from past (bottom) to present (top), curving toward the diamond-shaped causal boundary. Once a trajectory crosses the boundary, the risk can no longer be prevented — only its consequences can be managed.</p>
+    </div>
+
+    <h4>2.3 Trajectory Plotting</h4>
+    <p>Each risk or opportunity is plotted as a trajectory — a path through CCORD space over time. Slope encodes velocity; curvature encodes acceleration; quadrant position determines whether the trajectory is risk-dominant or opportunity-dominant. A risk trajectory curving toward the boundary signals imminent causal closure; an opportunity trajectory diverging outward signals a widening exploitation window.</p>
+
+    <h3>3. What the CCORD Provides for Leadership</h3>
+    <h4>The Intervention Map</h4>
+    <p>The CCORD provides, at each reporting cycle, an explicit answer to the question boards most need: which of our current risks are still inside the intervention window, and which have already crossed the causal horizon? This Intervention Map separates the risk register into two actionable categories: prevent (still interceptable) and contain (causal boundary crossed).</p>
+    <h4>Risk-Opportunity Simultaneity</h4>
+    <p>Because risk and opportunity share the same horizontal axis, the CCORD makes visible what conventional risk frameworks systematically obscure: every environmental disruption occupies a position on the full spectrum from threat to opportunity. The same regulatory change, the same technology disruption, the same competitive shift appears differently depending on the organisation's strategic posture. Article 4 develops this insight into the dual-axis strategic framework.</p>
+    <h4>Trajectory-Based Escalation</h4>
+    <p>A risk trajectory curving toward the causal boundary — even if the risk is currently rated only Moderate — warrants immediate escalation. The CCORD makes this signal visible; the conventional heat map does not. This is precisely the category of risk that produces boardroom surprises: risks that were consistently rated manageable until, suddenly, they were not.</p>
+
+    <h3>4. How to Initiate This in Your Organisation</h3>
+    <p>The CCORD is introduced as an additional output in the existing board risk report — not as a replacement for the risk matrix, but as a companion diagram that adds the causal dimension.</p>
+    <ul class="bullet-list">
+      <li><strong>Step 1</strong> — Select the top ten risks from the existing register, using TTS scores (Article 2) or conventional scores as the selection criterion.</li>
+      <li><strong>Step 2</strong> — Determine current CCORD positioning for each risk: magnitude, velocity (from Article 1 velocity tagging), and causal proximity (estimated from response capacity analysis). This is a half-day workshop.</li>
+      <li><strong>Step 3</strong> — Construct the first CCORD frame. Plot each risk as a point with an arrow indicating velocity direction. Mark the causal boundary based on the organisation’s assessed response capacity.</li>
+      <li><strong>Step 4</strong> — Present the CCORD frame alongside the conventional risk matrix at the next board risk committee. The primary board question: which risks are inside the intervention window, and what response investments are required to keep them there?</li>
+    </ul>
+
+    <div class="callout">
+      <p class="label">First Step for the Board</p>
+      <p>Ask your risk function to categorise the current top-ten risks into two groups: those where management intervention can still prevent the outcome, and those where the outcome is already trending toward locked-in — that is, where there is no more decision freedom. If they cannot make that distinction from current data, the CCORD is the tool that makes it possible.</p>
+    </div>
+
+    <h3>5. Conclusions</h3>
+    <p>Risk visualisation has prioritised ease of construction over completeness of information. The CCORD reverses that priority. It is the only risk diagram that enforces causal constraints — distinguishing, on geometric grounds, between risks that can still be managed and those that can only be contained. Introduced as a companion to the existing board risk report, it provides the strategic clarity that heat maps and risk matrices cannot: not just what is at risk, but whether it is still possible to do something about it.</p>
+    <h3 style="font-size:2.2rem;font-weight:500;color:#1A1A1A;margin:4.8rem 0 2.4rem;">Key Takeaways</h3>
+    <ul class="takeaway-list">
+      <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00A651" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span>All conventional risk diagrams are position diagrams — they show severity, not causal accessibility.</span></li>
+      <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00A651" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span>The CCORD causal boundary separates risks into two actionable categories: interceptable and locked-in.</span></li>
+      <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00A651" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span>Every risk appears as a trajectory, not a point — showing direction and velocity as well as current severity.</span></li>
+      <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00A651" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span>Implementation begins with a half-day positioning workshop applied to the top ten risks from the existing register.</span></li>
+      <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00A651" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span>The primary board output is the Intervention Map: a current-period categorisation of which risks are still inside the response window.</span></li>
+    </ul>
+
+  </div>
+</article>
+<section style="padding:7.2rem 2.4rem;background:#fff;" aria-label="CORE Insight Series navigation">
+  <div style="max-width:1000px;margin:0 auto;">
+    <div style="margin-bottom:1.6rem;">
+      <div class="section-rule"></div>
+      <h2 class="display-md" style="color:#1A1A1A;">CORE© Insight Series — Five Articles for Business Leaders</h2>
+      <p class="body-lg" style="color:#777;margin-top:1.2rem;">Your organisation makes risk decisions daily with tools designed thirty years ago. They score severity. They do not measure direction. CORE© changes that.</p>
+    </div>
+    <div style="border-bottom:1px solid #e8e8e8;">
+      <a href="blog-risktime.html" class="series-row" style="">
+        <span class="series-num">01</span>
+        <div>
+          <p class="series-title">RiskTime — The Missing Dimension</p>
+          <p class="series-msg">RiskTime quantifies the effective decision window: how long the organisation has before a risk becomes causally locked in.</p>
+        </div>
+      </a>
+      <a href="blog-tts.html" class="series-row" style="">
+        <span class="series-num">02</span>
+        <div>
+          <p class="series-title">The Threat-Trajectory Score — Beyond the Heat Map</p>
+          <p class="series-msg">TTS replaces the heat map with a dynamic, formula-driven score measuring direction, velocity, and systemic amplification.</p>
+        </div>
+      </a>
+      <a href="blog-ccord.html" class="series-row series-current" style="pointer-events:none;">
+        <span class="series-num">03</span>
+        <div>
+          <p class="series-title">The CCORD — Making Causal Structure Visible <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;color:#00A651;text-transform:uppercase;">— You Are Here</span></p>
+          <p class="series-msg">The CCORD makes the intervention boundary explicit, distinguishing risks that can be managed from those already locked in.</p>
+        </div>
+      </a>
+      <a href="blog-dualaxis.html" class="series-row" style="">
+        <span class="series-num">04</span>
+        <div>
+          <p class="series-title">Every Crisis Is Someone’s Opportunity — The Dual-Axis Model</p>
+          <p class="series-msg">CORE© computes opportunity and threat simultaneously, enabling boards to allocate resources across defence and growth.</p>
+        </div>
+      </a>
+      <a href="blog-integration.html" class="series-row" style="">
+        <span class="series-num">05</span>
+        <div>
+          <p class="series-title">Integration — Embedding CORE© in Your Existing Governance</p>
+          <p class="series-msg">CORE© is an augmentation, not a replacement. A three-phase roadmap embeds it into ISO 31000, COSO, and the Three Lines Model.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+<!-- ════════════════════════════════════════
+     CTA — READ THE FULL FRAMEWORK
+════════════════════════════════════════ -->
+<section style="background:#006338;padding:6.4rem 2.4rem;position:relative;overflow:hidden;" aria-label="Read the full CORE framework">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 80% 50%,rgba(0,166,81,0.3) 0%,transparent 60%);pointer-events:none;"></div>
+  <div style="max-width:1000px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:3.2rem;position:relative;z-index:2;">
+    <div style="max-width:56rem;">
+      <p class="label" style="color:rgba(255,255,255,0.6);margin-bottom:1rem;">Go deeper</p>
+      <h2 class="display-md" style="color:#fff;margin-bottom:1rem;">Read the full CORE© white paper for the complete mathematics and methodology.</h2>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:1.2rem;">
+      <a href="paper-core.html" class="btn-green" style="background:#00A651;">
+        Read the CORE© Paper
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="index.html#contact" class="btn-outline-white">Speak to Adrian</a>
+    </div>
+  </div>
+</section>
+<footer style="background:#1A1A1A;padding:6.4rem 2.4rem 3.2rem;" aria-label="Site footer">
+  <div style="max-width:1280px;margin:0 auto;">
+
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4.8rem;padding-bottom:4.8rem;border-bottom:1px solid rgba(255,255,255,0.1);" class="footer-grid">
+      <div>
+        <img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:4.8rem;width:auto;margin-bottom:2rem;filter:brightness(0) invert(1);" />
+        <p style="font-size:1.4rem;color:rgba(255,255,255,0.45);line-height:1.65;max-width:28rem;margin-bottom:2.4rem;">
+          Risk management consulting, education, and research — serving risk professionals and organisations across banking, insurance, and asset management globally.
+        </p>
+        <div style="display:flex;gap:1.2rem;">
+          <a href="#" aria-label="LinkedIn" style="width:3.6rem;height:3.6rem;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;transition:background 0.18s;" onmouseenter="this.style.background='#00A651'" onmouseleave="this.style.background='rgba(255,255,255,0.1)'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Services</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="index.html#services" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Risk Assessment</a></li>
+          <li><a href="index.html#services" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Training &amp; Education</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Research</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="paper-core.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">CORE© Framework</a></li>
+          <li><a href="paper-radar.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">RADAR© Framework</a></li>
+          <li><a href="paper-forge.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">FORGE© Framework</a></li>
+          <li><a href="publications.html#blog" style="font-size:1.3rem;color:#00A651;text-decoration:none;">CORE© Insight Series (Blog)</a></li>
+          <li><a href="publications.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">All Publications</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Company</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="about.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">About AMC</a></li>
+          <li><a href="index.html#contact" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="padding-top:2.8rem;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1.6rem;">
+      <p style="font-size:1.2rem;color:rgba(255,255,255,0.3);">© 2026 AMC — Adrian Clements. All rights reserved.</p>
+      <p style="font-size:1.2rem;color:rgba(255,255,255,0.2);max-width:60rem;text-align:right;">AMC provides risk management consulting and education services. All views are those of Adrian Clements and do not constitute regulated financial advice.</p>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  document.getElementById('site-header').style.boxShadow = window.scrollY > 8 ? '0 2px 20px rgba(0,0,0,0.1)' : 'none';
+}, { passive: true });
+
+document.getElementById('burger').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('open');
+});
+
+document.querySelectorAll('#mobile-menu .nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.remove('open');
+  });
+});
+
+function applyResponsive() {
+  const w = window.innerWidth;
+  const footerGrid = document.querySelector('.footer-grid');
+  if (footerGrid) footerGrid.style.gridTemplateColumns = w < 640 ? '1fr' : w < 900 ? '1fr 1fr' : '2fr 1fr 1fr 1fr';
+  const quadGrid = document.querySelector('.quad-grid');
+  if (quadGrid) quadGrid.style.gridTemplateColumns = w < 640 ? '1fr' : '1fr 1fr';
+}
+applyResponsive();
+window.addEventListener('resize', applyResponsive, { passive: true });
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('section, footer').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.55s cubic-bezier(.4,0,.2,1), transform 0.55s cubic-bezier(.4,0,.2,1)';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>

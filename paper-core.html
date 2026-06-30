@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CORE© Framework — AMC Adrian Clements</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'bcg-green':     '#00A651',
+            'bcg-green-dark':'#006338',
+            'bcg-black':     '#1A1A1A',
+            'bcg-grey':      '#F4F4F4',
+            'bcg-mid':       '#555555',
+          },
+          fontFamily: {
+            sans: ['"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 10px; scroll-behavior: smooth; }
+    body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 1.4rem; line-height: 1.5; color: #1A1A1A; background: #fff; overflow-x: hidden; }
+
+    .display-xl  { font-size: clamp(2.8rem, 4.5vw, 5.2rem); font-weight: 300; line-height: 1.08; letter-spacing: -0.02em; }
+    .display-lg  { font-size: clamp(2.2rem, 3vw, 3.6rem);   font-weight: 300; line-height: 1.1;  letter-spacing: -0.015em; }
+    .display-md  { font-size: clamp(1.8rem, 2.2vw, 2.6rem); font-weight: 400; line-height: 1.2; }
+    .body-lg     { font-size: 1.6rem; line-height: 1.65; }
+    .body-sm     { font-size: 1.3rem; line-height: 1.55; }
+    .label       { font-size: 1.1rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    .nav-link { font-size: 1.3rem; font-weight: 500; color: #1A1A1A; text-decoration: none; padding: 0.4rem 0; position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #00A651; transition: width 0.22s cubic-bezier(.4,0,.2,1); }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link:hover { color: #006338; }
+
+    .btn-green { display: inline-flex; align-items: center; gap: 0.6rem; background: #00A651; color: #fff; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 1rem 2.2rem; border: none; cursor: pointer; transition: background 0.18s ease, transform 0.14s ease; text-decoration: none; }
+    .btn-green:hover  { background: #006338; transform: translateY(-1px); }
+    .btn-green:active { background: #004d28; transform: translateY(0); }
+    .btn-green:focus-visible { outline: 2px solid #00A651; outline-offset: 3px; }
+
+    .btn-outline-green { display: inline-flex; align-items: center; gap: 0.6rem; background: transparent; color: #00A651; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.9rem 2.2rem; border: 2px solid #00A651; cursor: pointer; transition: background 0.18s ease, color 0.18s ease, transform 0.14s ease; text-decoration: none; }
+    .btn-outline-green:hover  { background: #00A651; color: #fff; transform: translateY(-1px); }
+
+    .btn-outline-white { display: inline-flex; align-items: center; gap: 0.6rem; background: transparent; color: #fff; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.9rem 2.2rem; border: 2px solid #fff; cursor: pointer; transition: background 0.18s ease, color 0.18s ease, transform 0.14s ease; text-decoration: none; }
+    .btn-outline-white:hover  { background: #fff; color: #1A1A1A; transform: translateY(-1px); }
+
+    .arrow-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #00A651; text-decoration: none; transition: gap 0.18s ease, color 0.14s ease; }
+    .arrow-link:hover { gap: 1rem; color: #006338; }
+
+    .card-hover { transition: transform 0.22s cubic-bezier(.4,0,.2,1), box-shadow 0.22s cubic-bezier(.4,0,.2,1); }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,166,81,0.08); }
+
+    .section-rule { width: 4rem; height: 3px; background: #00A651; margin-bottom: 1.6rem; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f0f0f0; }
+    ::-webkit-scrollbar-thumb { background: #00A651; border-radius: 3px; }
+
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-menu { position: absolute; top: calc(100% + 1rem); left: 50%; transform: translateX(-50%) translateY(-8px); background: #fff; border: 1px solid #e8e8e8; min-width: 24rem; padding: 0.6rem 0; box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06); opacity: 0; visibility: hidden; transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s; z-index: 200; }
+    .nav-dropdown:hover .nav-dropdown-menu, .nav-dropdown:focus-within .nav-dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s; }
+    .dropdown-item { display: flex; align-items: center; padding: 1rem 2rem; font-size: 1.3rem; font-weight: 500; color: #1A1A1A; text-decoration: none; border-left: 3px solid transparent; transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease; }
+    .dropdown-item:hover { background: #f8f8f8; color: #00A651; border-left-color: #00A651; }
+    .dropdown-divider { height: 1px; background: #f0f0f0; margin: 0.4rem 0; }
+    .nav-dropdown-btn { font-size: 1.3rem; font-weight: 500; color: #1A1A1A; background: none; border: none; cursor: pointer; font-family: inherit; padding: 0.4rem 0; display: inline-flex; align-items: center; gap: 0.4rem; position: relative; }
+    .nav-dropdown-btn::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #00A651; transition: width 0.22s cubic-bezier(.4,0,.2,1); }
+    .nav-dropdown:hover .nav-dropdown-btn::after { width: 100%; }
+    .nav-dropdown:hover .nav-dropdown-btn { color: #006338; }
+    .nav-dropdown-chevron { transition: transform 0.18s ease; }
+    .nav-dropdown:hover .nav-dropdown-chevron { transform: rotate(180deg); }
+
+    /* ── Placeholder zones ── */
+    .placeholder-zone {
+      border: 2px dashed #00A651;
+      background: rgba(0,166,81,0.04);
+      padding: 2.8rem 3.2rem;
+      margin-bottom: 0;
+    }
+    .placeholder-zone .pz-label {
+      font-size: 1.0rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: #00A651; margin-bottom: 1.2rem; display: block;
+    }
+    .placeholder-zone p {
+      color: #555; font-style: italic; font-size: 1.4rem; line-height: 1.7;
+    }
+    .placeholder-card {
+      border: 2px dashed rgba(0,166,81,0.5);
+      background: rgba(0,166,81,0.03);
+      padding: 2.4rem;
+    }
+    .placeholder-card .pz-label {
+      font-size: 1.0rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: #00A651; margin-bottom: 1rem; display: block;
+    }
+    .placeholder-card p {
+      color: #888; font-style: italic; font-size: 1.3rem; line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════ -->
+<header id="site-header" style="position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #e8e8e8;transition:box-shadow 0.2s ease;">
+  <nav style="max-width:1280px;margin:0 auto;padding:1.8rem 2.4rem;min-height:9rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;">
+
+    <a href="index.html" style="flex-shrink:0;" aria-label="AMC Home">
+      <img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:8rem;width:auto;" />
+    </a>
+
+    <div style="display:flex;align-items:center;gap:2.8rem;">
+      <a href="index.html#services"  class="nav-link">Services</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          Research
+          <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" role="menu">
+          <a href="index.html#insights" class="dropdown-item">Research &amp; Insights</a>
+          <div class="dropdown-divider"></div>
+          <a href="paper-core.html" class="dropdown-item" style="color:#00A651;font-weight:600;">CORE© Framework</a>
+          <a href="paper-radar.html" class="dropdown-item">RADAR© Framework</a>
+          <a href="paper-forge.html" class="dropdown-item">FORGE© Framework</a>
+          <div class="dropdown-divider"></div>
+          <a href="publications.html#blog" class="dropdown-item">CORE© Insight Series (Blog)</a>
+        </div>
+      </div>
+      <a href="publications.html" class="nav-link">Publications</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          About
+          <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" role="menu">
+          <a href="about.html" class="dropdown-item">Adrian Clements</a>
+          <div class="dropdown-divider"></div>
+          <a href="publications.html#publications" class="dropdown-item">Articles &amp; Publications</a>
+          <a href="publications.html#speeches" class="dropdown-item">Speeches</a>
+          <a href="publications.html#quotations" class="dropdown-item">Quotations &amp; Interviews</a>
+        </div>
+      </div>
+      <a href="index.html#expertise" class="nav-link">Expertise</a>
+      <a href="index.html#contact"   class="nav-link">Contact</a>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:1.6rem;">
+      <a href="index.html#contact" class="btn-green" style="padding:0.8rem 1.8rem;">
+        Speak to Adrian
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <button id="burger" aria-label="Toggle menu" style="display:flex;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;">
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+      </button>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" style="background:#fff;border-top:1px solid #e8e8e8;padding:2rem 2.4rem;flex-direction:column;gap:1.6rem;">
+    <a href="index.html#services"  class="nav-link" style="font-size:1.6rem;">Services</a>
+    <a href="index.html#insights"  class="nav-link" style="font-size:1.6rem;">Research</a>
+    <a href="publications.html#blog" class="nav-link" style="font-size:1.4rem;padding-left:1.6rem;color:#555;">CORE© Insight Series (Blog)</a>
+    <a href="publications.html" class="nav-link" style="font-size:1.6rem;">Publications</a>
+    <a href="about.html" class="nav-link" style="font-size:1.6rem;">About — Adrian Clements</a>
+    <a href="index.html#expertise" class="nav-link" style="font-size:1.6rem;">Expertise</a>
+    <a href="index.html#contact"   class="nav-link" style="font-size:1.6rem;">Contact</a>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════
+     PAPER HERO
+════════════════════════════════════════ -->
+<section style="position:relative;background:#1A1A1A;overflow:hidden;min-height:56vh;display:flex;align-items:flex-end;" aria-label="Paper hero">
+  <div style="position:absolute;inset:0;">
+    <img src="Webpictures/Trees.jpg" alt="CORE Framework" aria-hidden="true" style="width:100%;height:100%;object-fit:cover;display:block;" />
+    <div style="position:absolute;inset:0;background:linear-gradient(105deg, rgba(0,99,56,0.88) 0%, rgba(0,166,81,0.4) 50%, rgba(0,0,0,0.65) 100%);"></div>
+  </div>
+
+  <div style="position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:6rem 2.4rem 6rem;width:100%;">
+    <a href="index.html#insights" style="display:inline-flex;align-items:center;gap:0.6rem;color:rgba(255,255,255,0.7);font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;margin-bottom:2.4rem;transition:color 0.15s;" onmouseenter="this.style.color='#fff'" onmouseleave="this.style.color='rgba(255,255,255,0.7)'">
+      <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M13 5H1M6 9L2 5l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to Research
+    </a>
+    <p class="label" style="color:#00A651;margin-bottom:1.2rem;">Risk Management Framework · White Paper</p>
+    <h1 class="display-xl" style="color:#fff;max-width:72rem;margin-bottom:2rem;">
+      CORE©: A Better Way for Decision Making Under Uncertainty
+    </h1>
+    <p class="body-lg" style="color:rgba(255,255,255,0.78);max-width:56rem;margin-bottom:3.2rem;">
+      Beyond the traditional: embedding velocity and acceleration into the risk calculation.
+    </p>
+    <div style="display:flex;flex-wrap:wrap;gap:1.2rem;">
+      <a href="Papers/White_Paper_CORE_Framework.pdf" download="White_Paper_CORE_Framework.pdf" class="btn-green">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download White Paper (PDF)
+      </a>
+      <a href="Papers/CORE_Translation_Guide%20V1.pdf" download="CORE_Translation_Guide_V1.pdf" class="btn-outline-white">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Translation Guide (PDF)
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     PAPER METADATA STRIP
+════════════════════════════════════════ -->
+<div style="background:#F4F4F4;border-bottom:1px solid #e8e8e8;">
+  <div style="max-width:1280px;margin:0 auto;padding:2rem 2.4rem;display:flex;flex-wrap:wrap;gap:3.2rem;align-items:center;">
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Author</span>
+      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">Adrian Clements</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Framework</span>
+      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">CORE©</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Type</span>
+      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">White Paper</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Category</span>
+      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">Risk Management</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SECTION 1: ABSTRACT / OVERVIEW
+════════════════════════════════════════ -->
+<section style="padding:8rem 2.4rem;" aria-label="Overview">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 2fr;gap:6.4rem;align-items:start;" class="paper-two-col">
+
+    <div style="position:sticky;top:10rem;">
+      <div class="section-rule"></div>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Overview</h2>
+      <p class="body-sm" style="color:#555;">
+        CORE© 
+        Continuous Opportunity and Risk Dynamics Engine 
+        A Framework for Dynamic Risk Forecasting — Introducing RiskTime.
+      </p>
+    </div>
+
+    <div>
+      <!-- ═══════════════════════════════════════════════════════════════
+           FILL IN: Replace the placeholder below with your overview /
+           abstract text. Describe what the CORE Framework is and the
+           problem it solves. Suggested length: 3–5 paragraphs.
+      ═══════════════════════════════════════════════════════════════ -->
+      <div class="placeholder-zone">
+        <span class="pz-label">✏ Overview / Abstract</span>
+        <p>Risk management has always asked the wrong question. Not "how uncertain is this risk?" but "how long do we have before uncertainty becomes irrelevant because the outcome is locked in?" That single shift in perspective is the starting point for CORE©.</p>
+        <br>
+        <p>CORE© (Continuous Opportunity and Risk Dynamics Engine) is a novel enterprise risk management framework that reconstitutes risk and time as a single, inseparable dimension — RiskTime. Traditional approaches treat risk as a static snapshot: a severity score, a likelihood estimate, a point on a heat map. CORE© treats risk as a trajectory — moving, accelerating, and operating within a causal structure that constrains what can still be done and when.</p>
+        <br>
+        <p>The framework draws on conformal diagram mathematics — originally developed in theoretical physics to map the complete causal structure of spacetime — and adapts them to the organisational context. The result is a unified visual and quantitative system that embeds velocity, acceleration, appetite, and decision horizons into a single coherent picture: the Clements-Causal-Opportunity-Risk-Diagram (CCORD).</p>
+        <br>
+        <p>CORE© is the first of three papers in the framework trilogy. Part 2 (RADAR©) extends it for probabilistic early warning detection of emerging risks. Part 3 (FORGE©) extends it for deterministic response management of crystallised risks. Both build directly on CORE's mathematical foundation without repeating it.</p>
+        <br>
+        <p>Validated against eight major historical crises — including Enron, the 2008 financial crisis, Boeing 737 MAX, and Silicon Valley Bank — CORE© achieves 92% accuracy in identifying escalation patterns, with early warning lead times averaging 3–6 months before traditional metrics would trigger alerts. </p>
+        <br>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     SECTION 2: KEY THEMES
+════════════════════════════════════════ -->
+<section style="padding:8rem 2.4rem;background:#F4F4F4;" aria-label="Key themes">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="margin-bottom:4.8rem;">
+      <div class="section-rule"></div>
+      <h2 class="display-md" style="color:#1A1A1A;">Key Themes &amp; Highlights</h2>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         FILL IN: Replace each placeholder card below with a key theme,
+         finding, or highlight from the CORE© paper. Each card should
+         have a short title and 2–3 sentence description.
+    ═══════════════════════════════════════════════════════════════ -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2.4rem;" class="themes-grid">
+
+      <div class="placeholder-card">
+        <span class="pz-label">TIME</span>
+        <p style="font-size:1.8rem;font-weight:500;color:#1A1A1A;margin-bottom:0.8rem;font-style:normal;">RiskTime: The Foundational Shift</p>
+        <br>
+        <p>Risk and time are not two separate columns in a register. They form a single fabric. A cybersecurity breach that could occur in five years and one that could occur next Tuesday are not the same risk at different times — they are fundamentally different events. CORE© formalises this through the RiskTime continuum, making temporal dynamics constitutive of every risk metric rather than an afterthought.</p>
+      </div>
+
+      <div class="placeholder-card">
+        <span class="pz-label">SPEED</span>
+        <p style="font-size:1.8rem;font-weight:500;color:#1A1A1A;margin-bottom:0.8rem;font-style:normal;">The Five Gaps CORE© Closes</p>
+        <br>
+        <p>Conventional enterprise risk management fails at five critical points: temporal blindness (treating risks as static); independence assumptions (ignoring correlations and cascade effects); linear thinking (missing non-linear escalation); missing system context (ignoring criticality thresholds); and detection blindness (point estimates that cannot identify emerging risks). CORE© addresses all five.</p>
+      </div>
+
+      <div class="placeholder-card">
+        <span class="pz-label">DIRECTION</span>
+        <p style="font-size:1.8rem;font-weight:500;color:#1A1A1A;margin-bottom:0.8rem;font-style:normal;">The Threat-Trajectory Score (TTS)</p>
+        
+        <p>The mathematical engine of CORE© extends traditional Likelihood × Impact into a dynamic, four-component formula that captures velocity, amplification, information inertia, and system criticality. A cybersecurity risk that traditional methods would score 5.6 (L×I) can produce a TTS of 274 — not because the formula is inflated, but because it captures what the traditional formula ignores: how fast the risk is moving, how it compounds, and how close the system is to a tipping point. Step-by-step accuracy improvements from baseline L×I to full TTS range from 38% (adding velocity alone) to 92–97% with full calibration.</p>
+      </div>
+    
+      
+    <div class="placeholder-card">
+      <span class="pz-label">OPPORTUNITY</span>
+       <p style="font-size:1.8rem;font-weight:500;color:#1A1A1A;margin-bottom:0.8rem;font-style:normal;">Risk-Opportunity Duality</p>
+      <br>
+       <p>Risk-Opportunity Duality: CORE© treats opportunity as the mathematical mirror of risk. The Opportunity-Trajectory Score (OTS) parallels TTS with critical inversions that reflect the asymmetric nature of upside vs. downside. The CCORD diagram places both sides of this duality in one visual, ensuring that every risk conversation simultaneously surfaces the opportunity dimension. A formally grounded asymmetric appetite framework provides the basis for being conservative on downside while being genuinely selective — not merely cautious — on upside.</p>
+      </div>
+
+   <div class="placeholder-card">
+       <span class="pz-label">APPETITE</span>
+      <p style="font-size:1.8rem;font-weight:500;color:#1A1A1A;margin-bottom:0.8rem;font-style:normal;">Dynamic Risk Appetite</p>
+       <bdi>
+        <p>Dynamic Risk Appetite: In traditional frameworks, risk appetite is a static threshold that does not move unless the board explicitly updates it. In CORE©, appetite is a surface in RiskTime. A risk can breach appetite through acceleration alone — with no change to its severity score. This transforms appetite from a compliance label into a live strategic boundary.</p>
+       </div>
+
+   <div class="placeholder-card">
+          <span class="pz-label">FREEDOM</span>
+            <p style="font-size:1.8rem;font-weight:500;color:#1A1A1A;margin-bottom:0.8rem;font-style:normal;">Decision Horizons</p>
+            <br>
+              <p>Decision Horizons and Freedom: The CCORD diagram makes visible three decision horizons — Detection, Prevention, and Crisis — as curves within the conformal space. The distance between a risk's current position and the Prevention Horizon is a direct measure of remaining decision time. Freedom — the product of structural options and temporal window — is expressed as a single calculable number. When freedom drops, uncertainty increases. When it reaches zero, the decision has already been made for you.</p>
+            </div>
+  
+</section>
+
+<!-- ════════════════════════════════════════
+     SECTION 3: FRAMEWORK DETAIL
+════════════════════════════════════════ -->
+<section style="padding:8rem 2.4rem;" aria-label="Framework detail">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 2fr;gap:6.4rem;align-items:start;" class="paper-two-col">
+
+    <div style="position:sticky;top:10rem;">
+      <div class="section-rule"></div>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Framework Detail</h2>
+      <p class="body-sm" style="color:#555;">
+      <P>A deeper look at the mechanics and methodology of the CORE© Framework.</P>
+      <br>
+      <P>Three-Tier Delivery: Executive Dashboard: Traffic-light TTS zones, Freedom Index gauge, Phase Alert notifications. Five-minute review for CEO, Board, and C-Level.
+        Manager Workbench: Full TTS calculations, milestone tracking, urgency categories, and backcasting tools. Thirty-minute monthly review for VPs, department heads, and risk managers.
+        Specialist Engine: Complete Monte Carlo ensembles, density matrix operations, conformal mapping visualisations, and parameter calibration. Continuous analysis for risk analysts, quantitative modellers, and data scientists.</p>
+      </p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:3.2rem;">
+      <!-- ═══════════════════════════════════════════════════════════════
+           FILL IN: Replace the placeholder below with detailed content
+           about how the CORE© Framework works. You can split this into
+           multiple subsections — just duplicate the structure below.
+      ═══════════════════════════════════════════════════════════════ -->
+      <div class="placeholder-zone">
+        <span class="pz-label">✏ Framework Mechanics / Methodology</span>
+        <p>The four multiplicative components are calculated sequentially:</p>
+        <p>Step 1 — Base Risk Score (L × I × V): Extends traditional likelihood-impact scoring with velocity (V = 1/Time-to-Impact). A risk with TTI of 6 months and L=0.6, I=7 produces a base score of 8.4 vs the traditional 4.2 — the velocity doubles the urgency.</p>
+        <p>Step 2 — Amplification (1 + A × exp(α·t)): Captures network cascade potential and exponential feedback. A risk with amplification coefficient A=1.5 and growth rate α=0.15 over three quarters triples in severity through cascade alone.</p>
+        <p>Step 3 — Information Inertia (1/√(1−(v/v_max)²)): Represents management commitment and stress. As risk propagation speed approaches its organisational maximum, response capability compresses non-linearly — reflecting the impossibility of outrunning a crisis that spreads faster than the organisation can respond.</p>
+        <p>Step 4 — Criticality Multiplier (1+β×(ψ/ψ_c)^γ): Captures self-organised criticality — the sandpile effect where accumulated stress causes systems to become hypersensitive to small triggers. A system at 120% of its critical threshold produces a multiplier of 4.46, not 1.25.</p>
+        <br>
+        <p>Directly emerging from the risk trajectory is the opportunity trajectory.The key mathematical inversions from TTS reflect asymmetric realities: difficulty dampens opportunity scores rather than amplifying them toward a singularity; readiness acts as a positive multiplier rather than a friction factor; urgency is defined by the closing of the opportunity window rather than proximity to impact.</p>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════
+           FILL IN: Optional second subsection — e.g. "Practical Application"
+           or "Worked Example". Delete this block if not needed.
+      ═══════════════════════════════════════════════════════════════ -->
+      <div class="placeholder-zone">
+        <span class="pz-label">✏ Practical Application</span>
+        <p>The CCORD (Clements-Causal-Opportunity-Risk-Diagram ) replaces the traditional risk heat map in board presentations. Rather than a grid of coloured squares treating each risk as an independent, static point, the board sees trajectories with direction, speed, and mutual influence. The conversation naturally shifts from "What is the risk score?" to "Where is this risk heading?" and "How much decision time do we have?"
+          CORE© integrates with existing enterprise systems through risk register imports, financial system feeds for impact calibration, incident management system connections for velocity data, and business intelligence dashboards for executive reporting.
+          The framework is designed to be calibrated to specific organisational contexts and industrial sectors. Parameters (α, β, γ, ψ_c, v_max) are calibration points tuned through historical stress testing, not fixed constants. This calibration process itself generates valuable insight into the organisation's risk dynamics and decision-making patterns.
+          The Resilience Index (measuring organisational defensive capacity) and its opportunity-side counterpart, the Strategic Momentum Index, emerge directly from the framework calculations — not as add-on assessments but as natural outputs of the quantitative model. Risk culture, in terms of decision inertia, becomes transparent and measurable.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     SECTION 4: CONCLUSIONS / KEY TAKEAWAYS
+════════════════════════════════════════ -->
+<section style="padding:8rem 2.4rem;background:#F4F4F4;" aria-label="Conclusions">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 2fr;gap:6.4rem;align-items:start;" class="paper-two-col">
+
+    <div style="position:sticky;top:10rem;">
+      <div class="section-rule"></div>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Conclusions &amp; Key Takeaways</h2>
+      <p class="body-sm" style="color:#555;">What practitioners and organisations should take away from this research. CORE© provides a unified mathematical foundation that addresses fundamental questions traditional risk management has been unable to resolve. The key conclusions are:</p>
+    </div>
+
+    <div>
+      <!-- ═══════════════════════════════════════════════════════════════
+           FILL IN: Replace the placeholder below with conclusions,
+           recommendations, or key takeaways from the CORE© paper.
+      ═══════════════════════════════════════════════════════════════ -->
+      <div class="placeholder-zone">
+        <span class="pz-label">✏ Conclusions &amp; Key Takeaways</span>
+        <p>RiskTime is not a metaphor — it is the correct geometry for enterprise risk. Risks do not have a severity and a time. They have a position in RiskTime, and that position determines everything: urgency, appetite breach, freedom, and causal reach.
+Dynamic appetite replaces static thresholds. A risk can breach appetite through acceleration alone, without any change to its severity score. Appetite discussions become forward-looking: "This risk's TTS is currently 12 against our horizon of 16.67, but its acceleration means it will breach within two months."
+Decision horizons make the question "How much time do we have?" answerable with precision. The CCORD diagram shows not just whether a risk exceeds appetite but whether there is still time to prevent it from doing so.
+The symmetry between TTS and OTS ensures that risk management and strategy are not separate activities. Every downside assessment simultaneously surfaces the upside dimension. The asymmetric appetite framework provides quantitative — not merely rhetorical — support for being conservative on downside risk while being selective on upside opportunity.</p>
+        <br>
+        <p>CORE© is the starting point for a fundamentally different kind of conversation between risk managers and decision makers: not "What is the risk score?" but "Where is this risk heading, how fast is it moving, how much time remains, and what freedom of action exists?"</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     DOWNLOAD CTA — GREEN BAND
+════════════════════════════════════════ -->
+<section style="background:#006338;padding:7.2rem 2.4rem;position:relative;overflow:hidden;" aria-label="Download the paper">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 80% 50%,rgba(0,166,81,0.3) 0%,transparent 60%);pointer-events:none;"></div>
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:6.4rem;align-items:center;position:relative;z-index:2;" class="dl-grid">
+
+    <div>
+      <div class="section-rule" style="background:rgba(255,255,255,0.4);"></div>
+      <h2 class="display-lg" style="color:#fff;margin-bottom:1.6rem;">Read the Full CORE© Paper</h2>
+      <p class="body-lg" style="color:rgba(255,255,255,0.78);margin-bottom:3.2rem;">
+        Download the complete white paper to explore the full methodology, case examples, and implications of the CORE© Framework for risk decision making.
+      </p>
+      <div style="display:flex;flex-wrap:wrap;gap:1.2rem;">
+        <a href="Papers/White_Paper_CORE_Framework.pdf" download="White_Paper_CORE_Framework.pdf" class="btn-green" style="background:#00A651;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download White Paper
+        </a>
+        <a href="Papers/CORE_Translation_Guide%20V1.pdf" download="CORE_Translation_Guide_V1.pdf" class="btn-outline-white">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Translation Guide
+        </a>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:1.6rem;">
+      <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:2.4rem;">
+        <p class="label" style="color:rgba(255,255,255,0.6);margin-bottom:0.8rem;">White Paper</p>
+        <p style="font-size:1.4rem;color:#fff;font-weight:500;margin-bottom:0.4rem;">CORE© Framework</p>
+        <p style="font-size:1.2rem;color:rgba(255,255,255,0.55);">White_Paper_CORE_Framework.pdf</p>
+      </div>
+      <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:2.4rem;">
+        <p class="label" style="color:rgba(255,255,255,0.6);margin-bottom:0.8rem;">Companion Guide</p>
+        <p style="font-size:1.4rem;color:#fff;font-weight:500;margin-bottom:0.4rem;">CORE© Translation Guide</p>
+        <p style="font-size:1.2rem;color:rgba(255,255,255,0.55);">CORE_Translation_Guide_V1.pdf</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     RELATED PAPERS
+════════════════════════════════════════ -->
+<section style="padding:7.2rem 2.4rem;background:#fff;" aria-label="Related papers">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="margin-bottom:3.6rem;">
+      <div class="section-rule"></div>
+      <h2 class="display-md" style="color:#1A1A1A;">Related Framework Papers</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:2.4rem;" class="related-grid">
+      <a href="paper-radar.html" style="text-decoration:none;" class="card-hover">
+        <div style="background:#1A1A1A;padding:3.2rem;border-bottom:3px solid #00A651;">
+          <p class="label" style="color:#00A651;margin-bottom:1rem;">Enterprise Risk Management</p>
+          <h3 style="font-size:2rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:1.2rem;">RADAR©: Embracing Ambiguity, Capturing Opportunity</h3>
+          <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);margin-bottom:2rem;">Emerging risks: embracing risk ambiguity and capturing opportunity.</p>
+          <span class="arrow-link" style="color:#00A651;">Read Paper <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </a>
+      <a href="paper-forge.html" style="text-decoration:none;" class="card-hover">
+        <div style="background:#1A1A1A;padding:3.2rem;border-bottom:3px solid #00A651;">
+          <p class="label" style="color:#00A651;margin-bottom:1rem;">Strategic Risk Management</p>
+          <h3 style="font-size:2rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:1.2rem;">FORGE©: Decision Windows &amp; Urgency Calculation</h3>
+          <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);margin-bottom:2rem;">Decision windows: calculating when is the right time to act.</p>
+          <span class="arrow-link" style="color:#00A651;">Read Paper <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer style="background:#1A1A1A;padding:6.4rem 2.4rem 3.2rem;" aria-label="Site footer">
+  <div style="max-width:1280px;margin:0 auto;">
+
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4.8rem;padding-bottom:4.8rem;border-bottom:1px solid rgba(255,255,255,0.1);" class="footer-grid">
+      <div>
+        <img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:4.8rem;width:auto;margin-bottom:2rem;filter:brightness(0) invert(1);" />
+        <p style="font-size:1.4rem;color:rgba(255,255,255,0.45);line-height:1.65;max-width:28rem;margin-bottom:2.4rem;">
+          Risk management consulting, education, and research — serving risk professionals and organisations across banking, insurance, and asset management globally.
+        </p>
+        <div style="display:flex;gap:1.2rem;">
+          <a href="#" aria-label="LinkedIn" style="width:3.6rem;height:3.6rem;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;transition:background 0.18s;" onmouseenter="this.style.background='#00A651'" onmouseleave="this.style.background='rgba(255,255,255,0.1)'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Services</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="index.html#services" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Risk Assessment</a></li>
+          <li><a href="index.html#services" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Training &amp; Education</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Research</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="paper-core.html" style="font-size:1.3rem;color:#00A651;text-decoration:none;">CORE© Framework</a></li>
+          <li><a href="paper-radar.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">RADAR© Framework</a></li>
+          <li><a href="paper-forge.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">FORGE© Framework</a></li>
+          <li><a href="publications.html#blog" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">CORE© Insight Series (Blog)</a></li>
+          <li><a href="publications.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">All Publications</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Company</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="about.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">About AMC</a></li>
+          <li><a href="index.html#contact" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="padding-top:2.8rem;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1.6rem;">
+      <p style="font-size:1.2rem;color:rgba(255,255,255,0.3);">© 2026 AMC — Adrian Clements. All rights reserved.</p>
+      <p style="font-size:1.2rem;color:rgba(255,255,255,0.2);max-width:60rem;text-align:right;">AMC provides risk management consulting and education services. All views are those of Adrian Clements and do not constitute regulated financial advice.</p>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  document.getElementById('site-header').style.boxShadow =
+    window.scrollY > 8 ? '0 2px 20px rgba(0,0,0,0.1)' : 'none';
+}, { passive: true });
+
+document.getElementById('burger').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('open');
+});
+
+function applyResponsive() {
+  const w = window.innerWidth;
+  document.querySelectorAll('.paper-two-col').forEach(el => {
+    el.style.gridTemplateColumns = w < 960 ? '1fr' : '1fr 2fr';
+  });
+  const themesGrid = document.querySelector('.themes-grid');
+  if (themesGrid) themesGrid.style.gridTemplateColumns = w < 640 ? '1fr' : w < 900 ? '1fr 1fr' : 'repeat(3,1fr)';
+  const relatedGrid = document.querySelector('.related-grid');
+  if (relatedGrid) relatedGrid.style.gridTemplateColumns = w < 768 ? '1fr' : '1fr 1fr';
+  const dlGrid = document.querySelector('.dl-grid');
+  if (dlGrid) dlGrid.style.gridTemplateColumns = w < 900 ? '1fr' : '1.2fr 1fr';
+  const footerGrid = document.querySelector('.footer-grid');
+  if (footerGrid) footerGrid.style.gridTemplateColumns = w < 640 ? '1fr' : w < 900 ? '1fr 1fr' : '2fr 1fr 1fr 1fr';
+}
+applyResponsive();
+window.addEventListener('resize', applyResponsive, { passive: true });
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('section, footer').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.55s cubic-bezier(.4,0,.2,1), transform 0.55s cubic-bezier(.4,0,.2,1)';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>

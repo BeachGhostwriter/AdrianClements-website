@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -35,3 +36,161 @@
     </script>
   </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neptune Water Intelligence | Adrian Clements</title>
+    <meta name="description" content="A WAVE-inspired industrial water treatment design experience built from the Neptune Streamlit application." />
+    <style>
+      :root { --navy:#0b2b4d; --blue:#1d71b8; --teal:#0d7a8b; --light:#f4f7fb; --text:#233445; --muted:#5f6f7f; --border:#dfe7f1; }
+      * { box-sizing:border-box; }
+      body { margin:0; font-family:Segoe UI, Arial, sans-serif; color:var(--text); background:#fff; line-height:1.6; }
+      a { color:inherit; text-decoration:none; }
+      header { background:linear-gradient(135deg,var(--navy),var(--blue)); color:white; padding:24px 0 72px; }
+      nav { max-width:1120px; margin:0 auto; padding:0 24px; display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
+      .brand { font-size:1.1rem; font-weight:700; letter-spacing:0.04em; }
+      .nav-links { display:flex; gap:18px; flex-wrap:wrap; color:rgba(255,255,255,0.9); align-items:center; }
+      .nav-item { position:relative; }
+      .nav-item:hover .nav-dropdown { display:block; }
+      .nav-dropdown { display:none; position:absolute; top:calc(100% + 8px); left:0; background:white; color:var(--navy); min-width:170px; border-radius:10px; box-shadow:0 10px 24px rgba(0,0,0,0.14); overflow:hidden; z-index:10; }
+      .nav-dropdown a { display:block; padding:10px 12px; border-bottom:1px solid #eef2f7; }
+      .nav-dropdown a:last-child { border-bottom:none; }
+      .nav-dropdown a:hover { background:#f4f7fb; }
+      .hero { max-width:1120px; margin:36px auto 0; padding:0 24px; display:grid; grid-template-columns:1.15fr 0.85fr; gap:28px; align-items:center; }
+      .hero h1 { font-size:clamp(2rem,3.8vw,3.2rem); margin:0 0 14px; }
+      .hero p { font-size:1.02rem; color:rgba(255,255,255,0.92); max-width:720px; }
+      .hero-actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:24px; }
+      .btn { display:inline-block; padding:12px 18px; border-radius:999px; font-weight:600; transition:transform 0.2s ease; }
+      .btn:hover { transform:translateY(-1px); }
+      .btn-primary { background:white; color:var(--navy); }
+      .btn-secondary { border:1px solid rgba(255,255,255,0.35); color:white; }
+      .hero-card { background:rgba(255,255,255,0.13); border:1px solid rgba(255,255,255,0.2); border-radius:16px; padding:20px; backdrop-filter:blur(8px); }
+      .hero-card h3 { margin-top:0; margin-bottom:10px; }
+      .hero-card ul { margin:0; padding-left:18px; }
+      main { max-width:1120px; margin:0 auto; padding:40px 24px 64px; }
+      section { margin-top:28px; }
+      .section-title { font-size:1.4rem; margin:0 0 12px; }
+      .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+      .card { background:white; border:1px solid var(--border); border-radius:16px; padding:18px; box-shadow:0 8px 24px rgba(11,43,77,0.04); }
+      .card h3 { margin-top:0; margin-bottom:8px; font-size:1.05rem; }
+      .card p { margin:0; color:var(--muted); }
+      .split { display:grid; grid-template-columns:1.05fr 0.95fr; gap:18px; }
+      table { width:100%; border-collapse:collapse; }
+      th, td { padding:10px 12px; text-align:left; border-bottom:1px solid var(--border); vertical-align:top; }
+      th { background:var(--light); color:var(--navy); }
+      .highlight { padding:18px; border-radius:16px; background:linear-gradient(135deg,#f3f8ff,#eef8fa); border:1px solid var(--border); }
+      .steps { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; }
+      .step { background:var(--light); border-radius:14px; padding:14px; }
+      .step strong { display:block; margin-bottom:6px; }
+      .pill { display:inline-block; margin:4px 6px 0 0; padding:4px 9px; border-radius:999px; background:#e8f3ff; color:var(--blue); font-size:0.86rem; }
+      footer { background:#0c2036; color:rgba(255,255,255,0.82); padding:24px; text-align:center; }
+      @media (max-width:900px){ .hero,.split,.grid,.steps { grid-template-columns:1fr; } }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="brand">Adrian Clements | Water and Industrial Value Creation</div>
+        <div class="nav-links">
+          <div class="nav-item">
+            <a href="#">Software Application ▾</a>
+            <div class="nav-dropdown">
+              <a href="#neptune">Neptune</a>
+              <a href="#core">Core</a>
+            </div>
+          </div>
+          <a href="#platform">Platform</a>
+          <a href="#comparison">Comparison</a>
+          <a href="#roadmap">Roadmap</a>
+          <a href="#launch">Launch</a>
+        </div>
+      </nav>
+      <div class="hero">
+        <div>
+          <h1>WAVE-inspired software for industrial water treatment design</h1>
+          <p>The Neptune application already supports site assessment, treatment design, economics and value creation. This page adapts the DuPont WAVE approach into a professional product experience for the same capability.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#launch">Explore the application</a>
+            <a class="btn btn-secondary" href="neptune-wave-conversion-plan.html">View conversion roadmap</a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <h3>What the current app already does</h3>
+          <ul>
+            <li>Maps site context and regulatory limits</li>
+            <li>Models water balance and contaminants</li>
+            <li>Suggests treatment trains and checks compliance</li>
+            <li>Shows value creation, CapEx / OpEx and EBITDA impact</li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <main>
+      <section id="platform">
+        <h2 class="section-title">A platform for design, evaluation and decision support</h2>
+        <div class="grid">
+          <div class="card"><h3>Integrated workflow</h3><p>Instead of separate tools, the app links plant context, engineering design and economics into one flow.</p></div>
+          <div class="card"><h3>Scenario-based design</h3><p>Users can compare recycle targets, treatment options and cost cases to see the impact on water savings and sustainability.</p></div>
+          <div class="card"><h3>Business value lens</h3><p>The current app already shows EBITDA bridge, simple payback, savings and investment trade-offs.</p></div>
+        </div>
+      </section>
+      <section id="comparison">
+        <h2 class="section-title">How this compares with the DuPont WAVE approach</h2>
+        <div class="split">
+          <div class="card">
+            <h3>What the current Neptune app already contains</h3>
+            <table>
+              <thead><tr><th>Module</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td>Country &amp; Region</td><td>Water stress, climate and regulatory limits</td></tr>
+                <tr><td>Company Data</td><td>Water balance, sources and contaminant inputs</td></tr>
+                <tr><td>Treatment Solutions</td><td>Treatment chain and compliance logic</td></tr>
+                <tr><td>Cost Estimation</td><td>Cost library and scenario economics</td></tr>
+                <tr><td>EBITDA Bridge</td><td>Value creation and financial logic</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3>How to make it feel more like WAVE</h3>
+            <p>DuPont WAVE is successful because it offers a guided, single-interface design experience with clear value propositions and strong product storytelling.</p>
+            <div>
+              <span class="pill">Guided wizard</span><span class="pill">One interface</span><span class="pill">Scenario comparison</span><span class="pill">Downloadable reports</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="roadmap">
+        <h2 class="section-title">Suggested WAVE-style conversion roadmap</h2>
+        <div class="steps">
+          <div class="step"><strong>1. Reframe the app</strong>Create a stronger product story around design, evaluation and optimization.</div>
+          <div class="step"><strong>2. Build a guided workflow</strong>Move from setup to water balance to treatment selection and economics in one journey.</div>
+          <div class="step"><strong>3. Add WAVE-like modules</strong>Introduce a technology library, design assistant and scenario comparison panel.</div>
+          <div class="step"><strong>4. Elevate reporting</strong>Provide downloadable reports and investment cases that look like commercial software output.</div>
+        </div>
+      </section>
+      <section id="launch">
+        <div class="highlight">
+          <h2 class="section-title">How this page can be used</h2>
+          <p>This landing page is designed as the public-facing entry point for a broader Neptune/WAVE-style offering. It can sit on your site as a product story, while the Streamlit application remains the underlying engine for analysis and modelling.</p>
+        </div>
+      </section>
+      <section id="neptune">
+        <div class="card">
+          <h2 class="section-title">Neptune</h2>
+          <p>The Neptune application is the current industrial water design and decision-support platform, focused on site context, treatment selection, compliance and economics.</p>
+        </div>
+      </section>
+      <section id="core">
+        <div class="card">
+          <h2 class="section-title">Core</h2>
+          <p>The Core application will be the broader platform layer for future industrial software modules, shared data models and expanded decision workflows.</p>
+        </div>
+      </section>
+    </main>
+    <footer>Neptune Water Intelligence Platform — adapted for Adrian Clements' professional website.</footer>
+  </body>
+</html>
+>>>>>>> b0ef753bc0325de45ed85529959616f1820102cc

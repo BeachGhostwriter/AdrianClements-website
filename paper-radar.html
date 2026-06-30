@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RADAR© Framework — AMC Adrian Clements</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'bcg-green':     '#00A651',
+            'bcg-green-dark':'#006338',
+            'bcg-black':     '#1A1A1A',
+            'bcg-grey':      '#F4F4F4',
+            'bcg-mid':       '#555555',
+          },
+          fontFamily: {
+            sans: ['"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 10px; scroll-behavior: smooth; }
+    body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 1.4rem; line-height: 1.5; color: #1A1A1A; background: #fff; overflow-x: hidden; }
+
+    .display-xl  { font-size: clamp(2.8rem, 4.5vw, 5.2rem); font-weight: 300; line-height: 1.08; letter-spacing: -0.02em; }
+    .display-lg  { font-size: clamp(2.2rem, 3vw, 3.6rem);   font-weight: 300; line-height: 1.1;  letter-spacing: -0.015em; }
+    .display-md  { font-size: clamp(1.8rem, 2.2vw, 2.6rem); font-weight: 400; line-height: 1.2; }
+    .body-lg     { font-size: 1.6rem; line-height: 1.65; }
+    .body-sm     { font-size: 1.3rem; line-height: 1.55; }
+    .label       { font-size: 1.1rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    .nav-link { font-size: 1.3rem; font-weight: 500; color: #1A1A1A; text-decoration: none; padding: 0.4rem 0; position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #00A651; transition: width 0.22s cubic-bezier(.4,0,.2,1); }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link:hover { color: #006338; }
+
+    .btn-green { display: inline-flex; align-items: center; gap: 0.6rem; background: #00A651; color: #fff; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 1rem 2.2rem; border: none; cursor: pointer; transition: background 0.18s ease, transform 0.14s ease; text-decoration: none; }
+    .btn-green:hover  { background: #006338; transform: translateY(-1px); }
+    .btn-green:active { background: #004d28; transform: translateY(0); }
+
+    .btn-outline-white { display: inline-flex; align-items: center; gap: 0.6rem; background: transparent; color: #fff; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.9rem 2.2rem; border: 2px solid #fff; cursor: pointer; transition: background 0.18s ease, color 0.18s ease, transform 0.14s ease; text-decoration: none; }
+    .btn-outline-white:hover  { background: #fff; color: #1A1A1A; transform: translateY(-1px); }
+
+    .arrow-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #00A651; text-decoration: none; transition: gap 0.18s ease, color 0.14s ease; }
+    .arrow-link:hover { gap: 1rem; color: #006338; }
+
+    .card-hover { transition: transform 0.22s cubic-bezier(.4,0,.2,1), box-shadow 0.22s cubic-bezier(.4,0,.2,1); }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,166,81,0.08); }
+
+    .section-rule { width: 4rem; height: 3px; background: #00A651; margin-bottom: 1.6rem; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f0f0f0; }
+    ::-webkit-scrollbar-thumb { background: #00A651; border-radius: 3px; }
+
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-menu { position: absolute; top: calc(100% + 1rem); left: 50%; transform: translateX(-50%) translateY(-8px); background: #fff; border: 1px solid #e8e8e8; min-width: 24rem; padding: 0.6rem 0; box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06); opacity: 0; visibility: hidden; transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s; z-index: 200; }
+    .nav-dropdown:hover .nav-dropdown-menu, .nav-dropdown:focus-within .nav-dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s; }
+    .dropdown-item { display: flex; align-items: center; padding: 1rem 2rem; font-size: 1.3rem; font-weight: 500; color: #1A1A1A; text-decoration: none; border-left: 3px solid transparent; transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease; }
+    .dropdown-item:hover { background: #f8f8f8; color: #00A651; border-left-color: #00A651; }
+    .dropdown-divider { height: 1px; background: #f0f0f0; margin: 0.4rem 0; }
+    .nav-dropdown-btn { font-size: 1.3rem; font-weight: 500; color: #1A1A1A; background: none; border: none; cursor: pointer; font-family: inherit; padding: 0.4rem 0; display: inline-flex; align-items: center; gap: 0.4rem; position: relative; }
+    .nav-dropdown-btn::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #00A651; transition: width 0.22s cubic-bezier(.4,0,.2,1); }
+    .nav-dropdown:hover .nav-dropdown-btn::after { width: 100%; }
+    .nav-dropdown:hover .nav-dropdown-btn { color: #006338; }
+    .nav-dropdown-chevron { transition: transform 0.18s ease; }
+    .nav-dropdown:hover .nav-dropdown-chevron { transform: rotate(180deg); }
+
+    .placeholder-zone {
+      border: 2px dashed #00A651;
+      background: rgba(0,166,81,0.04);
+      padding: 2.8rem 3.2rem;
+      margin-bottom: 0;
+    }
+    .placeholder-zone .pz-label {
+      font-size: 1.0rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: #00A651; margin-bottom: 1.2rem; display: block;
+    }
+    .placeholder-zone p {
+      color: #555; font-style: italic; font-size: 1.4rem; line-height: 1.7;
+    }
+    .placeholder-card {
+      border: 2px dashed rgba(0,166,81,0.5);
+      background: rgba(0,166,81,0.03);
+      padding: 2.4rem;
+    }
+    .placeholder-card .pz-label {
+      font-size: 1.0rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: #00A651; margin-bottom: 1rem; display: block;
+    }
+    .placeholder-card p {
+      color: #888; font-style: italic; font-size: 1.3rem; line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════ -->
+<header id="site-header" style="position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #e8e8e8;transition:box-shadow 0.2s ease;">
+  <nav style="max-width:1280px;margin:0 auto;padding:1.8rem 2.4rem;min-height:9rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;">
+
+    <a href="index.html" style="flex-shrink:0;" aria-label="AMC Home">
+      <img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:8rem;width:auto;" />
+    </a>
+
+    <div style="display:flex;align-items:center;gap:2.8rem;">
+      <a href="index.html#services"  class="nav-link">Services</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          Research
+          <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" role="menu">
+          <a href="index.html#insights" class="dropdown-item">Research &amp; Insights</a>
+          <div class="dropdown-divider"></div>
+          <a href="paper-core.html" class="dropdown-item">CORE© Framework</a>
+          <a href="paper-radar.html" class="dropdown-item" style="color:#00A651;font-weight:600;">RADAR© Framework</a>
+          <a href="paper-forge.html" class="dropdown-item">FORGE© Framework</a>
+          <div class="dropdown-divider"></div>
+          <a href="publications.html#blog" class="dropdown-item">CORE© Insight Series (Blog)</a>
+        </div>
+      </div>
+      <a href="publications.html" class="nav-link">Publications</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          About
+          <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" role="menu">
+          <a href="about.html" class="dropdown-item">Adrian Clements</a>
+          <div class="dropdown-divider"></div>
+          <a href="publications.html#publications" class="dropdown-item">Articles &amp; Publications</a>
+          <a href="publications.html#speeches" class="dropdown-item">Speeches</a>
+          <a href="publications.html#quotations" class="dropdown-item">Quotations &amp; Interviews</a>
+        </div>
+      </div>
+      <a href="index.html#expertise" class="nav-link">Expertise</a>
+      <a href="index.html#contact"   class="nav-link">Contact</a>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:1.6rem;">
+      <a href="index.html#contact" class="btn-green" style="padding:0.8rem 1.8rem;">
+        Speak to Adrian
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <button id="burger" aria-label="Toggle menu" style="display:flex;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;">
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+      </button>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" style="background:#fff;border-top:1px solid #e8e8e8;padding:2rem 2.4rem;flex-direction:column;gap:1.6rem;">
+    <a href="index.html#services"  class="nav-link" style="font-size:1.6rem;">Services</a>
+    <a href="index.html#insights"  class="nav-link" style="font-size:1.6rem;">Research</a>
+    <a href="publications.html#blog" class="nav-link" style="font-size:1.4rem;padding-left:1.6rem;color:#555;">CORE© Insight Series (Blog)</a>
+    <a href="publications.html" class="nav-link" style="font-size:1.6rem;">Publications</a>
+    <a href="about.html" class="nav-link" style="font-size:1.6rem;">About — Adrian Clements</a>
+    <a href="index.html#expertise" class="nav-link" style="font-size:1.6rem;">Expertise</a>
+    <a href="index.html#contact"   class="nav-link" style="font-size:1.6rem;">Contact</a>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════
+     PAPER HERO
+════════════════════════════════════════ -->
+<section style="position:relative;background:#1A1A1A;overflow:hidden;min-height:56vh;display:flex;align-items:flex-end;" aria-label="Paper hero">
+  <div style="position:absolute;inset:0;">
+    <img src="Webpictures/20240928_071731.jpg" alt="RADAR Framework" aria-hidden="true" style="width:100%;height:100%;object-fit:cover;display:block;" />
+    <div style="position:absolute;inset:0;background:linear-gradient(105deg, rgba(0,99,56,0.88) 0%, rgba(0,166,81,0.4) 50%, rgba(0,0,0,0.65) 100%);"></div>
+  </div>
+
+  <div style="position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:6rem 2.4rem 6rem;width:100%;">
+    <a href="index.html#insights" style="display:inline-flex;align-items:center;gap:0.6rem;color:rgba(255,255,255,0.7);font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;margin-bottom:2.4rem;transition:color 0.15s;" onmouseenter="this.style.color='#fff'" onmouseleave="this.style.color='rgba(255,255,255,0.7)'">
+      <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M13 5H1M6 9L2 5l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to Research
+    </a>
+    <p class="label" style="color:#00A651;margin-bottom:1.2rem;">Enterprise Risk Management · White Paper</p>
+    <h1 class="display-xl" style="color:#fff;max-width:72rem;margin-bottom:2rem;">
+      RADAR©: Embracing Ambiguity, Capturing Opportunity
+    </h1>
+    <p class="body-lg" style="color:rgba(255,255,255,0.78);max-width:56rem;margin-bottom:3.2rem;">
+      Emerging risks: embracing risk ambiguity and turning uncertainty into opportunity.
+    </p>
+    <div style="display:flex;flex-wrap:wrap;gap:1.2rem;">
+      <a href="Papers/White_Paper_RADAR_Framework.pdf" download="White_Paper_RADAR_Framework.pdf" class="btn-green">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download White Paper (PDF)
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     PAPER METADATA STRIP
+════════════════════════════════════════ -->
+<div style="background:#F4F4F4;border-bottom:1px solid #e8e8e8;">
+  <div style="max-width:1280px;margin:0 auto;padding:2rem 2.4rem;display:flex;flex-wrap:wrap;gap:3.2rem;align-items:center;">
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Author</span>
+      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">Adrian Clements</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Framework</span>
+      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">RADAR©</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Type</span>
+      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">White Paper</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:1.1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">Category</span>
+      <span style="font-size:1.3rem;color:#1A1A1A;font-weight:500;">Enterprise Risk Management</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SECTION 1: ABSTRACT / OVERVIEW
+════════════════════════════════════════ -->
+<section style="padding:8rem 2.4rem;" aria-label="Overview">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 2fr;gap:6.4rem;align-items:start;" class="paper-two-col">
+
+    <div style="position:sticky;top:10rem;">
+      <div class="section-rule"></div>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Overview</h2>
+      <p class="body-sm" style="color:#555;"> Risk Ambiguity Detection and Anticipatory Recognition - RADAR©. </p>
+      <br>
+       <p> An introduction to the RADAR© Framework and its approach to emerging risk ambiguity. A Probabilistic, Early Warning Detection System in Enterprise Risk Management</p>
+       <br>
+       <p>Part 2 of the CORE© Framework</p>
+    </div>
+
+    <div>
+      <!-- ═══════════════════════════════════════════════════════════════
+           FILL IN: Replace the placeholder below with your overview /
+           abstract text. Describe what the RADAR Framework is and the
+           problem it solves. Suggested length: 3–5 paragraphs.
+      ═══════════════════════════════════════════════════════════════ -->
+      <div class="placeholder-zone">
+        <span class="pz-label">✏ Overview / Abstract</span>
+        <p>In virtually every documented major corporate crisis, the warning signals existed months or years before the event. Traditional risk frameworks failed to detect or prioritise them — not because the information was absent, but because the methodology was not designed to separate genuine signals from information overload.
+        <br>
+        <p>RADAR© (Risk Ambiguity Detection and Anticipatory Recognition) is Part 2 of the CORE© trilogy. It extends the CORE© mathematical foundation into the domain of uncertainty and ambiguity, providing a probabilistic early warning system built on three principles: that the spread of predictions is itself diagnostic information; that risks rarely fail independently; and that phase transitions — the moments when systems tip from stable to critical — have measurable precursors that appear well before the event.
+        <br>
+        <p>RADAR© operates on two axes. Axis 1 produces the Early Warning Threat-Trajectory Score (EW-TTS): the CORE© base TTS extended by Monte Carlo ensemble simulation, a Coherence Factor for detecting synchronised cascades, and Phase Proximity for measuring distance to tipping points. Axis 2 provides the Decision Guidance layer: Freedom Index, Phase Index, Von Neumann Entropy, and Urgency Index — the interpretation tools that translate mathematical output into actionable intelligence.
+        <br>
+        <p>The RADAR© calculation chain proceeds in two phases: Phase 1 (from CORE©) builds the base TTS through likelihood, impact, velocity, amplification, inertia, and criticality. Phase 2 (RADAR© extension) multiplies by ensemble mean, coherence factor, and phase proximity to produce the EW-TTS.
+        <br>
+        <p>Validated against eight major historical crises, RADAR© correctly identified escalation patterns in 92% of cases with average early warning lead times of 3–6 months before traditional indicators would have triggered alerts.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     SECTION 2: KEY THEMES
+════════════════════════════════════════ -->
+<section style="padding:8rem 2.4rem;background:#F4F4F4;" aria-label="Key themes">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="margin-bottom:4.8rem;">
+      <div class="section-rule"></div>
+      <h2 class="display-md" style="color:#1A1A1A;">Key Themes &amp; Highlights</h2>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         FILL IN: Replace each placeholder card below with a key theme,
+         finding, or highlight from the RADAR© paper.
+    ═══════════════════════════════════════════════════════════════ -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2.4rem;" class="themes-grid">
+
+      <div class="placeholder-card">
+        <span class="pz-label">✏ Information</span>
+        <p style="font-size:1.6rem;font-weight:500;color:#1A1A1A;margin-bottom:0.8rem;font-style:normal;">Uncertainty as Information
+        <p>RADAR© treats uncertainty as a diagnostic signal rather than noise to be reduced. Drawing on Tim Palmer's ensemble weather forecasting methodology, high variance in early-stage risk estimates is not a problem to be resolved — it indicates proximity to phase boundaries where small perturbations can cause qualitative shifts in system behaviour. The spread of the ensemble is as important as its mean.
+      </div>
+
+      <div class="placeholder-card">
+        <span class="pz-label">✏ Uncertainty</span>
+        <p style="font-size:1.6rem;font-weight:500;color:#1A1A1A;margin-bottom:0.8rem;font-style:normal;">The Uncertainty Classification Framework
+        <p>Before applying any RADAR© calculation, the uncertainty regime must be classified. Four distinct regimes require fundamentally different approaches: Risk (known probabilities, high parameter trust, binary act/don't-act decisions); Uncertainty (bounded unknowns, moderate trust, staged commitments); Ambiguity (multiple valid interpretations, low trust, alignment-building required); and Deep Uncertainty (no historical analogue, minimal trust, probe-and-learn strategy). RADAR© operates primarily in the Ambiguity regime. FORGE© operates in the Risk regime.
+      </div>
+
+      <div class="placeholder-card">
+        <span class="pz-label">✏ Beyond CORE</span>
+        <p style="font-size:1.6rem;font-weight:500;color:#1A1A1A;margin-bottom:0.8rem;font-style:normal;">Three Extensions Beyond CORE©</p>
+        <p>The EW-TTS builds CORE©'s base TTS with three additional layers that together create the early warning capability:
+The Ensemble Mean replaces a single point estimate with a central value derived from 500+ Monte Carlo simulations, each using perturbed inputs. The result is not just a number but a confidence statement.
+The Coherence Factor detects when apparently independent risks are in fact synchronised — moving together like waves in phase. The 2008 financial crisis was not the sum of individual bank failures; it was a perfectly coherent cascade. Standard risk registers cannot see this. RADAR© can.
+Phase Proximity measures the fraction of the distance to a critical tipping point. A Phase Proximity of 0.85 means the organisation is 85% of the way to a critical transition — a countdown, not a binary alarm.
+      </div>
+
+  <div class="placeholder-card">
+        <span class="pz-label">✏ Phase Index</span>
+        <p style="font-size:1.6rem;font-weight:500;color:#1A1A1A;margin-bottom:0.8rem;font-style:normal;">The Most Powerful Early Warning Metric</p>
+        <p>The Phase Index spikes when two things happen simultaneously: the risk is accelerating (second derivative is large) AND predictions about it are diverging (uncertainty is growing). That combination — speeding up and becoming less predictable at the same time — is the unmistakable mathematical signature of an approaching phase transition. Historical validation shows Phase Index elevated materially before every major crisis in the test set: four months before COVID border closures, six months before SVB failure, eleven months before the Boeing MAX grounding.
+      </div>
+
+      <div class="placeholder-card">
+        <span class="pz-label">✏ Entropy></span>
+        <p style="font-size:1.6rem;font-weight:500;color:#1A1A1A;margin-bottom:0.8rem;font-style:normal;">Measuring the Quality of the Risk Picture</p>
+        <p>Beyond measuring how big a risk is, RADAR© measures how reliable the picture of that risk is. Von Neumann Entropy quantifies uncertainty in the risk state itself. Decreasing entropy signals that the risk is crystallising toward a definite outcome — the handoff signal to FORGE©. Increasing entropy signals that the situation remains fluid and early intervention may still redirect the trajectory.
+      </div>
+
+      <div class="placeholder-card">
+        <span class="pz-label">✏ R²O Duality</span>
+        <p style="font-size:1.6rem;font-weight:500;color:#1A1A1A;margin-bottom:0.8rem;font-style:normal;">Risk-Opportunity Duality in Early Detection
+        <p>The same mathematics that detects emerging threats simultaneously identifies emerging opportunities. The Phase Index reading on a regulatory disruption scenario is simultaneously a risk alert and a strategic opportunity signal. "Our Phase Index on the regulatory disruption scenario has reached 0.84" is both a warning and an opening — the CCORD makes this explicit visually.
+      </div>
+
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     SECTION 3: FRAMEWORK DETAIL
+════════════════════════════════════════ -->
+<section style="padding:8rem 2.4rem;" aria-label="Framework detail">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 2fr;gap:6.4rem;align-items:start;" class="paper-two-col">
+
+    <div style="position:sticky;top:10rem;">
+      <div class="section-rule"></div>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Framework Detail</h2>
+      <p class="body-sm" style="color:#555;">A deeper look at the mechanics and methodology of the RADAR© Framework.</p>
+      <br>
+        <p>Phase 1 (CORE© base): L × I → V → Amplification → Lorentz → Criticality</p>
+        <BR>
+        <p>Phase 2 (RADAR© extension): Monte Carlo → Coherence → Phase Proximity</p>
+        <BR>
+        <p>The CORE© base components (L, I, V, A, α, v/v_max, β, γ, ψ/ψ_c) are calculated identically to CORE© Part 1, Section 3. For emerging risks, the interpretive differences are: likelihood is estimated from analogous historical events and leading indicators rather than direct observation; impact estimates carry wider ranges reflecting genuine epistemic uncertainty; velocity is inferred from leading indicator rates of change rather than direct observation.</p>
+
+
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:3.2rem;">
+      <!-- ═══════════════════════════════════════════════════════════════
+           FILL IN: Replace the placeholder below with detailed content
+           about how the RADAR© Framework works.
+      ═══════════════════════════════════════════════════════════════ -->
+      <div class="placeholder-zone">
+        <span class="pz-label">✏ Framework Mechanics / Methodology</span>
+        <p style="font-weight:bold;">EW-TTS Formula</p>
+
+EW-TTS(t) = ⟨TTS_ensemble(t)⟩ × Coherence_Factor × Phase_Proximity
+</p>
+        <br>
+        <p>Ensemble Mean ⟨TTS_ensemble⟩
+⟨TTS_ensemble⟩ = (1/N) × Σᵢ TTS(L+εᴸᵢ, I+εᴵᵢ, V+εᵛᵢ, A+εᴬᵢ)</p>
+<br>
+N ≥ 500 simulations, each with parameters perturbed by normally distributed noise with parameter-specific standard deviations (σ_L = 0.15, σ_I = 0.20, σ_V = 0.25, σ_A = 0.30). Palmer Noise grows as freedom decreases: σ = 0.1 + 0.3 × (1 − F). The ensemble spread is itself diagnostic: high spread near phase boundaries signals approaching criticality.</p>
+<br>
+<P style="font-weight:bold;">Coherence Factor</P>
+Coherence_Factor = 1 + κ_coh × √(Σᵢ≠ⱼ|ρᵢⱼ|²)
+Where κ_coh ∈ [0.1, 0.3] and ρᵢⱼ are off-diagonal elements of the risk density matrix. A factor of 1.0 means risks are genuinely independent. Values above 1.2 indicate significant synchronisation — compound effects that exceed any individual component. The density matrix approach also enables probabilistic reporting: "35% probability this risk is in early-warning state, 45% in moderate acceleration, 20% approaching the decision horizon."
+</p>
+<br>
+<p style="font-weight:bold;">Phase Proximity
+Phase_Proximity = exp(−(d/d_critical)²)</p>
+<br>
+Where d = |ψ − ψ_c| is the distance from the critical threshold. Ranges from near 0 (far from tipping point) to near 1.0 (at tipping point). The trend is more informative than the absolute value — accelerating proximity is the key signal, even at moderate absolute levels.
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════
+           FILL IN: Optional second subsection. Delete if not needed.
+      ═══════════════════════════════════════════════════════════════ -->
+      <div class="placeholder-zone">
+        <span class="pz-label">✏ Practical Application</span>
+        <p>RADAR© is designed for risk teams that need to separate genuine emerging signals from noise — and to do so early enough to preserve decision freedom. The practical workflow is:</p>
+        <br>
+        <p>Classify the uncertainty regime first. The calculation, the thresholds, and the action language are all regime-dependent. Running RADAR© calculations in an Ambiguity regime requires different confidence in parameter inputs than running them in a Risk regime.</p>
+      </br>
+       <p>Monitor the Phase Index as the primary early warning metric. When it elevates above 2.0, increase monitoring frequency and begin pre-positioning resources regardless of the current TTS level. By the time TTS is visibly high, the Phase Index will have been signalling for months.</p>
+        <br>
+         <p>Use the Freedom Index as a separate urgency signal. A moderate-TTS risk with rapidly declining freedom is strategically more urgent than it appears — the closing of options matters as much as the severity of the risk.</p>
+        <br>
+         <p>Use Von Neumann Entropy to answer the meta-question: "How reliable is our picture of this risk?" High entropy means the risk picture is still fluid and early intervention may still work. Low and falling entropy means the risk is crystallising — the handoff to FORGE© is approaching.</p>
+        <br>
+         <p>The Opportunity Phase Index and Opportunity Capture Score provide the same early warning capability for strategic openings: when market conditions are approaching a tipping point, RADAR© surfaces the signal alongside the threat.</p>
+        <br>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     SECTION 4: CONCLUSIONS / KEY TAKEAWAYS
+════════════════════════════════════════ -->
+<section style="padding:8rem 2.4rem;background:#F4F4F4;" aria-label="Conclusions">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 2fr;gap:6.4rem;align-items:start;" class="paper-two-col">
+
+    <div style="position:sticky;top:10rem;">
+      <div class="section-rule"></div>
+      <h2 class="display-md" style="color:#1A1A1A;margin-bottom:1.6rem;">Conclusions &amp; Key Takeaways</h2>
+      <p class="body-sm" style="color:#555;">What practitioners and organisations should take away from this research.</p>
+      <p>Typically, organisations only identify emerging risks when they are already risks. meaning they are established and decision time is reduced. As this approach identifies weak signals within the realm of ambiguity companies can monitor and apply funding to track the evolution and therefore will have an advantage over competition resulting in higher decision freedom.</p>
+      <p> the most interesting point here is that where as most organisation talk about Monte Carlo simulations they apply this mathematical approach too soon. The key elements of acceleration and velocity have not been applied meaning that results are less accurate. </p>
+    </div>
+
+    <div>
+      <!-- ═══════════════════════════════════════════════════════════════
+           FILL IN: Replace the placeholder below with conclusions and
+           key takeaways from the RADAR© paper.
+      ═══════════════════════════════════════════════════════════════ -->
+      <div class="placeholder-zone">
+        <span class="pz-label">✏ Conclusions &amp; Key Takeaways</span>
+        <p>RADAR© addresses the most critical failure in traditional risk management: the inability to detect risks before they crystallise into crises. The three RADAR-specific extensions each serve a distinct function that CORE© base calculations alone cannot provide.</p>
+        <br>
+         <p>The ensemble mean replaces the dangerous fiction of a single point estimate with an honest confidence interval. The coherence factor reveals when apparently independent risks are in fact synchronised — the difference between a risk register entry and a cascade-in-progress. Phase proximity provides the countdown that enables calibrated escalation rather than surprise crisis response.</p>
+        <br>
+         <p>The Phase Index is the most powerful single early warning metric identified in historical validation. Its consistent elevation 3–6 months before traditional indicators trigger alerts provides organisations with genuine decision time rather than post-event analysis. This is the bridge between detection and prevention.</p>
+        <br>
+         <p>Von Neumann Entropy provides a fundamentally new capability: measuring the coherence and quality of the risk picture itself. This answers not just "how big is this risk?" but "how reliable is our information about this risk?" — a question that traditional frameworks cannot even formulate.</p>
+        <br>
+         <p>The seamless handoff criteria to FORGE© ensure that no risk falls into the gap between monitoring and action. RADAR© is not a standalone tool — it is the detection phase of a complete lifecycle framework, designed to flow into FORGE© as uncertainty resolves into clarity.</p>
+        <br>
+        <p>Used together with CORE© (Part 1) and FORGE© (Part 3), RADAR© provides the probabilistic intelligence layer that makes the difference between strategic anticipation and reactive crisis management.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     DOWNLOAD CTA — GREEN BAND
+════════════════════════════════════════ -->
+<section style="background:#006338;padding:7.2rem 2.4rem;position:relative;overflow:hidden;" aria-label="Download the paper">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 80% 50%,rgba(0,166,81,0.3) 0%,transparent 60%);pointer-events:none;"></div>
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:6.4rem;align-items:center;position:relative;z-index:2;" class="dl-grid">
+
+    <div>
+      <div class="section-rule" style="background:rgba(255,255,255,0.4);"></div>
+      <h2 class="display-lg" style="color:#fff;margin-bottom:1.6rem;">Read the Full RADAR© Paper</h2>
+      <p class="body-lg" style="color:rgba(255,255,255,0.78);margin-bottom:3.2rem;">
+        Download the complete white paper to explore the full methodology, case examples, and implications of the RADAR© Framework for enterprise risk management.
+      </p>
+      <a href="Papers/White_Paper_RADAR_Framework.pdf" download="White_Paper_RADAR_Framework.pdf" class="btn-green" style="background:#00A651;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download White Paper
+      </a>
+    </div>
+
+    <div>
+      <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:2.4rem;">
+        <p class="label" style="color:rgba(255,255,255,0.6);margin-bottom:0.8rem;">White Paper</p>
+        <p style="font-size:1.4rem;color:#fff;font-weight:500;margin-bottom:0.4rem;">RADAR© Framework</p>
+        <p style="font-size:1.2rem;color:rgba(255,255,255,0.55);">White_Paper_RADAR_Framework.pdf</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     RELATED PAPERS
+════════════════════════════════════════ -->
+<section style="padding:7.2rem 2.4rem;background:#fff;" aria-label="Related papers">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="margin-bottom:3.6rem;">
+      <div class="section-rule"></div>
+      <h2 class="display-md" style="color:#1A1A1A;">Related Framework Papers</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:2.4rem;" class="related-grid">
+      <a href="paper-core.html" style="text-decoration:none;" class="card-hover">
+        <div style="background:#1A1A1A;padding:3.2rem;border-bottom:3px solid #00A651;">
+          <p class="label" style="color:#00A651;margin-bottom:1rem;">Risk Management</p>
+          <h3 style="font-size:2rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:1.2rem;">CORE©: A Better Way for Decision Making Under Risk</h3>
+          <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);margin-bottom:2rem;">Beyond the traditional: embedding velocity and acceleration into the risk calculation.</p>
+          <span class="arrow-link" style="color:#00A651;">Read Paper <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </a>
+      <a href="paper-forge.html" style="text-decoration:none;" class="card-hover">
+        <div style="background:#1A1A1A;padding:3.2rem;border-bottom:3px solid #00A651;">
+          <p class="label" style="color:#00A651;margin-bottom:1rem;">Strategic Risk Management</p>
+          <h3 style="font-size:2rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:1.2rem;">FORGE©: Decision Windows &amp; Urgency Calculation</h3>
+          <p style="font-size:1.3rem;color:rgba(255,255,255,0.55);margin-bottom:2rem;">Decision windows: calculating when is the right time to act.</p>
+          <span class="arrow-link" style="color:#00A651;">Read Paper <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer style="background:#1A1A1A;padding:6.4rem 2.4rem 3.2rem;" aria-label="Site footer">
+  <div style="max-width:1280px;margin:0 auto;">
+
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4.8rem;padding-bottom:4.8rem;border-bottom:1px solid rgba(255,255,255,0.1);" class="footer-grid">
+      <div>
+        <img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:4.8rem;width:auto;margin-bottom:2rem;filter:brightness(0) invert(1);" />
+        <p style="font-size:1.4rem;color:rgba(255,255,255,0.45);line-height:1.65;max-width:28rem;">Risk management consulting, education, and research — serving risk professionals and organisations globally.</p>
+      </div>
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Services</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="index.html#services" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Risk Assessment</a></li>
+          <li><a href="index.html#services" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Training &amp; Education</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Research</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="paper-core.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">CORE© Framework</a></li>
+          <li><a href="paper-radar.html" style="font-size:1.3rem;color:#00A651;text-decoration:none;">RADAR© Framework</a></li>
+          <li><a href="paper-forge.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">FORGE© Framework</a></li>
+          <li><a href="publications.html#blog" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">CORE© Insight Series (Blog)</a></li>
+          <li><a href="publications.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">All Publications</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Company</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="about.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">About AMC</a></li>
+          <li><a href="index.html#contact" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="padding-top:2.8rem;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1.6rem;">
+      <p style="font-size:1.2rem;color:rgba(255,255,255,0.3);">© 2026 AMC — Adrian Clements. All rights reserved.</p>
+      <p style="font-size:1.2rem;color:rgba(255,255,255,0.2);max-width:60rem;text-align:right;">AMC provides risk management consulting and education services. All views are those of Adrian Clements and do not constitute regulated financial advice.</p>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  document.getElementById('site-header').style.boxShadow =
+    window.scrollY > 8 ? '0 2px 20px rgba(0,0,0,0.1)' : 'none';
+}, { passive: true });
+
+document.getElementById('burger').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('open');
+});
+
+function applyResponsive() {
+  const w = window.innerWidth;
+  document.querySelectorAll('.paper-two-col').forEach(el => {
+    el.style.gridTemplateColumns = w < 960 ? '1fr' : '1fr 2fr';
+  });
+  const themesGrid = document.querySelector('.themes-grid');
+  if (themesGrid) themesGrid.style.gridTemplateColumns = w < 640 ? '1fr' : w < 900 ? '1fr 1fr' : 'repeat(3,1fr)';
+  const relatedGrid = document.querySelector('.related-grid');
+  if (relatedGrid) relatedGrid.style.gridTemplateColumns = w < 768 ? '1fr' : '1fr 1fr';
+  const dlGrid = document.querySelector('.dl-grid');
+  if (dlGrid) dlGrid.style.gridTemplateColumns = w < 900 ? '1fr' : '1.2fr 1fr';
+  const footerGrid = document.querySelector('.footer-grid');
+  if (footerGrid) footerGrid.style.gridTemplateColumns = w < 640 ? '1fr' : w < 900 ? '1fr 1fr' : '2fr 1fr 1fr 1fr';
+}
+applyResponsive();
+window.addEventListener('resize', applyResponsive, { passive: true });
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('section, footer').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.55s cubic-bezier(.4,0,.2,1), transform 0.55s cubic-bezier(.4,0,.2,1)';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>
