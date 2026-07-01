@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CORE App — AMC Adrian Clements</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'bcg-green': '#00A651',
+            'bcg-green-dark': '#006338',
+            'bcg-black': '#1A1A1A',
+            'bcg-grey': '#F4F4F4',
+            'bcg-mid': '#555555',
+          },
+          fontFamily: {
+            sans: ['"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 10px; scroll-behavior: smooth; }
+    body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 1.4rem; line-height: 1.5; color: #1A1A1A; background: #fff; overflow-x: hidden; }
+    .display-xl  { font-size: clamp(2.8rem, 4.5vw, 5.2rem); font-weight: 300; line-height: 1.08; letter-spacing: -0.02em; }
+    .display-lg  { font-size: clamp(2.2rem, 3vw, 3.6rem);   font-weight: 300; line-height: 1.1;  letter-spacing: -0.015em; }
+    .display-md  { font-size: clamp(1.8rem, 2.2vw, 2.6rem); font-weight: 400; line-height: 1.2; }
+    .body-lg     { font-size: 1.6rem; line-height: 1.65; }
+    .label       { font-size: 1.1rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+    .nav-link { font-size: 1.3rem; font-weight: 500; color: #1A1A1A; text-decoration: none; padding: 0.4rem 0; position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #00A651; transition: width 0.22s cubic-bezier(.4,0,.2,1); }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link:hover { color: #006338; }
+    .btn-green { display: inline-flex; align-items: center; gap: 0.6rem; background: #00A651; color: #fff; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 1rem 2.2rem; border: none; cursor: pointer; transition: background 0.18s ease, transform 0.14s ease; text-decoration: none; }
+    .btn-green:hover { background: #006338; transform: translateY(-1px); }
+    .btn-outline-green { display: inline-flex; align-items: center; gap: 0.6rem; background: transparent; color: #00A651; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 1rem 2.2rem; border: 2px solid #00A651; cursor: pointer; transition: background 0.18s ease, color 0.18s ease, transform 0.14s ease; text-decoration: none; }
+    .btn-outline-green:hover { background: #00A651; color: #fff; transform: translateY(-1px); }
+    .section-rule { width: 4rem; height: 3px; background: #00A651; margin-bottom: 1.6rem; }
+    .hero-wave { position: absolute; inset: 0; overflow: hidden; }
+    .hero-wave svg { position: absolute; left: 0; width: 100%; height: 100%; }
+    .hero-wave .shape-1 { fill: rgba(0,166,81,0.18); top: 20%; }
+    .hero-wave .shape-2 { fill: rgba(0,99,56,0.24); top: 45%; }
+    .hero-wave .shape-3 { fill: rgba(0,166,81,0.4); top: 65%; }
+    .feature-card { background: #fff; border: 1px solid #e8e8e8; padding: 2.6rem; border-radius: 1.2rem; box-shadow: 0 24px 60px rgba(0,0,0,0.06); }
+  </style>
+</head>
+<body>
+<header id="site-header" style="position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #e8e8e8;transition:box-shadow 0.2s ease;">
+  <nav style="max-width:1280px;margin:0 auto;padding:1.8rem 2.4rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;">
+    <a href="index.html" aria-label="AMC Home"><img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:7.2rem;width:auto;" /></a>
+    <div style="display:flex;align-items:center;gap:2.4rem;flex-wrap:wrap;">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="core.html" class="nav-link">CORE App</a>
+      <a href="neptune1.html" class="nav-link">Neptune1</a>
+      <a href="about.html" class="nav-link">About</a>
+    </div>
+  </nav>
+</header>
+<section style="position:relative;overflow:hidden;background:linear-gradient(135deg,#006338 0%,#00A651 100%);color:#fff;min-height:70vh;display:flex;align-items:center;">
+  <div class="hero-wave" aria-hidden="true">
+    <svg class="shape-1" viewBox="0 0 1440 320" preserveAspectRatio="none"><path d="M0,160 C360,220 1080,100 1440,160 L1440,320 L0,320 Z"></path></svg>
+    <svg class="shape-2" viewBox="0 0 1440 320" preserveAspectRatio="none"><path d="M0,220 C360,160 1080,240 1440,200 L1440,320 L0,320 Z"></path></svg>
+    <svg class="shape-3" viewBox="0 0 1440 320" preserveAspectRatio="none"><path d="M0,260 C360,300 1080,180 1440,220 L1440,320 L0,320 Z"></path></svg>
+  </div>
+  <div style="position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:7rem 2.4rem;display:grid;grid-template-columns:1fr 0.9fr;gap:4rem;align-items:center;">
+    <div>
+      <p class="label" style="color:rgba(255,255,255,0.8);">Decision Intelligence</p>
+      <h1 class="display-xl" style="max-width:56rem;margin-bottom:2rem;">CORE App — The Intelligent Risk Decision Engine</h1>
+      <p class="body-lg" style="color:rgba(255,255,255,0.85);max-width:44rem;margin-bottom:3rem;">
+        A modern application for quantitative decision-making. CORE brings together velocity, acceleration, causal proximity and opportunity into a single, auditable risk platform.
+      </p>
+      <div style="display:flex;flex-wrap:wrap;gap:1.2rem;">
+        <a href="paper-core.html" class="btn-green">Read the CORE White Paper</a>
+        <a href="index.html#insights" class="btn-outline-green">Explore CORE Insights</a>
+      </div>
+    </div>
+    <div style="display:grid;gap:1.2rem;">
+      <div class="feature-card">
+        <p class="label" style="color:#006338;">Dynamic prioritisation</p>
+        <h2 class="display-md" style="color:#1A1A1A;margin-top:1rem;">RiskTime charts urgency, not just severity.</h2>
+      </div>
+      <div class="feature-card">
+        <p class="label" style="color:#006338;">Dual-axis intelligence</p>
+        <h2 class="display-md" style="color:#1A1A1A;margin-top:1rem;">Opportunity and threat on the same decision frame.</h2>
+      </div>
+    </div>
+  </div>
+</section>
+<section style="padding:7rem 2.4rem;background:#fff;">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:3rem;margin-bottom:4rem;">
+      <div style="max-width:56rem;">
+        <div class="section-rule"></div>
+        <h2 class="display-lg" style="color:#1A1A1A;">Why CORE App?</h2>
+      </div>
+      <p class="body-lg" style="color:#555;max-width:44rem;">CORE App is designed for executives and risk teams who need a practical, modern framework to make better decisions in fast-moving, uncertain environments.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;">
+      <div style="background:#F4F4F4;padding:2.8rem;border-radius:1rem;">
+        <p class="label" style="color:#006338;margin-bottom:1rem;">Signal over noise</p>
+        <p style="color:#555;line-height:1.75;">Move beyond static heat maps and watch risk trajectories in real time.</p>
+      </div>
+      <div style="background:#F4F4F4;padding:2.8rem;border-radius:1rem;">
+        <p class="label" style="color:#006338;margin-bottom:1rem;">Causal clarity</p>
+        <p style="color:#555;line-height:1.75;">CCORD reveals the decision window and causal boundary for each material risk.</p>
+      </div>
+      <div style="background:#F4F4F4;padding:2.8rem;border-radius:1rem;">
+        <p class="label" style="color:#006338;margin-bottom:1rem;">Integrated governance</p>
+        <p style="color:#555;line-height:1.75;">Designed to augment existing frameworks, not to replace them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section style="padding:6rem 2.4rem;background:#F4F4F4;">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;">
+    <div>
+      <div class="section-rule"></div>
+      <h2 class="display-lg" style="color:#1A1A1A;">CORE App is built for rapid adoption</h2>
+      <p class="body-lg" style="color:#555;margin-top:1.6rem;">The platform is anchored in a practical decision process: identify the top risks, quantify their momentum, map them on the causal frame, and use the results to direct resources where they will make the most difference.</p>
+    </div>
+    <div style="display:grid;gap:1.6rem;">
+      <div style="background:#fff;padding:2.4rem;border-radius:1rem;">
+        <p class="label" style="color:#006338;margin-bottom:1rem;">Built for executives</p>
+        <p style="color:#555;line-height:1.7;">Makes risk decisions auditable, directional, and board-ready.</p>
+      </div>
+      <div style="background:#fff;padding:2.4rem;border-radius:1rem;">
+        <p class="label" style="color:#006338;margin-bottom:1rem;">Designed for teams</p>
+        <p style="color:#555;line-height:1.7;">Supports risk, finance, operations and sustainability with a single shared view.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<footer style="background:#1A1A1A;color:#fff;padding:4rem 2.4rem;">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:2rem;">
+    <p style="font-size:1.3rem;line-height:1.8;max-width:54rem;">CORE App is the entry point for the AMC risk platform family. The app is supported by the CORE white paper and by AMC’s broader research program.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;">
+      <a href="index.html" class="btn-outline-green">Back to AMC Home</a>
+      <a href="paper-core.html" class="btn-green">Read the CORE White Paper</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

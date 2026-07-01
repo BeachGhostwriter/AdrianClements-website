@@ -1,368 +1,885 @@
-<<<<<<< HEAD
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Adrian Clements | Strategic Risk, Learning and Advisory</title>
-    <meta name="description" content="Adrian Clements' professional website with core documents, insights and protected software applications." />
-    <style>
-      :root {
-        --green-900: #163b26;
-        --green-700: #2f6b3d;
-        --green-500: #4d8c5a;
-        --green-200: #e7f3ea;
-        --text: #223127;
-        --muted: #5d6d5f;
-        --border: #d6e6da;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AMC ÔÇö Risk Management and Performance Enhancement Consulting | Adrian Clements</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'bcg-green':     '#00A651',
+            'bcg-green-dark':'#006338',
+            'bcg-black':     '#1A1A1A',
+            'bcg-grey':      '#F4F4F4',
+            'bcg-mid':       '#555555',
+          },
+          fontFamily: {
+            sans: ['"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+          },
+        }
       }
-      * { box-sizing: border-box; }
-      body {
-        margin: 0;
-        font-family: "Segoe UI", Arial, sans-serif;
-        color: var(--text);
-        background: #f8fbf8;
-        line-height: 1.6;
-      }
-      a { color: inherit; text-decoration: none; }
-      header {
-        background: linear-gradient(135deg, var(--green-900), var(--green-700));
-        color: white;
-        padding: 22px 0 64px;
-      }
-      nav {
-        max-width: 1120px;
-        margin: 0 auto;
-        padding: 0 24px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 14px;
-        flex-wrap: wrap;
-      }
-      .brand { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.04em; }
-      .nav-links { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
-      .nav-item { position: relative; }
-      .nav-item:hover .nav-dropdown { display: block; }
-      .nav-dropdown {
-        display: none;
-        position: absolute;
-        top: calc(100% + 8px);
-        left: 0;
-        background: white;
-        color: var(--green-900);
-        min-width: 190px;
-        border-radius: 10px;
-        box-shadow: 0 10px 24px rgba(0,0,0,0.14);
-        overflow: hidden;
-        z-index: 10;
-      }
-      .nav-dropdown a { display: block; padding: 10px 12px; border-bottom: 1px solid #eef6ef; }
-      .nav-dropdown a:last-child { border-bottom: none; }
-      .nav-dropdown a:hover { background: var(--green-200); }
-      .hero {
-        max-width: 1120px;
-        margin: 32px auto 0;
-        padding: 0 24px;
-        display: grid;
-        grid-template-columns: 1.1fr 0.9fr;
-        gap: 24px;
-        align-items: center;
-      }
-      .hero h1 { font-size: clamp(2rem, 3.7vw, 3.1rem); margin: 0 0 12px; }
-      .hero p { color: rgba(255,255,255,0.92); max-width: 720px; }
-      .hero-card {
-        background: rgba(255,255,255,0.15);
-        border: 1px solid rgba(255,255,255,0.22);
-        border-radius: 16px;
-        padding: 20px;
-        backdrop-filter: blur(6px);
-      }
-      .hero-card h3 { margin-top: 0; margin-bottom: 8px; }
-      .hero-card ul { margin: 0; padding-left: 18px; }
-      main { max-width: 1120px; margin: 0 auto; padding: 40px 24px 64px; }
-      section { margin-top: 28px; }
-      .section-title { font-size: 1.35rem; margin: 0 0 12px; }
-      .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-      .card {
-        background: white;
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 18px;
-        box-shadow: 0 8px 24px rgba(11, 43, 77, 0.04);
-      }
-      .card h3 { margin-top: 0; margin-bottom: 8px; font-size: 1.05rem; }
-      .card p { color: var(--muted); margin: 0 0 8px; }
-      .pill {
-        display: inline-block;
-        margin: 6px 6px 0 0;
-        padding: 4px 9px;
-        border-radius: 999px;
-        background: var(--green-200);
-        color: var(--green-700);
-        font-size: 0.85rem;
-      }
-      .doc-list { display: grid; gap: 10px; }
-      .doc-link {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 10px 12px;
-        background: #fcfefc;
-      }
-      footer {
-        background: var(--green-900);
-        color: rgba(255,255,255,0.85);
-        padding: 24px;
-        text-align: center;
-      }
-      @media (max-width: 900px) {
-        .hero, .grid { grid-template-columns: 1fr; }
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <nav>
-        <div class="brand">Adrian Clements | Strategic Risk and Advisory</div>
-        <div class="nav-links">
-          <a href="#home">Home</a>
-          <a href="#documents">Core Documents</a>
-          <a href="#blog">Blog</a>
-          <div class="nav-item">
-            <a href="#">Software / Applications ▾</a>
-            <div class="nav-dropdown">
-              <a href="neptune1/index.html">Neptune 1</a>
-              <a href="core/index.html">Core</a>
-            </div>
-          </div>
-        </div>
-      </nav>
-      <div class="hero" id="home">
-        <div>
-          <h1>Helping organisations navigate risk, performance and change</h1>
-          <p>This site brings together core documents, practical insights and protected application access in a green-toned professional layout.</p>
-        </div>
-        <div class="hero-card">
-          <h3>What you will find here</h3>
-          <ul>
-            <li>Core documents and reference material</li>
-            <li>Thought leadership and blog-style updates</li>
-            <li>Protected access to Neptune and Core applications</li>
-          </ul>
+    }
+  </script>
+  <style>
+    /* ÔöÇÔöÇ Reset ÔöÇÔöÇ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 10px; scroll-behavior: smooth; }
+    body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 1.4rem; line-height: 1.5; color: #1A1A1A; background: #fff; overflow-x: hidden; }
+
+    /* ÔöÇÔöÇ Typography ÔöÇÔöÇ */
+    .display-xl  { font-size: clamp(2.8rem, 4.5vw, 5.2rem); font-weight: 300; line-height: 1.08; letter-spacing: -0.02em; }
+    .display-lg  { font-size: clamp(2.2rem, 3vw, 3.6rem);   font-weight: 300; line-height: 1.1;  letter-spacing: -0.015em; }
+    .display-md  { font-size: clamp(1.8rem, 2.2vw, 2.6rem); font-weight: 400; line-height: 1.2; }
+    .body-lg     { font-size: 1.6rem; line-height: 1.65; }
+    .body-sm     { font-size: 1.3rem; line-height: 1.55; }
+    .label       { font-size: 1.1rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    /* ÔöÇÔöÇ Nav ÔöÇÔöÇ */
+    .nav-link {
+      font-size: 1.3rem; font-weight: 500; color: #1A1A1A;
+      text-decoration: none; padding: 0.4rem 0;
+      position: relative;
+    }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+      background: #00A651;
+      transition: width 0.22s cubic-bezier(.4,0,.2,1);
+    }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link:hover { color: #006338; }
+
+    /* ÔöÇÔöÇ Buttons ÔöÇÔöÇ */
+    .btn-green {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: #00A651; color: #fff;
+      font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 1rem 2.2rem; border: none; cursor: pointer;
+      transition: background 0.18s ease, transform 0.14s ease;
+      text-decoration: none;
+    }
+    .btn-green:hover  { background: #006338; transform: translateY(-1px); }
+    .btn-green:active { background: #004d28; transform: translateY(0); }
+    .btn-green:focus-visible { outline: 2px solid #00A651; outline-offset: 3px; }
+
+    .btn-outline-green {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: transparent; color: #00A651;
+      font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.9rem 2.2rem; border: 2px solid #00A651; cursor: pointer;
+      transition: background 0.18s ease, color 0.18s ease, transform 0.14s ease;
+      text-decoration: none;
+    }
+    .btn-outline-green:hover  { background: #00A651; color: #fff; transform: translateY(-1px); }
+    .btn-outline-green:active { transform: translateY(0); }
+    .btn-outline-green:focus-visible { outline: 2px solid #00A651; outline-offset: 3px; }
+
+    .btn-outline-white {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: transparent; color: #fff;
+      font-size: 1.3rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.9rem 2.2rem; border: 2px solid #fff; cursor: pointer;
+      transition: background 0.18s ease, color 0.18s ease, transform 0.14s ease;
+      text-decoration: none;
+    }
+    .btn-outline-white:hover  { background: #fff; color: #1A1A1A; transform: translateY(-1px); }
+    .btn-outline-white:active { transform: translateY(0); }
+    .btn-outline-white:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+    /* ÔöÇÔöÇ Arrow link ÔöÇÔöÇ */
+    .arrow-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 1.3rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      color: #00A651; text-decoration: none;
+      transition: gap 0.18s ease, color 0.14s ease;
+    }
+    .arrow-link:hover { gap: 1rem; color: #006338; }
+    .arrow-link:focus-visible { outline: 2px solid #00A651; outline-offset: 2px; }
+    .arrow-link-white { color: #fff; }
+    .arrow-link-white:hover { color: #e0e0e0; }
+
+    /* ÔöÇÔöÇ Card hover ÔöÇÔöÇ */
+    .card-hover {
+      transition: transform 0.22s cubic-bezier(.4,0,.2,1),
+                  box-shadow 0.22s cubic-bezier(.4,0,.2,1);
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,166,81,0.08);
+    }
+
+    /* ÔöÇÔöÇ Image overlay ÔöÇÔöÇ */
+    .img-overlay { position: relative; overflow: hidden; }
+    .img-overlay img { width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.4s cubic-bezier(.4,0,.2,1); }
+    .img-overlay:hover img { transform: scale(1.04); }
+    .img-overlay .overlay-grad {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
+    }
+
+    /* ÔöÇÔöÇ Section divider ÔöÇÔöÇ */
+    .section-rule { width: 4rem; height: 3px; background: #00A651; margin-bottom: 1.6rem; }
+
+    /* ÔöÇÔöÇ Stats counter ÔöÇÔöÇ */
+    .stat-num { font-size: clamp(3.2rem, 5vw, 5.6rem); font-weight: 200; line-height: 1; letter-spacing: -0.03em; }
+
+    /* ÔöÇÔöÇ Accordion ÔöÇÔöÇ */
+    .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(.4,0,.2,1); }
+    .accordion-body.open { max-height: 400px; }
+    .accordion-icon { transition: transform 0.25s ease; display: inline-block; }
+    .accordion-icon.open { transform: rotate(45deg); }
+
+    /* ÔöÇÔöÇ Scrollbar ÔöÇÔöÇ */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f0f0f0; }
+    ::-webkit-scrollbar-thumb { background: #00A651; border-radius: 3px; }
+
+    /* ÔöÇÔöÇ Mobile nav ÔöÇÔöÇ */
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+
+    /* ÔöÇÔöÇ Nav Dropdown ÔöÇÔöÇ */
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-menu {
+      position: absolute; top: calc(100% + 1rem); left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      background: #fff; border: 1px solid #e8e8e8;
+      min-width: 24rem; padding: 0.6rem 0;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
+      z-index: 200;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown:focus-within .nav-dropdown-menu {
+      opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
+      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s;
+    }
+    .dropdown-item {
+      display: flex; align-items: center; padding: 1rem 2rem;
+      font-size: 1.3rem; font-weight: 500; color: #1A1A1A;
+      text-decoration: none; border-left: 3px solid transparent;
+      transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease;
+    }
+    .dropdown-item:hover { background: #f8f8f8; color: #00A651; border-left-color: #00A651; }
+    .dropdown-divider { height: 1px; background: #f0f0f0; margin: 0.4rem 0; }
+    .nav-dropdown-btn {
+      font-size: 1.3rem; font-weight: 500; color: #1A1A1A;
+      background: none; border: none; cursor: pointer; font-family: inherit;
+      padding: 0.4rem 0; display: inline-flex; align-items: center; gap: 0.4rem;
+      position: relative;
+    }
+    .nav-dropdown-btn::after {
+      content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+      background: #00A651; transition: width 0.22s cubic-bezier(.4,0,.2,1);
+    }
+    .nav-dropdown:hover .nav-dropdown-btn::after { width: 100%; }
+    .nav-dropdown:hover .nav-dropdown-btn { color: #006338; }
+    .nav-dropdown-chevron { transition: transform 0.18s ease; }
+    .nav-dropdown:hover .nav-dropdown-chevron { transform: rotate(180deg); }
+  </style>
+</head>
+<body>
+
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+     NAVIGATION
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
+<header id="site-header" style="position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #e8e8e8;transition:box-shadow 0.2s ease;">
+  <nav style="max-width:1280px;margin:0 auto;padding:1.8rem 2.4rem;min-height:9rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;">
+
+    <!-- Logo -->
+    <a href="#" style="flex-shrink:0;" aria-label="AMC Home">
+      <img src="brand_assets/AMC logo.png" alt="AMC ÔÇö Adrian Clements" style="height:8rem;width:auto;" />
+    </a>
+
+    <!-- Desktop nav links -->
+    <div style="display:flex;align-items:center;gap:2.8rem;">
+      <a href="#services"  class="nav-link">Services</a>
+      <a href="#insights"  class="nav-link">Research</a>
+      <a href="publications.html" class="nav-link">Publications</a>
+      <a href="core.html" class="nav-link">CORE App</a>
+      <a href="neptune1.html" class="nav-link">Neptune1</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          About
+          <svg class="nav-dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" role="menu">
+          <a href="about.html" class="dropdown-item">Adrian Clements</a>
+          <div class="dropdown-divider"></div>
+          <a href="publications.html#publications" class="dropdown-item">Articles &amp; Publications</a>
+          <a href="publications.html#speeches" class="dropdown-item">Speeches</a>
+          <a href="publications.html#quotations" class="dropdown-item">Quotations &amp; Interviews</a>
         </div>
       </div>
-    </header>
+      <a href="#expertise" class="nav-link">Expertise</a>
+      <a href="#contact"   class="nav-link">Contact</a>
+    </div>
 
-    <main>
-      <section id="documents">
-        <h2 class="section-title">Core Documents</h2>
-        <div class="grid">
-          <div class="card">
-            <h3>Strategic risk and advisory</h3>
-            <div class="doc-list">
-              <a class="doc-link" href="../2017-strategic-risk-waging-war-on-big-business.pdf" target="_blank" rel="noreferrer">Strategic Risk Report <span>PDF</span></a>
-              <a class="doc-link" href="../aig-stratrisk-report_manufacturing.pdf" target="_blank" rel="noreferrer">Manufacturing Risk Report <span>PDF</span></a>
-            </div>
-          </div>
-          <div class="card">
-            <h3>Operational and project management</h3>
-            <div class="doc-list">
-              <a class="doc-link" href="../AM Visual Management ARM -Mining.docx" target="_blank" rel="noreferrer">Visual Management - Mining <span>DOCX</span></a>
-              <a class="doc-link" href="../ARM process safety November 2012_ForApprova v1l.docx" target="_blank" rel="noreferrer">Process Safety Update <span>DOCX</span></a>
-            </div>
-          </div>
-          <div class="card">
-            <h3>Executive thinking</h3>
-            <p>These pages are intended to support a polished professional presence while preserving access to the broader document set you already assembled.</p>
-          </div>
-        </div>
-      </section>
+    <!-- CTA + burger -->
+    <div style="display:flex;align-items:center;gap:1.6rem;">
+      <a href="#contact" class="btn-green" style="padding:0.8rem 1.8rem;">
+        Speak to Adrian
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <!-- Burger (mobile) -->
+      <button id="burger" aria-label="Toggle menu" style="display:flex;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;">
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+        <span style="display:block;width:22px;height:2px;background:#1A1A1A;"></span>
+      </button>
+    </div>
+  </nav>
 
-      <section id="blog">
-        <h2 class="section-title">From the blog</h2>
-        <div class="grid">
-          <div class="card">
-            <h3>Risk as a business enabler</h3>
-            <p>Practical thinking on how leaders can use risk management to support growth, resilience and better decisions.</p>
-            <span class="pill">Strategy</span><span class="pill">Leadership</span>
-          </div>
-          <div class="card">
-            <h3>Designing control systems that work</h3>
-            <p>How process discipline, governance and communication can improve the reliability of major change initiatives.</p>
-            <span class="pill">Operations</span><span class="pill">Governance</span>
-          </div>
-          <div class="card">
-            <h3>Making value visible</h3>
-            <p>Why clear value stories are often the missing link between technical improvement and executive support.</p>
-            <span class="pill">Value</span><span class="pill">Communication</span>
-          </div>
-        </div>
-      </section>
-    </main>
+  <!-- Mobile menu -->
+  <div id="mobile-menu" style="background:#fff;border-top:1px solid #e8e8e8;padding:2rem 2.4rem;flex-direction:column;gap:1.6rem;">
+    <a href="#services"  class="nav-link" style="font-size:1.6rem;">Services</a>
+    <a href="#insights"  class="nav-link" style="font-size:1.6rem;">Research</a>
+    <a href="publications.html" class="nav-link" style="font-size:1.6rem;">Publications</a>
+    <a href="core.html" class="nav-link" style="font-size:1.6rem;">CORE App</a>
+    <a href="neptune1.html" class="nav-link" style="font-size:1.6rem;">Neptune1</a>
+    <a href="about.html" class="nav-link" style="font-size:1.6rem;">About ÔÇö Adrian Clements</a>
+    <a href="publications.html#publications" class="nav-link" style="font-size:1.4rem;padding-left:1.6rem;color:#555;">Articles &amp; Publications</a>
+    <a href="publications.html#speeches" class="nav-link" style="font-size:1.4rem;padding-left:1.6rem;color:#555;">Speeches</a>
+    <a href="publications.html#quotations" class="nav-link" style="font-size:1.4rem;padding-left:1.6rem;color:#555;">Quotations &amp; Interviews</a>
+    <a href="#expertise" class="nav-link" style="font-size:1.6rem;">Expertise</a>
+    <a href="#contact"   class="nav-link" style="font-size:1.6rem;">Contact</a>
+  </div>
+</header>
 
-    <footer>
-      <div>Adrian Clements — strategic risk, learning and advisory</div>
-    </footer>
-  </body>
-</html>
-=======
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Neptune Water Intelligence | Adrian Clements</title>
-    <meta name="description" content="A WAVE-inspired industrial water treatment design experience built from the Neptune Streamlit application." />
-    <style>
-      :root { --navy:#0b2b4d; --blue:#1d71b8; --teal:#0d7a8b; --light:#f4f7fb; --text:#233445; --muted:#5f6f7f; --border:#dfe7f1; }
-      * { box-sizing:border-box; }
-      body { margin:0; font-family:Segoe UI, Arial, sans-serif; color:var(--text); background:#fff; line-height:1.6; }
-      a { color:inherit; text-decoration:none; }
-      header { background:linear-gradient(135deg,var(--navy),var(--blue)); color:white; padding:24px 0 72px; }
-      nav { max-width:1120px; margin:0 auto; padding:0 24px; display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
-      .brand { font-size:1.1rem; font-weight:700; letter-spacing:0.04em; }
-      .nav-links { display:flex; gap:18px; flex-wrap:wrap; color:rgba(255,255,255,0.9); align-items:center; }
-      .nav-item { position:relative; }
-      .nav-item:hover .nav-dropdown { display:block; }
-      .nav-dropdown { display:none; position:absolute; top:calc(100% + 8px); left:0; background:white; color:var(--navy); min-width:170px; border-radius:10px; box-shadow:0 10px 24px rgba(0,0,0,0.14); overflow:hidden; z-index:10; }
-      .nav-dropdown a { display:block; padding:10px 12px; border-bottom:1px solid #eef2f7; }
-      .nav-dropdown a:last-child { border-bottom:none; }
-      .nav-dropdown a:hover { background:#f4f7fb; }
-      .hero { max-width:1120px; margin:36px auto 0; padding:0 24px; display:grid; grid-template-columns:1.15fr 0.85fr; gap:28px; align-items:center; }
-      .hero h1 { font-size:clamp(2rem,3.8vw,3.2rem); margin:0 0 14px; }
-      .hero p { font-size:1.02rem; color:rgba(255,255,255,0.92); max-width:720px; }
-      .hero-actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:24px; }
-      .btn { display:inline-block; padding:12px 18px; border-radius:999px; font-weight:600; transition:transform 0.2s ease; }
-      .btn:hover { transform:translateY(-1px); }
-      .btn-primary { background:white; color:var(--navy); }
-      .btn-secondary { border:1px solid rgba(255,255,255,0.35); color:white; }
-      .hero-card { background:rgba(255,255,255,0.13); border:1px solid rgba(255,255,255,0.2); border-radius:16px; padding:20px; backdrop-filter:blur(8px); }
-      .hero-card h3 { margin-top:0; margin-bottom:10px; }
-      .hero-card ul { margin:0; padding-left:18px; }
-      main { max-width:1120px; margin:0 auto; padding:40px 24px 64px; }
-      section { margin-top:28px; }
-      .section-title { font-size:1.4rem; margin:0 0 12px; }
-      .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
-      .card { background:white; border:1px solid var(--border); border-radius:16px; padding:18px; box-shadow:0 8px 24px rgba(11,43,77,0.04); }
-      .card h3 { margin-top:0; margin-bottom:8px; font-size:1.05rem; }
-      .card p { margin:0; color:var(--muted); }
-      .split { display:grid; grid-template-columns:1.05fr 0.95fr; gap:18px; }
-      table { width:100%; border-collapse:collapse; }
-      th, td { padding:10px 12px; text-align:left; border-bottom:1px solid var(--border); vertical-align:top; }
-      th { background:var(--light); color:var(--navy); }
-      .highlight { padding:18px; border-radius:16px; background:linear-gradient(135deg,#f3f8ff,#eef8fa); border:1px solid var(--border); }
-      .steps { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; }
-      .step { background:var(--light); border-radius:14px; padding:14px; }
-      .step strong { display:block; margin-bottom:6px; }
-      .pill { display:inline-block; margin:4px 6px 0 0; padding:4px 9px; border-radius:999px; background:#e8f3ff; color:var(--blue); font-size:0.86rem; }
-      footer { background:#0c2036; color:rgba(255,255,255,0.82); padding:24px; text-align:center; }
-      @media (max-width:900px){ .hero,.split,.grid,.steps { grid-template-columns:1fr; } }
-    </style>
-  </head>
-  <body>
-    <header>
-      <nav>
-        <div class="brand">Adrian Clements | Water and Industrial Value Creation</div>
-        <div class="nav-links">
-          <div class="nav-item">
-            <a href="#">Software Application ▾</a>
-            <div class="nav-dropdown">
-              <a href="#neptune">Neptune</a>
-              <a href="#core">Core</a>
-            </div>
-          </div>
-          <a href="#platform">Platform</a>
-          <a href="#comparison">Comparison</a>
-          <a href="#roadmap">Roadmap</a>
-          <a href="#launch">Launch</a>
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+     HERO
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
+<section style="position:relative;background:#1A1A1A;overflow:hidden;min-height:72vh;display:flex;align-items:flex-end;" aria-label="Hero">
+
+  <!-- Background image layer -->
+  <div style="position:absolute;inset:0;">
+    <img src="Webpictures/Lighthouse1.JPG" alt="Risk lighthouse background" aria-hidden="true" style="width:100%;height:100%;object-fit:cover;display:block;" />
+    <!-- Dual gradient overlay -->
+    <div style="position:absolute;inset:0;background:linear-gradient(105deg, rgba(0,99,56,0.82) 0%, rgba(0,166,81,0.35) 50%, rgba(0,0,0,0.55) 100%);"></div>
+    <!-- Radial accent -->
+    <div style="position:absolute;top:-30%;right:-5%;width:60%;aspect-ratio:1;background:radial-gradient(circle,rgba(0,166,81,0.2) 0%,transparent 70%);pointer-events:none;"></div>
+  </div>
+
+  <!-- Content -->
+  <div style="position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:6rem 2.4rem 7rem;width:100%;display:grid;grid-template-columns:1fr auto;gap:4rem;align-items:flex-end;" class="hero-inner">
+    <div>
+      <p class="label" style="color:#00A651;margin-bottom:1.4rem;">Featured Research</p>
+      <h1 class="display-xl" style="color:#fff;max-width:68rem;margin-bottom:2.4rem;">
+        Navigating Through the Lighthouse Effect. Building Prosilience through Adaptability and Resilience.
+      </h1>
+      <p class="body-lg" style="color:rgba(255,255,255,0.82);max-width:52rem;margin-bottom:3.2rem;">
+        Expert risk management consulting, education, and research ÔÇö helping professionals and organisations identify, quantify, and govern risk with confidence.
+      </p>
+      <div style="display:flex;flex-wrap:wrap;gap:1.2rem;align-items:center;">
+        <a href="#insights" class="btn-green">Read More
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#services" class="btn-outline-white">Our Services</a>
+      </div>
+    </div>
+
+    <!-- Side preview cards -->
+    <div style="display:flex;flex-direction:column;gap:1rem;max-width:24rem;min-width:20rem;" class="hero-cards">
+      <a href="#insights" style="text-decoration:none;display:block;background:rgba(255,255,255,0.08);backdrop-filter:blur(8px);border-left:3px solid #00A651;padding:1.4rem 1.6rem;transition:background 0.18s;" class="card-hover" onmouseenter="this.style.background='rgba(255,255,255,0.14)'" onmouseleave="this.style.background='rgba(255,255,255,0.08)'">
+        <p class="label" style="color:#fff;margin-bottom:0.8rem;">CORE┬®; - A better way for Decision Making</p>
+        <p style="font-size:1.6rem;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.4;">Beyond the traditional: Embedding velocity and acceleration into the calculation. CORE┬®</p>
+      </a>
+      <a href="#insights" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);backdrop-filter:blur(8px);border-left:3px solid rgba(255,255,255,0.25);padding:1.4rem 1.6rem;transition:background 0.18s;" class="card-hover" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'">
+        <p class="label" style="color:#fff;margin-bottom:0.8rem;">Ambiguity:- What opportunities are coming?</p>
+        <p style="font-size:1.6rem;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.4;">Emerging risks: embracing risk ambiguity and capturing opportunity. RADAR┬®</p>
+      </a>
+      <a href="#insights" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);backdrop-filter:blur(8px);border-left:3px solid rgba(255,255,255,0.25);padding:1.4rem 1.6rem;transition:background 0.18s;" class="card-hover" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'">
+        <p class="label" style="color:#fff;margin-bottom:0.8rem;">When is the Right time?</p>
+        <p style="font-size:1.6rem;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.4;">Decision windows: Calculating urgency. FORGE┬®</p>
+      </a>
+    </div>
+  </div>
+
+  <!-- Slide indicators -->
+  <div style="position:absolute;bottom:2.4rem;left:2.4rem;display:flex;gap:0.8rem;z-index:10;">
+    <div style="width:2.4rem;height:3px;background:#00A651;"></div>
+    <div style="width:1.4rem;height:3px;background:rgba(255,255,255,0.3);"></div>
+    <div style="width:1.4rem;height:3px;background:rgba(255,255,255,0.3);"></div>
+  </div>
+</section>
+
+<section style="padding:5rem 2.4rem;background:#F4F4F4;">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:center;text-align:center;">
+    <div>
+      <p class="label" style="color:#006338;margin-bottom:1rem;">Select an Application</p>
+      <h2 class="display-md" style="color:#1A1A1A;max-width:48rem;margin:0 auto;">Choose the software platform you want to explore</h2>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;">
+      <a href="core.html" class="btn-green">CORE App</a>
+      <a href="neptune1.html" class="btn-outline-green">Neptune1</a>
+    </div>
+  </div>
+</section>
+
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+     SERVICES ÔÇö DARK
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
+<section id="services" style="background:#1A1A1A;padding:7.2rem 2.4rem;" aria-label="Services">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:3.2rem;margin-bottom:5.2rem;">
+      <div>
+        <div class="section-rule"></div>
+        <h2 class="display-lg" style="color:#fff;">How can we assist<br>you today?</h2>
+      </div>
+      <p class="body-lg" style="color:rgba(255,255,255,0.55);max-width:44rem;padding-top:0.8rem;">
+        Providing a unique blend of Risk management and Operational performance. An innovative, intuitive but practical management system serving and supporting your business needs of tomorrow in the framework of today.
+      </p>
+    </div>style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:3.2rem;margin-bottom:5.2rem;">
+      <div>
+        <div class="section-rule"></div>
+        <h2 class="display-lg" style="color:#fff;">We make it sustainable through bespoke;</h2>
+      </div>
+
+    <!-- 4-column service tiles -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.2rem;" class="services-grid">
+
+      <div style="background:#232323;padding:3.2rem 2.4rem;cursor:pointer;border-bottom:3px solid transparent;transition:border-color 0.2s,background 0.2s,transform 0.22s;" class="svc-tile card-hover">
+        <div style="width:4.8rem;height:4.8rem;background:#00A651;display:flex;align-items:center;justify-content:center;margin-bottom:2rem;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
         </div>
-      </nav>
-      <div class="hero">
-        <div>
-          <h1>WAVE-inspired software for industrial water treatment design</h1>
-          <p>The Neptune application already supports site assessment, treatment design, economics and value creation. This page adapts the DuPont WAVE approach into a professional product experience for the same capability.</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#launch">Explore the application</a>
-            <a class="btn btn-secondary" href="neptune-wave-conversion-plan.html">View conversion roadmap</a>
+        <h3 style="font-size:1.8rem;font-weight:500;color:#fff;margin-bottom:1.2rem;letter-spacing:-0.01em;">Coaching, Facilitation  &amp; Mentoring</h3>
+        <p style="font-size:1.3rem;color:rgba(255,255,255,0.5);line-height:1.65;margin-bottom:2.4rem;">for leadership team and directors on ESG, Sustainability, Resilience. Helping to identify the future, provide roadmaps and empower change.</p>
+        <a href="#" class="arrow-link arrow-link-white">Learn more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+
+      <div style="background:#232323;padding:3.2rem 2.4rem;cursor:pointer;border-bottom:3px solid transparent;transition:border-color 0.2s,background 0.2s,transform 0.22s;" class="svc-tile card-hover">
+        <div style="width:4.8rem;height:4.8rem;background:#00A651;display:flex;align-items:center;justify-content:center;margin-bottom:2rem;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <h3 style="font-size:1.8rem;font-weight:500;color:#fff;margin-bottom:1.2rem;letter-spacing:-0.01em;">Performance Enhancement  &amp; Operational Sustainability </h3>
+        <p style="font-size:1.3rem;color:rgba(255,255,255,0.5);line-height:1.65;margin-bottom:2.4rem;">through reducing EBITDA leakage, stabilising operations and capturing innovation we utilise known processes such as continuous improvement, LEAN and prioritised action plans.</p>
+        <a href="#" class="arrow-link arrow-link-white">Learn more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+
+      <div style="background:#232323;padding:3.2rem 2.4rem;cursor:pointer;border-bottom:3px solid transparent;transition:border-color 0.2s,background 0.2s,transform 0.22s;" class="svc-tile card-hover">
+        <div style="width:4.8rem;height:4.8rem;background:#00A651;display:flex;align-items:center;justify-content:center;margin-bottom:2rem;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <h3 style="font-size:1.8rem;font-weight:500;color:#fff;margin-bottom:1.2rem;letter-spacing:-0.01em;">Value Creation</h3>
+        <p style="font-size:1.3rem;color:rgba(255,255,255,0.5);line-height:1.65;margin-bottom:2.4rem;">utilising the tailor-made value plan initiative which sets stretched targets, monitors delivery, identifies lessons learnt and adapts behaviour to build on success.</p>
+        <a href="#" class="arrow-link arrow-link-white">Learn more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+
+      <div style="background:#232323;padding:3.2rem 2.4rem;cursor:pointer;border-bottom:3px solid transparent;transition:border-color 0.2s,background 0.2s,transform 0.22s;" class="svc-tile card-hover">
+        <div style="width:4.8rem;height:4.8rem;background:#00A651;display:flex;align-items:center;justify-content:center;margin-bottom:2rem;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <h3 style="font-size:1.8rem;font-weight:500;color:#fff;margin-bottom:1.2rem;letter-spacing:-0.01em;">Vision Setting </h3>
+        <p style="font-size:1.3rem;color:rgba(255,255,255,0.5);line-height:1.65;margin-bottom:2.4rem;">by using a lighthouse approach to help management identify weak signals, see opportunities, value actions and embed resilience.</p>
+        <a href="#" class="arrow-link arrow-link-white">Learn more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+     LATEST INSIGHTS
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
+<section id="insights" style="padding:8rem 2.4rem;background:#fff;" aria-label="Latest insights">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:2rem;margin-bottom:4.8rem;">
+      <div>
+        <div class="section-rule"></div>
+        <h2 class="display-lg" style="color:#1A1A1A;">Research &amp; Insights</h2>
+      </div>
+      <a href="publications.html" class="arrow-link">All research <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+
+    <!-- Insights grid: 1 large + 3 regular -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3.2rem;" class="insights-grid">
+
+      <!-- Large card spanning 2 cols -->
+      <div class="card-hover insight-featured" style="grid-column:1/3;display:flex;flex-direction:column;cursor:pointer;">
+        <div class="img-overlay" style="height:38rem;">
+          <img src="Webpictures/Trees.jpg" alt="Market outlook illustration" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.1) 55%,transparent 100%);"></div>
+          <div style="position:absolute;bottom:0;left:0;padding:3.2rem;z-index:2;">
+            <span class="label" style="color:#00A651;display:block;margin-bottom:1rem;">Risk Management</span>
+            <h3 class="display-md" style="color:#fff;max-width:52rem;">Beyond the traditional: Embedding velocity and acceleration into the calculation. CORE┬®</h3>
           </div>
         </div>
-        <div class="hero-card">
-          <h3>What the current app already does</h3>
-          <ul>
-            <li>Maps site context and regulatory limits</li>
-            <li>Models water balance and contaminants</li>
-            <li>Suggests treatment trains and checks compliance</li>
-            <li>Shows value creation, CapEx / OpEx and EBITDA impact</li>
-          </ul>
+        <div style="padding:2.4rem 0;">
+          <p class="body-lg" style="color:#555;margin-bottom:2rem;">Emerging risks: embracing risk ambiguity and capturing opportunity. RADAR┬®</p>
+          <a href="#" class="arrow-link">Read more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
       </div>
-    </header>
-    <main>
-      <section id="platform">
-        <h2 class="section-title">A platform for design, evaluation and decision support</h2>
-        <div class="grid">
-          <div class="card"><h3>Integrated workflow</h3><p>Instead of separate tools, the app links plant context, engineering design and economics into one flow.</p></div>
-          <div class="card"><h3>Scenario-based design</h3><p>Users can compare recycle targets, treatment options and cost cases to see the impact on water savings and sustainability.</p></div>
-          <div class="card"><h3>Business value lens</h3><p>The current app already shows EBITDA bridge, simple payback, savings and investment trade-offs.</p></div>
+
+      <!-- Card 2 -->
+      <div class="card-hover" style="display:flex;flex-direction:column;cursor:pointer;">
+        <div class="img-overlay" style="height:22rem;">
+          <img src="Webpictures/greenworld.png" alt="Sustainable risk illustration" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 60%);"></div>
         </div>
-      </section>
-      <section id="comparison">
-        <h2 class="section-title">How this compares with the DuPont WAVE approach</h2>
-        <div class="split">
-          <div class="card">
-            <h3>What the current Neptune app already contains</h3>
-            <table>
-              <thead><tr><th>Module</th><th>Purpose</th></tr></thead>
-              <tbody>
-                <tr><td>Country &amp; Region</td><td>Water stress, climate and regulatory limits</td></tr>
-                <tr><td>Company Data</td><td>Water balance, sources and contaminant inputs</td></tr>
-                <tr><td>Treatment Solutions</td><td>Treatment chain and compliance logic</td></tr>
-                <tr><td>Cost Estimation</td><td>Cost library and scenario economics</td></tr>
-                <tr><td>EBITDA Bridge</td><td>Value creation and financial logic</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="card">
-            <h3>How to make it feel more like WAVE</h3>
-            <p>DuPont WAVE is successful because it offers a guided, single-interface design experience with clear value propositions and strong product storytelling.</p>
-            <div>
-              <span class="pill">Guided wizard</span><span class="pill">One interface</span><span class="pill">Scenario comparison</span><span class="pill">Downloadable reports</span>
-            </div>
-          </div>
+        <div style="padding:2rem 0;flex:1;display:flex;flex-direction:column;">
+          <span class="label" style="color:#00A651;display:block;margin-bottom:0.8rem;">Enterprise Risk Management</span>
+          <h3 style="font-size:1.9rem;font-weight:500;line-height:1.25;color:#1A1A1A;margin-bottom:1.2rem;letter-spacing:-0.01em;flex:1;">Decision windows: calculating urgency. FORGE┬®</h3>
+          <a href="#" class="arrow-link">Read more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
-      </section>
-      <section id="roadmap">
-        <h2 class="section-title">Suggested WAVE-style conversion roadmap</h2>
-        <div class="steps">
-          <div class="step"><strong>1. Reframe the app</strong>Create a stronger product story around design, evaluation and optimization.</div>
-          <div class="step"><strong>2. Build a guided workflow</strong>Move from setup to water balance to treatment selection and economics in one journey.</div>
-          <div class="step"><strong>3. Add WAVE-like modules</strong>Introduce a technology library, design assistant and scenario comparison panel.</div>
-          <div class="step"><strong>4. Elevate reporting</strong>Provide downloadable reports and investment cases that look like commercial software output.</div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card-hover" style="display:flex;flex-direction:column;cursor:pointer;">
+        <div class="img-overlay" style="height:22rem;">
+          <img src="https://placehold.co/400x220/162a18/162a18" alt="Retirement planning" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 60%);"></div>
         </div>
-      </section>
-      <section id="launch">
-        <div class="highlight">
-          <h2 class="section-title">How this page can be used</h2>
-          <p>This landing page is designed as the public-facing entry point for a broader Neptune/WAVE-style offering. It can sit on your site as a product story, while the Streamlit application remains the underlying engine for analysis and modelling.</p>
+        <div style="padding:2rem 0;flex:1;display:flex;flex-direction:column;">
+          <span class="label" style="color:#00A651;display:block;margin-bottom:0.8rem;">Stress Testing</span>
+          <h3 style="font-size:1.9rem;font-weight:500;line-height:1.25;color:#1A1A1A;margin-bottom:1.2rem;letter-spacing:-0.01em;flex:1;">Stress Testing Beyond Compliance: Turning Regulatory Burden into Strategic Insight</h3>
+          <a href="#" class="arrow-link">Read more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
-      </section>
-      <section id="neptune">
-        <div class="card">
-          <h2 class="section-title">Neptune</h2>
-          <p>The Neptune application is the current industrial water design and decision-support platform, focused on site context, treatment selection, compliance and economics.</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="card-hover" style="display:flex;flex-direction:column;cursor:pointer;">
+        <div class="img-overlay" style="height:22rem;">
+          <img src="https://placehold.co/400x220/0a1f14/0a1f14" alt="AI in investing" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 60%);"></div>
         </div>
-      </section>
-      <section id="core">
-        <div class="card">
-          <h2 class="section-title">Core</h2>
-          <p>The Core application will be the broader platform layer for future industrial software modules, shared data models and expanded decision workflows.</p>
+        <div style="padding:2rem 0;flex:1;display:flex;flex-direction:column;">
+          <span class="label" style="color:#00A651;display:block;margin-bottom:0.8rem;">Career Development</span>
+          <h3 style="font-size:1.9rem;font-weight:500;line-height:1.25;color:#1A1A1A;margin-bottom:1.2rem;letter-spacing:-0.01em;flex:1;">FRM vs PRM vs CFA: Choosing the Right Risk Certification for Your Career</h3>
+          <a href="#" class="arrow-link">Read more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
-      </section>
-    </main>
-    <footer>Neptune Water Intelligence Platform — adapted for Adrian Clements' professional website.</footer>
-  </body>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+     STATS ÔÇö GREEN BAND
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
+<section style="background:#00A651;padding:7rem 2.4rem;position:relative;overflow:hidden;" aria-label="Key statistics">
+  <div style="position:absolute;top:-40%;left:-10%;width:70%;aspect-ratio:1;background:radial-gradient(circle,rgba(255,255,255,0.12) 0%,transparent 70%);pointer-events:none;"></div>
+  <div style="position:absolute;bottom:-40%;right:-10%;width:60%;aspect-ratio:1;background:radial-gradient(circle,rgba(0,99,56,0.5) 0%,transparent 70%);pointer-events:none;"></div>
+
+  <div style="max-width:1280px;margin:0 auto;position:relative;z-index:2;">
+    <div style="text-align:center;margin-bottom:5.6rem;">
+      <h2 class="display-lg" style="color:#fff;">Risk Expertise That Speaks</h2>
+      <p class="body-lg" style="color:rgba(255,255,255,0.78);margin-top:1.2rem;">Built on deep practitioner experience, rigorous methodology, and a commitment to building genuine risk capability.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4rem;text-align:center;" class="stats-grid">
+      <div>
+        <div class="stat-num" style="color:#fff;">20+</div>
+        <div style="width:3rem;height:2px;background:rgba(255,255,255,0.4);margin:1.2rem auto;"></div>
+        <p style="font-size:1.4rem;color:rgba(255,255,255,0.78);">Years of practitioner risk management experience</p>
+      </div>
+      <div>
+        <div class="stat-num" style="color:#fff;">500+</div>
+        <div style="width:3rem;height:2px;background:rgba(255,255,255,0.4);margin:1.2rem auto;"></div>
+        <p style="font-size:1.4rem;color:rgba(255,255,255,0.78);">Risk professionals trained across the globe</p>
+      </div>
+      <div>
+        <div class="stat-num" style="color:#fff;">40+</div>
+        <div style="width:3rem;height:2px;background:rgba(255,255,255,0.4);margin:1.2rem auto;"></div>
+        <p style="font-size:1.4rem;color:rgba(255,255,255,0.78);">Organisations supported across banking, insurance, and asset management</p>
+      </div>
+      <div>
+        <div class="stat-num" style="color:#fff;">15+</div>
+        <div style="width:3rem;height:2px;background:rgba(255,255,255,0.4);margin:1.2rem auto;"></div>
+        <p style="font-size:1.4rem;color:rgba(255,255,255,0.78);">Published research papers and industry articles</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+     ABOUT ÔÇö SPLIT PANEL
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
+<section id="about" style="overflow:hidden;" aria-label="About Adrian Clements">
+  <div style="display:grid;grid-template-columns:1fr 1fr;min-height:52rem;" class="about-grid">
+    <!-- Image side -->
+    <div style="position:relative;overflow:hidden;min-height:42rem;">
+      <img src="Webpictures/Boat.jpg" alt="Adrian Clements profile" style="width:100%;height:100%;object-fit:cover;display:block;" />
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,99,56,0.45) 0%,rgba(0,0,0,0.35) 100%);"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,transparent 60%);"></div>
+    </div>
+    <!-- Text side -->
+    <div style="background:#1A1A1A;padding:6.4rem 5.6rem;display:flex;flex-direction:column;justify-content:center;">
+      <div class="section-rule"></div>
+      <p class="label" style="color:#00A651;margin-bottom:1.6rem;">About AMC</p>
+      <h2 class="display-lg" style="color:#fff;margin-bottom:2.4rem;">Practitioner-Led Risk Intelligence for the Modern Risk Professional</h2>
+      <p class="body-lg" style="color:rgba(255,255,255,0.7);margin-bottom:1.6rem;">
+        Adrian Clements founded AMConsulting to bridge the gap between theoretical risk frameworks and the practical realities of managing risk in complex, fast-moving organisations.
+      </p>
+      <p style="font-size:1.4rem;color:rgba(255,255,255,0.5);line-height:1.65;margin-bottom:3.2rem;">
+        With over two decades of hands-on experience across banking, asset management, and insurance, Adrian combines deep quantitative expertise with pragmatic governance insight. AMC serves both seasoned risk managers seeking advanced perspectives and professionals new to the field who need a structured foundation.
+      </p>
+      <a href="#contact" class="btn-green" style="align-self:flex-start;">
+        Work with Adrian
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+     EXPERTISE ÔÇö ACCORDION
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
+<section id="expertise" style="padding:8rem 2.4rem;background:#F4F4F4;" aria-label="Areas of expertise">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1.4fr;gap:6.4rem;align-items:start;" class="expertise-grid">
+    <div style="position:sticky;top:10rem;">
+      <div class="section-rule"></div>
+      <h2 class="display-lg" style="color:#1A1A1A;margin-bottom:2.4rem;">Areas of Deep Risk Expertise</h2>
+      <p class="body-lg" style="color:#555;margin-bottom:3.2rem;">Two decades of specialisation spanning quantitative risk, governance, regulation, and professional development.</p>
+      <a href="#contact" class="btn-green">
+        Schedule a Consultation
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+
+    <div style="display:flex;flex-direction:column;">
+      <div style="border-top:1px solid #ddd;">
+        <button class="acc-trigger" style="width:100%;display:flex;justify-content:space-between;align-items:center;padding:2.4rem 0;background:none;border:none;cursor:pointer;text-align:left;" aria-expanded="false">
+          <span style="font-size:1.8rem;font-weight:500;color:#1A1A1A;letter-spacing:-0.01em;">Quantitative Risk Modelling</span>
+          <span class="accordion-icon" style="color:#00A651;font-size:2.4rem;flex-shrink:0;margin-left:1.6rem;">+</span>
+        </button>
+        <div class="accordion-body">
+          <p style="font-size:1.4rem;color:#555;line-height:1.65;padding-bottom:2.4rem;">Value at Risk (VaR), Expected Shortfall (ES), Monte Carlo simulation, factor models, and counterparty credit exposure measurement. Adrian works across both the mathematical foundations and practical implementation challenges that real-world risk teams face.</p>
+        </div>
+      </div>
+      <div style="border-top:1px solid #ddd;">
+        <button class="acc-trigger" style="width:100%;display:flex;justify-content:space-between;align-items:center;padding:2.4rem 0;background:none;border:none;cursor:pointer;text-align:left;" aria-expanded="false">
+          <span style="font-size:1.8rem;font-weight:500;color:#1A1A1A;letter-spacing:-0.01em;">Regulatory Capital &amp; Basel Frameworks</span>
+          <span class="accordion-icon" style="color:#00A651;font-size:2.4rem;flex-shrink:0;margin-left:1.6rem;">+</span>
+        </button>
+        <div class="accordion-body">
+          <p style="font-size:1.4rem;color:#555;line-height:1.65;padding-bottom:2.4rem;">Deep understanding of Basel III/IV, FRTB, CRD VI, Solvency II, and IFRS 9. AMC supports institutions navigating the transition to new capital regimes ÔÇö including FRTB IMA/SA implementation, ICAAP/ILAAP, and Pillar 2 capital add-ons.</p>
+        </div>
+      </div>
+      <div style="border-top:1px solid #ddd;">
+        <button class="acc-trigger" style="width:100%;display:flex;justify-content:space-between;align-items:center;padding:2.4rem 0;background:none;border:none;cursor:pointer;text-align:left;" aria-expanded="false">
+          <span style="font-size:1.8rem;font-weight:500;color:#1A1A1A;letter-spacing:-0.01em;">Operational &amp; Non-Financial Risk</span>
+          <span class="accordion-icon" style="color:#00A651;font-size:2.4rem;flex-shrink:0;margin-left:1.6rem;">+</span>
+        </button>
+        <div class="accordion-body">
+          <p style="font-size:1.4rem;color:#555;line-height:1.65;padding-bottom:2.4rem;">Operational risk capital modelling (AMA, BIA, SMA), RCSA design and facilitation, Key Risk Indicator frameworks, scenario analysis, and Business Continuity Planning ÔÇö covering cyber, conduct, third-party, and people risks.</p>
+        </div>
+      </div>
+      <div style="border-top:1px solid #ddd;">
+        <button class="acc-trigger" style="width:100%;display:flex;justify-content:space-between;align-items:center;padding:2.4rem 0;background:none;border:none;cursor:pointer;text-align:left;" aria-expanded="false">
+          <span style="font-size:1.8rem;font-weight:500;color:#1A1A1A;letter-spacing:-0.01em;">Climate &amp; ESG Risk</span>
+          <span class="accordion-icon" style="color:#00A651;font-size:2.4rem;flex-shrink:0;margin-left:1.6rem;">+</span>
+        </button>
+        <div class="accordion-body">
+          <p style="font-size:1.4rem;color:#555;line-height:1.65;padding-bottom:2.4rem;">Transition and physical risk assessment, TCFD and TNFD reporting frameworks, climate stress testing aligned to NGFS scenarios, and integration of ESG factors into credit and market risk models ÔÇö a rapidly evolving area where early investment pays dividends.</p>
+        </div>
+      </div>
+      <div style="border-top:1px solid #ddd;border-bottom:1px solid #ddd;">
+        <button class="acc-trigger" style="width:100%;display:flex;justify-content:space-between;align-items:center;padding:2.4rem 0;background:none;border:none;cursor:pointer;text-align:left;" aria-expanded="false">
+          <span style="font-size:1.8rem;font-weight:500;color:#1A1A1A;letter-spacing:-0.01em;">Risk Culture &amp; Behavioural Risk</span>
+          <span class="accordion-icon" style="color:#00A651;font-size:2.4rem;flex-shrink:0;margin-left:1.6rem;">+</span>
+        </button>
+        <div class="accordion-body">
+          <p style="font-size:1.4rem;color:#555;line-height:1.65;padding-bottom:2.4rem;">Frameworks, tone-from-the-top assessment, risk appetite articulation, and incentive structure review. The best models fail when the humans using them don't understand or respect the risk they are managing ÔÇö culture is the ultimate control.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+     CLIENT IMPACT ÔÇö DARK GREEN
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
+<section style="background:#006338;padding:7.2rem 2.4rem;position:relative;overflow:hidden;" aria-label="Client impact">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 80% 50%,rgba(0,166,81,0.3) 0%,transparent 60%);pointer-events:none;"></div>
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:6.4rem;align-items:center;position:relative;z-index:2;" class="impact-grid">
+    <div>
+      <div class="section-rule" style="background:rgba(255,255,255,0.4);"></div>
+      <p class="label" style="color:rgba(255,255,255,0.6);margin-bottom:1.2rem;">Client Impact Library</p>
+      <h2 class="display-lg" style="color:#fff;margin-bottom:2.4rem;">Our Client Impact Library</h2>
+      <p class="body-lg" style="color:rgba(255,255,255,0.72);margin-bottom:3.2rem;">
+        Real outcomes. Real clients. Browse our curated case studies showing how AMC's risk management consulting translates into concrete, measurable improvements in risk control and organisational resilience.
+      </p>
+      <a href="#" class="btn-outline-white">
+        Explore Cases
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;">
+      <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);padding:2.4rem;" class="card-hover">
+        <div style="font-size:3.2rem;font-weight:200;color:#fff;line-height:1;margin-bottom:0.8rem;">60%</div>
+        <p style="font-size:1.3rem;color:rgba(255,255,255,0.6);line-height:1.5;">Reduction in operational risk incidents at a Tier 1 bank post-RCSA redesign</p>
+      </div>
+      <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);padding:2.4rem;" class="card-hover">
+        <div style="font-size:3.2rem;font-weight:200;color:#fff;line-height:1;margin-bottom:0.8rem;">┬ú45M</div>
+        <p style="font-size:1.3rem;color:rgba(255,255,255,0.6);line-height:1.5;">In capital savings identified through FRTB SA model optimisation</p>
+      </div>
+      <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);padding:2.4rem;" class="card-hover">
+        <div style="font-size:3.2rem;font-weight:200;color:#fff;line-height:1;margin-bottom:0.8rem;">3├ù</div>
+        <p style="font-size:1.3rem;color:rgba(255,255,255,0.6);line-height:1.5;">Improvement in risk team capability scores after tailored training programme</p>
+      </div>
+      <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);padding:2.4rem;" class="card-hover">
+        <div style="font-size:3.2rem;font-weight:200;color:#fff;line-height:1;margin-bottom:0.8rem;">100%</div>
+        <p style="font-size:1.3rem;color:rgba(255,255,255,0.6);line-height:1.5;">Regulatory pass rate for stress test submissions supported by AMC</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+     CONTACT
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
+<section id="contact" style="padding:8rem 2.4rem;background:#fff;" aria-label="Contact">
+  <div style="max-width:720px;margin:0 auto;text-align:center;">
+    <div class="section-rule" style="margin-left:auto;margin-right:auto;"></div>
+    <h2 class="display-lg" style="color:#1A1A1A;margin-bottom:2rem;">Ready to Build Stronger<br>Risk Capability?</h2>
+    <p class="body-lg" style="color:#555;margin-bottom:4rem;">Book a confidential, no-obligation consultation. Whether you need a risk framework review, training for your team, or support with a regulatory challenge ÔÇö AMC can help.</p>
+
+    <div id="form-success" style="display:none;padding:2rem 2.4rem;background:#f0faf4;border-left:4px solid #00A651;">
+      <p style="font-size:1.5rem;font-weight:600;color:#006338;margin-bottom:0.4rem;">Message received ÔÇö thank you.</p>
+      <p style="font-size:1.4rem;color:#555;">Adrian will be in touch within one business day.</p>
+    </div>
+    <form id="contact-form" style="display:flex;flex-direction:column;gap:1.6rem;text-align:left;" onsubmit="handleContactSubmit(event)">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;" class="form-row">
+        <div>
+          <label style="font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#555;display:block;margin-bottom:0.6rem;">First Name</label>
+          <input type="text" placeholder="Jane" style="width:100%;padding:1.2rem 1.4rem;border:1px solid #ddd;font-size:1.4rem;outline:none;font-family:inherit;" onfocus="this.style.borderColor='#00A651'" onblur="this.style.borderColor='#ddd'" />
+        </div>
+        <div>
+          <label style="font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#555;display:block;margin-bottom:0.6rem;">Last Name</label>
+          <input type="text" placeholder="Smith" style="width:100%;padding:1.2rem 1.4rem;border:1px solid #ddd;font-size:1.4rem;outline:none;font-family:inherit;" onfocus="this.style.borderColor='#00A651'" onblur="this.style.borderColor='#ddd'" />
+        </div>
+      </div>
+      <div>
+        <label style="font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#555;display:block;margin-bottom:0.6rem;">Email Address</label>
+        <input type="email" placeholder="jane@example.com" style="width:100%;padding:1.2rem 1.4rem;border:1px solid #ddd;font-size:1.4rem;outline:none;font-family:inherit;" onfocus="this.style.borderColor='#00A651'" onblur="this.style.borderColor='#ddd'" />
+      </div>
+      <div>
+        <label style="font-size:1.2rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#555;display:block;margin-bottom:0.6rem;">Your Enquiry</label>
+        <textarea rows="4" placeholder="Tell us a little about your situation and goals..." style="width:100%;padding:1.2rem 1.4rem;border:1px solid #ddd;font-size:1.4rem;outline:none;resize:vertical;font-family:inherit;" onfocus="this.style.borderColor='#00A651'" onblur="this.style.borderColor='#ddd'"></textarea>
+      </div>
+      <button type="submit" class="btn-green" style="align-self:flex-start;padding:1.4rem 3.2rem;font-size:1.4rem;">
+        Send Message
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+     FOOTER
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
+<footer style="background:#1A1A1A;padding:6.4rem 2.4rem 3.2rem;" aria-label="Site footer">
+  <div style="max-width:1280px;margin:0 auto;">
+
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4.8rem;padding-bottom:4.8rem;border-bottom:1px solid rgba(255,255,255,0.1);" class="footer-grid">
+      <div>
+        <img src="brand_assets/AMC logo.png" alt="AMC ÔÇö Adrian Clements" style="height:4.8rem;width:auto;margin-bottom:2rem;filter:brightness(0) invert(1);" />
+        <p style="font-size:1.4rem;color:rgba(255,255,255,0.45);line-height:1.65;max-width:28rem;margin-bottom:2.4rem;">
+          Risk management consulting, education, and research ÔÇö serving risk professionals and organisations across banking, insurance, and asset management globally.
+        </p>
+        <div style="display:flex;gap:1.2rem;">
+          <a href="#" aria-label="LinkedIn" style="width:3.6rem;height:3.6rem;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;transition:background 0.18s;" onmouseenter="this.style.background='#00A651'" onmouseleave="this.style.background='rgba(255,255,255,0.1)'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="#" aria-label="Twitter / X" style="width:3.6rem;height:3.6rem;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;transition:background 0.18s;" onmouseenter="this.style.background='#00A651'" onmouseleave="this.style.background='rgba(255,255,255,0.1)'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Services</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="#" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Risk Assessment</a></li>
+          <li><a href="#" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Risk Governance</a></li>
+          <li><a href="#" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Training &amp; Education</a></li>
+          <li><a href="#" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Model Risk Management</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Research</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="#" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Risk Insights</a></li>
+          <li><a href="#" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Regulatory Updates</a></li>
+          <li><a href="publications.html" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Publications</a></li>
+          <li><a href="#" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Case Studies</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="label" style="color:#fff;margin-bottom:2rem;">Company</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:1.2rem;">
+          <li><a href="#about" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">About AMC</a></li>
+          <li><a href="#contact" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Contact</a></li>
+          <li><a href="#" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Privacy Policy</a></li>
+          <li><a href="#" style="font-size:1.3rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.15s;" onmouseenter="this.style.color='#00A651'" onmouseleave="this.style.color='rgba(255,255,255,0.45)'">Legal Notice</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="padding-top:2.8rem;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1.6rem;">
+      <p style="font-size:1.2rem;color:rgba(255,255,255,0.3);">┬® 2026 AMC ÔÇö Adrian Clements. All rights reserved.</p>
+      <p style="font-size:1.2rem;color:rgba(255,255,255,0.2);max-width:60rem;text-align:right;">
+        AMC provides risk management consulting and education services. All views are those of Adrian Clements and do not constitute regulated financial advice.
+      </p>
+    </div>
+
+  </div>
+</footer>
+
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+     JAVASCRIPT
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
+<script>
+// Contact form submit
+async function handleContactSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('contact-form');
+  const firstName = form.querySelector('input[placeholder="Jane"]').value.trim();
+  const lastName  = form.querySelector('input[placeholder="Smith"]').value.trim();
+  const email     = form.querySelector('input[type="email"]').value.trim();
+  const message   = form.querySelector('textarea').value.trim();
+
+  if (!firstName || !email) {
+    const missing = !firstName ? 'first name' : 'email address';
+    alert('Please enter your ' + missing + ' before sending.');
+    return;
+  }
+  if (!message) {
+    alert('Please describe your enquiry before sending.');
+    return;
+  }
+
+  const btn = form.querySelector('button[type="submit"]');
+  btn.disabled = true;
+  btn.textContent = 'SendingÔÇª';
+
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ firstName, lastName, email, message }),
+    });
+
+    if (!res.ok) throw new Error('Server error');
+
+    form.style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+  } catch {
+    alert('Sorry, there was a problem sending your message. Please try again or email us directly.');
+    btn.disabled = false;
+    btn.innerHTML = 'Send Message <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+}
+
+// Navbar shadow on scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('site-header').style.boxShadow =
+    window.scrollY > 8 ? '0 2px 20px rgba(0,0,0,0.1)' : 'none';
+}, { passive: true });
+
+// Mobile burger
+document.getElementById('burger').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('open');
+});
+
+// Close mobile menu when a nav link is clicked
+document.querySelectorAll('#mobile-menu .nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.remove('open');
+  });
+});
+
+// Accordion
+document.querySelectorAll('.acc-trigger').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const body  = btn.nextElementSibling;
+    const icon  = btn.querySelector('.accordion-icon');
+    const open  = body.classList.contains('open');
+
+    document.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.accordion-icon').forEach(i => i.classList.remove('open'));
+    document.querySelectorAll('.acc-trigger').forEach(b => b.setAttribute('aria-expanded','false'));
+
+    if (!open) {
+      body.classList.add('open');
+      icon.classList.add('open');
+      btn.setAttribute('aria-expanded','true');
+    }
+  });
+});
+
+// Service tile hover border
+document.querySelectorAll('.svc-tile').forEach(tile => {
+  tile.addEventListener('mouseenter', () => { tile.style.borderBottomColor = '#00A651'; tile.style.background = '#272727'; });
+  tile.addEventListener('mouseleave', () => { tile.style.borderBottomColor = 'transparent'; tile.style.background = '#232323'; });
+});
+
+// Responsive layout
+function applyResponsive() {
+  const w = window.innerWidth;
+
+  const heroInner = document.querySelector('.hero-inner');
+  const heroCards = document.querySelector('.hero-cards');
+  if (heroInner) heroInner.style.gridTemplateColumns = w < 1024 ? '1fr' : '1fr auto';
+  if (heroCards) heroCards.style.display = w < 1024 ? 'none' : 'flex';
+
+  const servicesGrid = document.querySelector('.services-grid');
+  if (servicesGrid) servicesGrid.style.gridTemplateColumns = w < 640 ? '1fr' : w < 900 ? '1fr 1fr' : 'repeat(4,1fr)';
+
+  const insightsGrid = document.querySelector('.insights-grid');
+  if (insightsGrid) {
+    insightsGrid.style.gridTemplateColumns = w < 640 ? '1fr' : w < 900 ? '1fr 1fr' : 'repeat(3,1fr)';
+    const featured = document.querySelector('.insight-featured');
+    if (featured) featured.style.gridColumn = w < 900 ? '1 / -1' : '1/3';
+  }
+
+  const statsGrid = document.querySelector('.stats-grid');
+  if (statsGrid) statsGrid.style.gridTemplateColumns = w < 640 ? '1fr 1fr' : 'repeat(4,1fr)';
+
+  const aboutGrid = document.querySelector('.about-grid');
+  if (aboutGrid) aboutGrid.style.gridTemplateColumns = w < 768 ? '1fr' : '1fr 1fr';
+
+  const expertiseGrid = document.querySelector('.expertise-grid');
+  if (expertiseGrid) expertiseGrid.style.gridTemplateColumns = w < 960 ? '1fr' : '1fr 1.4fr';
+
+  const impactGrid = document.querySelector('.impact-grid');
+  if (impactGrid) impactGrid.style.gridTemplateColumns = w < 960 ? '1fr' : '1.2fr 1fr';
+
+  const footerGrid = document.querySelector('.footer-grid');
+  if (footerGrid) footerGrid.style.gridTemplateColumns = w < 640 ? '1fr' : w < 900 ? '1fr 1fr' : '2fr 1fr 1fr 1fr';
+
+  const formRow = document.querySelector('.form-row');
+  if (formRow) formRow.style.gridTemplateColumns = w < 480 ? '1fr' : '1fr 1fr';
+}
+applyResponsive();
+window.addEventListener('resize', applyResponsive, { passive: true });
+
+// Fade-in on scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('section, footer').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.55s cubic-bezier(.4,0,.2,1), transform 0.55s cubic-bezier(.4,0,.2,1)';
+  observer.observe(el);
+});
+</script>
+
+</body>
 </html>
->>>>>>> b0ef753bc0325de45ed85529959616f1820102cc
