@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AMC ÔÇö Risk Management and Performance Enhancement Consulting | Adrian Clements</title>
+  <title>AMC — Risk Management and Performance Enhancement Consulting | Adrian Clements</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -24,12 +24,12 @@
     }
   </script>
   <style>
-    /* ÔöÇÔöÇ Reset ÔöÇÔöÇ */
+    /* ── Reset ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { font-size: 10px; scroll-behavior: smooth; }
     body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 1.4rem; line-height: 1.5; color: #1A1A1A; background: #fff; overflow-x: hidden; }
 
-    /* ÔöÇÔöÇ Typography ÔöÇÔöÇ */
+    /* ── Typography ── */
     .display-xl  { font-size: clamp(2.8rem, 4.5vw, 5.2rem); font-weight: 300; line-height: 1.08; letter-spacing: -0.02em; }
     .display-lg  { font-size: clamp(2.2rem, 3vw, 3.6rem);   font-weight: 300; line-height: 1.1;  letter-spacing: -0.015em; }
     .display-md  { font-size: clamp(1.8rem, 2.2vw, 2.6rem); font-weight: 400; line-height: 1.2; }
@@ -37,7 +37,7 @@
     .body-sm     { font-size: 1.3rem; line-height: 1.55; }
     .label       { font-size: 1.1rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
 
-    /* ÔöÇÔöÇ Nav ÔöÇÔöÇ */
+    /* ── Nav ── */
     .nav-link {
       font-size: 1.3rem; font-weight: 500; color: #1A1A1A;
       text-decoration: none; padding: 0.4rem 0;
@@ -51,7 +51,7 @@
     .nav-link:hover::after { width: 100%; }
     .nav-link:hover { color: #006338; }
 
-    /* ÔöÇÔöÇ Buttons ÔöÇÔöÇ */
+    /* ── Buttons ── */
     .btn-green {
       display: inline-flex; align-items: center; gap: 0.6rem;
       background: #00A651; color: #fff;
@@ -88,7 +88,7 @@
     .btn-outline-white:active { transform: translateY(0); }
     .btn-outline-white:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 
-    /* ÔöÇÔöÇ Arrow link ÔöÇÔöÇ */
+    /* ── Arrow link ── */
     .arrow-link {
       display: inline-flex; align-items: center; gap: 0.5rem;
       font-size: 1.3rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
@@ -100,7 +100,7 @@
     .arrow-link-white { color: #fff; }
     .arrow-link-white:hover { color: #e0e0e0; }
 
-    /* ÔöÇÔöÇ Card hover ÔöÇÔöÇ */
+    /* ── Card hover ── */
     .card-hover {
       transition: transform 0.22s cubic-bezier(.4,0,.2,1),
                   box-shadow 0.22s cubic-bezier(.4,0,.2,1);
@@ -110,7 +110,7 @@
       box-shadow: 0 16px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,166,81,0.08);
     }
 
-    /* ÔöÇÔöÇ Image overlay ÔöÇÔöÇ */
+    /* ── Image overlay ── */
     .img-overlay { position: relative; overflow: hidden; }
     .img-overlay img { width: 100%; height: 100%; object-fit: cover; display: block;
       transition: transform 0.4s cubic-bezier(.4,0,.2,1); }
@@ -120,28 +120,28 @@
       background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
     }
 
-    /* ÔöÇÔöÇ Section divider ÔöÇÔöÇ */
+    /* ── Section divider ── */
     .section-rule { width: 4rem; height: 3px; background: #00A651; margin-bottom: 1.6rem; }
 
-    /* ÔöÇÔöÇ Stats counter ÔöÇÔöÇ */
+    /* ── Stats counter ── */
     .stat-num { font-size: clamp(3.2rem, 5vw, 5.6rem); font-weight: 200; line-height: 1; letter-spacing: -0.03em; }
 
-    /* ÔöÇÔöÇ Accordion ÔöÇÔöÇ */
+    /* ── Accordion ── */
     .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(.4,0,.2,1); }
     .accordion-body.open { max-height: 400px; }
     .accordion-icon { transition: transform 0.25s ease; display: inline-block; }
     .accordion-icon.open { transform: rotate(45deg); }
 
-    /* ÔöÇÔöÇ Scrollbar ÔöÇÔöÇ */
+    /* ── Scrollbar ── */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #f0f0f0; }
     ::-webkit-scrollbar-thumb { background: #00A651; border-radius: 3px; }
 
-    /* ÔöÇÔöÇ Mobile nav ÔöÇÔöÇ */
+    /* ── Mobile nav ── */
     #mobile-menu { display: none; }
     #mobile-menu.open { display: flex; }
 
-    /* ÔöÇÔöÇ Nav Dropdown ÔöÇÔöÇ */
+    /* ── Nav Dropdown ── */
     .nav-dropdown { position: relative; }
     .nav-dropdown-menu {
       position: absolute; top: calc(100% + 1rem); left: 50%;
@@ -192,7 +192,7 @@
 
     <!-- Logo -->
     <a href="#" style="flex-shrink:0;" aria-label="AMC Home">
-      <img src="brand_assets/AMC logo.png" alt="AMC ÔÇö Adrian Clements" style="height:8rem;width:auto;" />
+      <img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:8rem;width:auto;" />
     </a>
 
     <!-- Desktop nav links -->
@@ -243,7 +243,7 @@
     <a href="publications.html" class="nav-link" style="font-size:1.6rem;">Publications</a>
     <a href="core.html" class="nav-link" style="font-size:1.6rem;">CORE App</a>
     <a href="neptune1.html" class="nav-link" style="font-size:1.6rem;">Neptune1</a>
-    <a href="about.html" class="nav-link" style="font-size:1.6rem;">About ÔÇö Adrian Clements</a>
+    <a href="about.html" class="nav-link" style="font-size:1.6rem;">About — Adrian Clements</a>
     <a href="publications.html#publications" class="nav-link" style="font-size:1.4rem;padding-left:1.6rem;color:#555;">Articles &amp; Publications</a>
     <a href="publications.html#speeches" class="nav-link" style="font-size:1.4rem;padding-left:1.6rem;color:#555;">Speeches</a>
     <a href="publications.html#quotations" class="nav-link" style="font-size:1.4rem;padding-left:1.6rem;color:#555;">Quotations &amp; Interviews</a>
@@ -274,7 +274,7 @@
         Navigating Through the Lighthouse Effect. Building Prosilience through Adaptability and Resilience.
       </h1>
       <p class="body-lg" style="color:rgba(255,255,255,0.82);max-width:52rem;margin-bottom:3.2rem;">
-        Expert risk management consulting, education, and research ÔÇö helping professionals and organisations identify, quantify, and govern risk with confidence.
+        Expert risk management consulting, education, and research — helping professionals and organisations identify, quantify, and govern risk with confidence.
       </p>
       <div style="display:flex;flex-wrap:wrap;gap:1.2rem;align-items:center;">
         <a href="#insights" class="btn-green">Read More
@@ -287,16 +287,16 @@
     <!-- Side preview cards -->
     <div style="display:flex;flex-direction:column;gap:1rem;max-width:24rem;min-width:20rem;" class="hero-cards">
       <a href="#insights" style="text-decoration:none;display:block;background:rgba(255,255,255,0.08);backdrop-filter:blur(8px);border-left:3px solid #00A651;padding:1.4rem 1.6rem;transition:background 0.18s;" class="card-hover" onmouseenter="this.style.background='rgba(255,255,255,0.14)'" onmouseleave="this.style.background='rgba(255,255,255,0.08)'">
-        <p class="label" style="color:#fff;margin-bottom:0.8rem;">CORE┬®; - A better way for Decision Making</p>
-        <p style="font-size:1.6rem;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.4;">Beyond the traditional: Embedding velocity and acceleration into the calculation. CORE┬®</p>
+        <p class="label" style="color:#fff;margin-bottom:0.8rem;">CORE©; - A better way for Decision Making</p>
+        <p style="font-size:1.6rem;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.4;">Beyond the traditional: Embedding velocity and acceleration into the calculation. CORE©</p>
       </a>
       <a href="#insights" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);backdrop-filter:blur(8px);border-left:3px solid rgba(255,255,255,0.25);padding:1.4rem 1.6rem;transition:background 0.18s;" class="card-hover" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'">
         <p class="label" style="color:#fff;margin-bottom:0.8rem;">Ambiguity:- What opportunities are coming?</p>
-        <p style="font-size:1.6rem;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.4;">Emerging risks: embracing risk ambiguity and capturing opportunity. RADAR┬®</p>
+        <p style="font-size:1.6rem;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.4;">Emerging risks: embracing risk ambiguity and capturing opportunity. RADAR©</p>
       </a>
       <a href="#insights" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);backdrop-filter:blur(8px);border-left:3px solid rgba(255,255,255,0.25);padding:1.4rem 1.6rem;transition:background 0.18s;" class="card-hover" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'">
         <p class="label" style="color:#fff;margin-bottom:0.8rem;">When is the Right time?</p>
-        <p style="font-size:1.6rem;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.4;">Decision windows: Calculating urgency. FORGE┬®</p>
+        <p style="font-size:1.6rem;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.4;">Decision windows: Calculating urgency. FORGE©</p>
       </a>
     </div>
   </div>
@@ -323,7 +323,7 @@
 </section>
 
 <!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
-     SERVICES ÔÇö DARK
+     SERVICES — DARK
 ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <section id="services" style="background:#1A1A1A;padding:7.2rem 2.4rem;" aria-label="Services">
   <div style="max-width:1280px;margin:0 auto;">
@@ -407,11 +407,11 @@
           <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.1) 55%,transparent 100%);"></div>
           <div style="position:absolute;bottom:0;left:0;padding:3.2rem;z-index:2;">
             <span class="label" style="color:#00A651;display:block;margin-bottom:1rem;">Risk Management</span>
-            <h3 class="display-md" style="color:#fff;max-width:52rem;">Beyond the traditional: Embedding velocity and acceleration into the calculation. CORE┬®</h3>
+            <h3 class="display-md" style="color:#fff;max-width:52rem;">Beyond the traditional: Embedding velocity and acceleration into the calculation. CORE©</h3>
           </div>
         </div>
         <div style="padding:2.4rem 0;">
-          <p class="body-lg" style="color:#555;margin-bottom:2rem;">Emerging risks: embracing risk ambiguity and capturing opportunity. RADAR┬®</p>
+          <p class="body-lg" style="color:#555;margin-bottom:2rem;">Emerging risks: embracing risk ambiguity and capturing opportunity. RADAR©</p>
           <a href="#" class="arrow-link">Read more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
       </div>
@@ -424,7 +424,7 @@
         </div>
         <div style="padding:2rem 0;flex:1;display:flex;flex-direction:column;">
           <span class="label" style="color:#00A651;display:block;margin-bottom:0.8rem;">Enterprise Risk Management</span>
-          <h3 style="font-size:1.9rem;font-weight:500;line-height:1.25;color:#1A1A1A;margin-bottom:1.2rem;letter-spacing:-0.01em;flex:1;">Decision windows: calculating urgency. FORGE┬®</h3>
+          <h3 style="font-size:1.9rem;font-weight:500;line-height:1.25;color:#1A1A1A;margin-bottom:1.2rem;letter-spacing:-0.01em;flex:1;">Decision windows: calculating urgency. FORGE©</h3>
           <a href="#" class="arrow-link">Read more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
       </div>
@@ -460,7 +460,7 @@
 </section>
 
 <!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
-     STATS ÔÇö GREEN BAND
+     STATS — GREEN BAND
 ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <section style="background:#00A651;padding:7rem 2.4rem;position:relative;overflow:hidden;" aria-label="Key statistics">
   <div style="position:absolute;top:-40%;left:-10%;width:70%;aspect-ratio:1;background:radial-gradient(circle,rgba(255,255,255,0.12) 0%,transparent 70%);pointer-events:none;"></div>
@@ -497,7 +497,7 @@
 </section>
 
 <!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
-     ABOUT ÔÇö SPLIT PANEL
+     ABOUT — SPLIT PANEL
 ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <section id="about" style="overflow:hidden;" aria-label="About Adrian Clements">
   <div style="display:grid;grid-template-columns:1fr 1fr;min-height:52rem;" class="about-grid">
@@ -527,7 +527,7 @@
 </section>
 
 <!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
-     EXPERTISE ÔÇö ACCORDION
+     EXPERTISE — ACCORDION
 ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <section id="expertise" style="padding:8rem 2.4rem;background:#F4F4F4;" aria-label="Areas of expertise">
   <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1.4fr;gap:6.4rem;align-items:start;" class="expertise-grid">
@@ -557,7 +557,7 @@
           <span class="accordion-icon" style="color:#00A651;font-size:2.4rem;flex-shrink:0;margin-left:1.6rem;">+</span>
         </button>
         <div class="accordion-body">
-          <p style="font-size:1.4rem;color:#555;line-height:1.65;padding-bottom:2.4rem;">Deep understanding of Basel III/IV, FRTB, CRD VI, Solvency II, and IFRS 9. AMC supports institutions navigating the transition to new capital regimes ÔÇö including FRTB IMA/SA implementation, ICAAP/ILAAP, and Pillar 2 capital add-ons.</p>
+          <p style="font-size:1.4rem;color:#555;line-height:1.65;padding-bottom:2.4rem;">Deep understanding of Basel III/IV, FRTB, CRD VI, Solvency II, and IFRS 9. AMC supports institutions navigating the transition to new capital regimes — including FRTB IMA/SA implementation, ICAAP/ILAAP, and Pillar 2 capital add-ons.</p>
         </div>
       </div>
       <div style="border-top:1px solid #ddd;">
@@ -566,7 +566,7 @@
           <span class="accordion-icon" style="color:#00A651;font-size:2.4rem;flex-shrink:0;margin-left:1.6rem;">+</span>
         </button>
         <div class="accordion-body">
-          <p style="font-size:1.4rem;color:#555;line-height:1.65;padding-bottom:2.4rem;">Operational risk capital modelling (AMA, BIA, SMA), RCSA design and facilitation, Key Risk Indicator frameworks, scenario analysis, and Business Continuity Planning ÔÇö covering cyber, conduct, third-party, and people risks.</p>
+          <p style="font-size:1.4rem;color:#555;line-height:1.65;padding-bottom:2.4rem;">Operational risk capital modelling (AMA, BIA, SMA), RCSA design and facilitation, Key Risk Indicator frameworks, scenario analysis, and Business Continuity Planning — covering cyber, conduct, third-party, and people risks.</p>
         </div>
       </div>
       <div style="border-top:1px solid #ddd;">
@@ -575,7 +575,7 @@
           <span class="accordion-icon" style="color:#00A651;font-size:2.4rem;flex-shrink:0;margin-left:1.6rem;">+</span>
         </button>
         <div class="accordion-body">
-          <p style="font-size:1.4rem;color:#555;line-height:1.65;padding-bottom:2.4rem;">Transition and physical risk assessment, TCFD and TNFD reporting frameworks, climate stress testing aligned to NGFS scenarios, and integration of ESG factors into credit and market risk models ÔÇö a rapidly evolving area where early investment pays dividends.</p>
+          <p style="font-size:1.4rem;color:#555;line-height:1.65;padding-bottom:2.4rem;">Transition and physical risk assessment, TCFD and TNFD reporting frameworks, climate stress testing aligned to NGFS scenarios, and integration of ESG factors into credit and market risk models — a rapidly evolving area where early investment pays dividends.</p>
         </div>
       </div>
       <div style="border-top:1px solid #ddd;border-bottom:1px solid #ddd;">
@@ -584,7 +584,7 @@
           <span class="accordion-icon" style="color:#00A651;font-size:2.4rem;flex-shrink:0;margin-left:1.6rem;">+</span>
         </button>
         <div class="accordion-body">
-          <p style="font-size:1.4rem;color:#555;line-height:1.65;padding-bottom:2.4rem;">Frameworks, tone-from-the-top assessment, risk appetite articulation, and incentive structure review. The best models fail when the humans using them don't understand or respect the risk they are managing ÔÇö culture is the ultimate control.</p>
+          <p style="font-size:1.4rem;color:#555;line-height:1.65;padding-bottom:2.4rem;">Frameworks, tone-from-the-top assessment, risk appetite articulation, and incentive structure review. The best models fail when the humans using them don't understand or respect the risk they are managing — culture is the ultimate control.</p>
         </div>
       </div>
     </div>
@@ -593,7 +593,7 @@
 </section>
 
 <!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
-     CLIENT IMPACT ÔÇö DARK GREEN
+     CLIENT IMPACT — DARK GREEN
 ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <section style="background:#006338;padding:7.2rem 2.4rem;position:relative;overflow:hidden;" aria-label="Client impact">
   <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 80% 50%,rgba(0,166,81,0.3) 0%,transparent 60%);pointer-events:none;"></div>
@@ -616,11 +616,11 @@
         <p style="font-size:1.3rem;color:rgba(255,255,255,0.6);line-height:1.5;">Reduction in operational risk incidents at a Tier 1 bank post-RCSA redesign</p>
       </div>
       <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);padding:2.4rem;" class="card-hover">
-        <div style="font-size:3.2rem;font-weight:200;color:#fff;line-height:1;margin-bottom:0.8rem;">┬ú45M</div>
+        <div style="font-size:3.2rem;font-weight:200;color:#fff;line-height:1;margin-bottom:0.8rem;">£45M</div>
         <p style="font-size:1.3rem;color:rgba(255,255,255,0.6);line-height:1.5;">In capital savings identified through FRTB SA model optimisation</p>
       </div>
       <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);padding:2.4rem;" class="card-hover">
-        <div style="font-size:3.2rem;font-weight:200;color:#fff;line-height:1;margin-bottom:0.8rem;">3├ù</div>
+        <div style="font-size:3.2rem;font-weight:200;color:#fff;line-height:1;margin-bottom:0.8rem;">3×</div>
         <p style="font-size:1.3rem;color:rgba(255,255,255,0.6);line-height:1.5;">Improvement in risk team capability scores after tailored training programme</p>
       </div>
       <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);padding:2.4rem;" class="card-hover">
@@ -638,10 +638,10 @@
   <div style="max-width:720px;margin:0 auto;text-align:center;">
     <div class="section-rule" style="margin-left:auto;margin-right:auto;"></div>
     <h2 class="display-lg" style="color:#1A1A1A;margin-bottom:2rem;">Ready to Build Stronger<br>Risk Capability?</h2>
-    <p class="body-lg" style="color:#555;margin-bottom:4rem;">Book a confidential, no-obligation consultation. Whether you need a risk framework review, training for your team, or support with a regulatory challenge ÔÇö AMC can help.</p>
+    <p class="body-lg" style="color:#555;margin-bottom:4rem;">Book a confidential, no-obligation consultation. Whether you need a risk framework review, training for your team, or support with a regulatory challenge — AMC can help.</p>
 
     <div id="form-success" style="display:none;padding:2rem 2.4rem;background:#f0faf4;border-left:4px solid #00A651;">
-      <p style="font-size:1.5rem;font-weight:600;color:#006338;margin-bottom:0.4rem;">Message received ÔÇö thank you.</p>
+      <p style="font-size:1.5rem;font-weight:600;color:#006338;margin-bottom:0.4rem;">Message received — thank you.</p>
       <p style="font-size:1.4rem;color:#555;">Adrian will be in touch within one business day.</p>
     </div>
     <form id="contact-form" style="display:flex;flex-direction:column;gap:1.6rem;text-align:left;" onsubmit="handleContactSubmit(event)">
@@ -679,9 +679,9 @@
 
     <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4.8rem;padding-bottom:4.8rem;border-bottom:1px solid rgba(255,255,255,0.1);" class="footer-grid">
       <div>
-        <img src="brand_assets/AMC logo.png" alt="AMC ÔÇö Adrian Clements" style="height:4.8rem;width:auto;margin-bottom:2rem;filter:brightness(0) invert(1);" />
+        <img src="brand_assets/AMC logo.png" alt="AMC — Adrian Clements" style="height:4.8rem;width:auto;margin-bottom:2rem;filter:brightness(0) invert(1);" />
         <p style="font-size:1.4rem;color:rgba(255,255,255,0.45);line-height:1.65;max-width:28rem;margin-bottom:2.4rem;">
-          Risk management consulting, education, and research ÔÇö serving risk professionals and organisations across banking, insurance, and asset management globally.
+          Risk management consulting, education, and research — serving risk professionals and organisations across banking, insurance, and asset management globally.
         </p>
         <div style="display:flex;gap:1.2rem;">
           <a href="#" aria-label="LinkedIn" style="width:3.6rem;height:3.6rem;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;transition:background 0.18s;" onmouseenter="this.style.background='#00A651'" onmouseleave="this.style.background='rgba(255,255,255,0.1)'">
@@ -725,7 +725,7 @@
     </div>
 
     <div style="padding-top:2.8rem;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1.6rem;">
-      <p style="font-size:1.2rem;color:rgba(255,255,255,0.3);">┬® 2026 AMC ÔÇö Adrian Clements. All rights reserved.</p>
+      <p style="font-size:1.2rem;color:rgba(255,255,255,0.3);">© 2026 AMC — Adrian Clements. All rights reserved.</p>
       <p style="font-size:1.2rem;color:rgba(255,255,255,0.2);max-width:60rem;text-align:right;">
         AMC provides risk management consulting and education services. All views are those of Adrian Clements and do not constitute regulated financial advice.
       </p>
@@ -759,7 +759,7 @@ async function handleContactSubmit(e) {
 
   const btn = form.querySelector('button[type="submit"]');
   btn.disabled = true;
-  btn.textContent = 'SendingÔÇª';
+  btn.textContent = 'Sending…';
 
   try {
     const res = await fetch('/api/contact', {
@@ -883,3 +883,4 @@ document.querySelectorAll('section, footer').forEach(el => {
 
 </body>
 </html>
+
