@@ -123,6 +123,38 @@
     /* ── Section divider ── */
     .section-rule { width: 4rem; height: 3px; background: #00A651; margin-bottom: 1.6rem; }
 
+    .hero-spotlight {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: 0;
+      margin-top: 2.4rem;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(8px);
+      overflow: hidden;
+      border-radius: 2.4rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      text-decoration: none;
+    }
+    .hero-spotlight img {
+      width: 100%; height: 100%; min-height: 24rem; object-fit: cover; display: block;
+    }
+    .hero-spotlight:hover img { transform: scale(1.03); }
+    .hero-spotlight-copy {
+      padding: 2.4rem 2.6rem;
+      display: flex; flex-direction: column; justify-content: center;
+      background: linear-gradient(140deg, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0.1) 100%);
+    }
+    .blog-card {
+      text-decoration: none; display: flex; flex-direction: column; overflow: hidden; border-radius: 2rem;
+      background: #fff; border: 1px solid #ebebeb; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    .blog-card img { width: 100%; height: 19rem; object-fit: cover; display: block; }
+    .blog-card .content { padding: 2rem 2rem 2.2rem; display: flex; flex-direction: column; gap: 1rem; flex: 1; }
+    .blog-card .eyebrow { color: #00A651; font-size: 1.1rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+    .blog-card h3 { font-size: 1.9rem; font-weight: 500; line-height: 1.25; color: #1A1A1A; }
+    .blog-card p { font-size: 1.4rem; color: #555; line-height: 1.6; }
+
     /* ── Stats counter ── */
     .stat-num { font-size: clamp(3.2rem, 5vw, 5.6rem); font-weight: 200; line-height: 1; letter-spacing: -0.03em; }
 
@@ -267,36 +299,46 @@
   </div>
 
   <!-- Content -->
-  <div style="position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:6rem 2.4rem 7rem;width:100%;display:grid;grid-template-columns:1fr auto;gap:4rem;align-items:flex-end;" class="hero-inner">
+  <div style="position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:6rem 2.4rem 7rem;width:100%;display:grid;grid-template-columns:1.05fr 0.95fr;gap:3.2rem;align-items:center;" class="hero-inner">
     <div>
-      <p class="label" style="color:#00A651;margin-bottom:1.4rem;">Featured Research</p>
-      <h1 class="display-xl" style="color:#fff;max-width:68rem;margin-bottom:2.4rem;">
-        Navigating Through the Lighthouse Effect. Building Prosilience through Adaptability and Resilience.
+      <p class="label" style="color:#00A651;margin-bottom:1.4rem;">Atipic Group insights</p>
+      <h1 class="display-xl" style="color:#fff;max-width:70rem;margin-bottom:2rem;">
+        Fresh thinking for resilient strategy, bold decisions and practical implementation.
       </h1>
-      <p class="body-lg" style="color:rgba(255,255,255,0.82);max-width:52rem;margin-bottom:3.2rem;">
-        Expert risk management consulting, education, and research — helping professionals and organisations identify, quantify, and govern risk with confidence.
+      <p class="body-lg" style="color:rgba(255,255,255,0.82);max-width:58rem;margin-bottom:2.8rem;">
+        Explore a growing library of thought leadership articles covering funding, foresight, implementation and procurement — published for leaders who need clarity and momentum.
       </p>
-      <div style="display:flex;flex-wrap:wrap;gap:1.2rem;align-items:center;">
-        <a href="#insights" class="btn-green">Read More
+      <div style="display:flex;flex-wrap:wrap;gap:1.2rem;align-items:center;margin-bottom:2rem;">
+        <a href="#insights" class="btn-green">Browse stories
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
         <a href="#services" class="btn-outline-white">Our Services</a>
       </div>
+
+      <a href="Articles/Insight/published/01_funding-the-right-action.pdf" target="_blank" rel="noopener" class="hero-spotlight card-hover">
+        <img src="Webpictures/business.jpg" alt="A leadership team reviewing a strategy document" />
+        <div class="hero-spotlight-copy">
+          <p class="label" style="color:#00A651;margin-bottom:0.8rem;">Featured article</p>
+          <h3 class="display-md" style="color:#fff;margin-bottom:0.8rem;">Funding the Right Action</h3>
+          <p style="font-size:1.45rem;color:rgba(255,255,255,0.8);line-height:1.6;">A practical guide to directing energy, investment and urgency toward the moves that make resilience real.</p>
+          <span class="arrow-link arrow-link-white" style="margin-top:1.2rem;">Open the article <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </a>
     </div>
 
     <!-- Side preview cards -->
-    <div style="display:flex;flex-direction:column;gap:1rem;max-width:24rem;min-width:20rem;" class="hero-cards">
-      <a href="#insights" style="text-decoration:none;display:block;background:rgba(255,255,255,0.08);backdrop-filter:blur(8px);border-left:3px solid #00A651;padding:1.4rem 1.6rem;transition:background 0.18s;" class="card-hover" onmouseenter="this.style.background='rgba(255,255,255,0.14)'" onmouseleave="this.style.background='rgba(255,255,255,0.08)'">
-        <p class="label" style="color:#fff;margin-bottom:0.8rem;">CORE©; - A better way for Decision Making</p>
-        <p style="font-size:1.6rem;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.4;">Beyond the traditional: Embedding velocity and acceleration into the calculation. CORE©</p>
+    <div style="display:flex;flex-direction:column;gap:1rem;max-width:30rem;min-width:20rem;margin-left:auto;width:100%;" class="hero-cards">
+      <a href="Articles/Insight/published/02_accelerators-and-amplifiers.pdf" target="_blank" rel="noopener" style="text-decoration:none;display:block;background:rgba(255,255,255,0.08);backdrop-filter:blur(8px);border-left:3px solid #00A651;padding:1.4rem 1.6rem;transition:background 0.18s;" class="card-hover" onmouseenter="this.style.background='rgba(255,255,255,0.14)'" onmouseleave="this.style.background='rgba(255,255,255,0.08)'">
+        <p class="label" style="color:#fff;margin-bottom:0.8rem;">Accelerators &amp; amplifiers</p>
+        <p style="font-size:1.6rem;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.4;">How the right enablers turn strategy into motion without overcomplicating delivery.</p>
       </a>
-      <a href="#insights" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);backdrop-filter:blur(8px);border-left:3px solid rgba(255,255,255,0.25);padding:1.4rem 1.6rem;transition:background 0.18s;" class="card-hover" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'">
-        <p class="label" style="color:#fff;margin-bottom:0.8rem;">Ambiguity:- What opportunities are coming?</p>
-        <p style="font-size:1.6rem;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.4;">Emerging risks: embracing risk ambiguity and capturing opportunity. RADAR©</p>
+      <a href="Articles/Insight/published/03_foresight-the-other-half.pdf" target="_blank" rel="noopener" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);backdrop-filter:blur(8px);border-left:3px solid rgba(255,255,255,0.25);padding:1.4rem 1.6rem;transition:background 0.18s;" class="card-hover" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'">
+        <p class="label" style="color:#fff;margin-bottom:0.8rem;">Foresight</p>
+        <p style="font-size:1.6rem;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.4;">The other half of resilience is seeing change early enough to act with intention.</p>
       </a>
-      <a href="#insights" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);backdrop-filter:blur(8px);border-left:3px solid rgba(255,255,255,0.25);padding:1.4rem 1.6rem;transition:background 0.18s;" class="card-hover" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'">
-        <p class="label" style="color:#fff;margin-bottom:0.8rem;">When is the Right time?</p>
-        <p style="font-size:1.6rem;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.4;">Decision windows: Calculating urgency. FORGE©</p>
+      <a href="Articles/Insight/published/05_push-to-pull-implementation.pdf" target="_blank" rel="noopener" style="text-decoration:none;display:block;background:rgba(255,255,255,0.06);backdrop-filter:blur(8px);border-left:3px solid rgba(255,255,255,0.25);padding:1.4rem 1.6rem;transition:background 0.18s;" class="card-hover" onmouseenter="this.style.background='rgba(255,255,255,0.12)'" onmouseleave="this.style.background='rgba(255,255,255,0.06)'">
+        <p class="label" style="color:#fff;margin-bottom:0.8rem;">Implementation</p>
+        <p style="font-size:1.6rem;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.4;">Transitioning from push-driven plans to pull-driven momentum.</p>
       </a>
     </div>
   </div>
@@ -397,63 +439,84 @@
       <a href="publications.html" class="arrow-link">All research <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
 
-    <!-- Insights grid: 1 large + 3 regular -->
+    <!-- Insights grid: 1 large + 6 regular -->
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3.2rem;" class="insights-grid">
 
-      <!-- Large card spanning 2 cols -->
-      <div class="card-hover insight-featured" style="grid-column:1/3;display:flex;flex-direction:column;cursor:pointer;">
+      <a href="Articles/Insight/published/01_funding-the-right-action.pdf" target="_blank" rel="noopener" class="card-hover blog-card insight-featured" style="grid-column:1/3;cursor:pointer;">
         <div class="img-overlay" style="height:38rem;">
-          <img src="Webpictures/Trees.jpg" alt="Market outlook illustration" />
-          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.1) 55%,transparent 100%);"></div>
+          <img src="Webpictures/Trees.jpg" alt="A landscape view that frames the article theme" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.12) 55%,transparent 100%);"></div>
           <div style="position:absolute;bottom:0;left:0;padding:3.2rem;z-index:2;">
-            <span class="label" style="color:#00A651;display:block;margin-bottom:1rem;">Risk Management</span>
-            <h3 class="display-md" style="color:#fff;max-width:52rem;">Beyond the traditional: Embedding velocity and acceleration into the calculation. CORE©</h3>
+            <span class="label" style="color:#00A651;display:block;margin-bottom:1rem;">Featured article</span>
+            <h3 class="display-md" style="color:#fff;max-width:52rem;">Funding the Right Action</h3>
           </div>
         </div>
-        <div style="padding:2.4rem 0;">
-          <p class="body-lg" style="color:#555;margin-bottom:2rem;">Emerging risks: embracing risk ambiguity and capturing opportunity. RADAR©</p>
-          <a href="#" class="arrow-link">Read more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="content">
+          <p class="eyebrow">Strategy &amp; execution</p>
+          <p class="body-lg" style="color:#555;margin-bottom:0.4rem;">A concise view on making investment choices that sustain resilience rather than just reacting to pressure.</p>
+          <span class="arrow-link">Open article <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
-      </div>
+      </a>
 
-      <!-- Card 2 -->
-      <div class="card-hover" style="display:flex;flex-direction:column;cursor:pointer;">
-        <div class="img-overlay" style="height:22rem;">
-          <img src="Webpictures/greenworld.png" alt="Sustainable risk illustration" />
-          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 60%);"></div>
+      <a href="Articles/Insight/published/02_accelerators-and-amplifiers.pdf" target="_blank" rel="noopener" class="card-hover blog-card">
+        <img src="Webpictures/greenworld.png" alt="An illustration of sustainable growth" />
+        <div class="content">
+          <p class="eyebrow">Enablers</p>
+          <h3>Accelerators and Amplifiers</h3>
+          <p>How the right mechanisms can turn good intent into repeatable momentum.</p>
+          <span class="arrow-link">Read article <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
-        <div style="padding:2rem 0;flex:1;display:flex;flex-direction:column;">
-          <span class="label" style="color:#00A651;display:block;margin-bottom:0.8rem;">Enterprise Risk Management</span>
-          <h3 style="font-size:1.9rem;font-weight:500;line-height:1.25;color:#1A1A1A;margin-bottom:1.2rem;letter-spacing:-0.01em;flex:1;">Decision windows: calculating urgency. FORGE©</h3>
-          <a href="#" class="arrow-link">Read more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        </div>
-      </div>
+      </a>
 
-      <!-- Card 3 -->
-      <div class="card-hover" style="display:flex;flex-direction:column;cursor:pointer;">
-        <div class="img-overlay" style="height:22rem;">
-          <img src="https://placehold.co/400x220/162a18/162a18" alt="Retirement planning" />
-          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 60%);"></div>
+      <a href="Articles/Insight/published/03_foresight-the-other-half.pdf" target="_blank" rel="noopener" class="card-hover blog-card">
+        <img src="Webpictures/Earth.jpg" alt="A global perspective on foresight and change" />
+        <div class="content">
+          <p class="eyebrow">Foresight</p>
+          <h3>Foresight: The Other Half</h3>
+          <p>Seeing change earlier creates a wider window for thoughtful action.</p>
+          <span class="arrow-link">Read article <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
-        <div style="padding:2rem 0;flex:1;display:flex;flex-direction:column;">
-          <span class="label" style="color:#00A651;display:block;margin-bottom:0.8rem;">Stress Testing</span>
-          <h3 style="font-size:1.9rem;font-weight:500;line-height:1.25;color:#1A1A1A;margin-bottom:1.2rem;letter-spacing:-0.01em;flex:1;">Stress Testing Beyond Compliance: Turning Regulatory Burden into Strategic Insight</h3>
-          <a href="#" class="arrow-link">Read more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        </div>
-      </div>
+      </a>
 
-      <!-- Card 4 -->
-      <div class="card-hover" style="display:flex;flex-direction:column;cursor:pointer;">
-        <div class="img-overlay" style="height:22rem;">
-          <img src="https://placehold.co/400x220/0a1f14/0a1f14" alt="AI in investing" />
-          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 60%);"></div>
+      <a href="Articles/Insight/published/04_opportunities-and-the-comfort-zone.pdf" target="_blank" rel="noopener" class="card-hover blog-card">
+        <img src="Webpictures/20161108_Clements_Adrian_69.jpg" alt="Adrian Clements speaking in a professional setting" />
+        <div class="content">
+          <p class="eyebrow">Opportunity</p>
+          <h3>Opportunities and the Comfort Zone</h3>
+          <p>Why staying comfortable can quietly close the door on the next strategic leap.</p>
+          <span class="arrow-link">Read article <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
-        <div style="padding:2rem 0;flex:1;display:flex;flex-direction:column;">
-          <span class="label" style="color:#00A651;display:block;margin-bottom:0.8rem;">Career Development</span>
-          <h3 style="font-size:1.9rem;font-weight:500;line-height:1.25;color:#1A1A1A;margin-bottom:1.2rem;letter-spacing:-0.01em;flex:1;">FRM vs PRM vs CFA: Choosing the Right Risk Certification for Your Career</h3>
-          <a href="#" class="arrow-link">Read more <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </a>
+
+      <a href="Articles/Insight/published/05_push-to-pull-implementation.pdf" target="_blank" rel="noopener" class="card-hover blog-card">
+        <img src="Webpictures/20161108_Clements_Adrian_31.jpg" alt="A leadership workshop environment" />
+        <div class="content">
+          <p class="eyebrow">Implementation</p>
+          <h3>Push to Pull Implementation</h3>
+          <p>Designing delivery systems that respond to need rather than forcing activity.</p>
+          <span class="arrow-link">Read article <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
-      </div>
+      </a>
+
+      <a href="Articles/Insight/published/06_what-we-need-to-survive.pdf" target="_blank" rel="noopener" class="card-hover blog-card">
+        <img src="Webpictures/20240831_122702.jpg" alt="A calm, reflective business setting" />
+        <div class="content">
+          <p class="eyebrow">Resilience</p>
+          <h3>What We Need to Survive</h3>
+          <p>Reframing survival as a strategic capability rather than a reactive one.</p>
+          <span class="arrow-link">Read article <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </a>
+
+      <a href="Articles/Insight/published/07_procurement-golden-key.pdf" target="_blank" rel="noopener" class="card-hover blog-card">
+        <img src="Webpictures/20240928_071731.jpg" alt="A team focused on planning and procurement" />
+        <div class="content">
+          <p class="eyebrow">Procurement</p>
+          <h3>Procurement: The Golden Key</h3>
+          <p>How procurement can become a lever for value, resilience and strategic advantage.</p>
+          <span class="arrow-link">Read article <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </a>
 
     </div>
   </div>
