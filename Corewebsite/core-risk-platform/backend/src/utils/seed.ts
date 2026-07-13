@@ -2,10 +2,9 @@
  * Database seed — creates admin user + demo business unit
  * Run: npm run db:seed  (from project root)
  */
-import { PrismaClient, UserRole } from '@prisma/client'
+import { UserRole } from '@prisma/client'
 import bcrypt from 'bcryptjs'
-
-const prisma = new PrismaClient()
+import { prisma } from '../config/db'
 
 async function main() {
   console.log('🌱 Seeding CORE v7 database...')

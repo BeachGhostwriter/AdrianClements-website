@@ -4,6 +4,9 @@ import streamlit as st
 import plotly.graph_objects as go
 import pandas as pd
 import sys, os
+import hashlib
+import hmac
+import psycopg2
 sys.path.insert(0, os.path.dirname(__file__))
 
 from utils.data_models import (
@@ -29,6 +32,64 @@ st.markdown("""
 .plot-container text { text-shadow: none !important; }
 </style>
 """, unsafe_allow_html=True)
+
+NEPTUNE_LOGIN_KEY = "neptune_authenticated"
+NEPTUNE_USER_KEY = "neptune_user"
+
+
+def _password_matches(password: str, stored: str) -> bool:
+    salt, hash_hex = (stored or "").split(":", 1) if ":" in (stored or "") else (None, None)
+    if not salt or not hash_hex:
+        return False
+    candidate = hashlib.scrypt(password.encode("utf-8"), salt=salt.encode("utf-8"), n=16384, r=8, p=1, dklen=64)
+    return hmac.compare_digest(candidate.hex(), hash_hex)
+
+
+def _verify_neptune_user(email: str, password: str):
+    dsn = os.getenv("NEPTUNE_DATABASE_URL") or os.getenv("Neptune_database_url") or ""
+    if not dsn:
+        return None, "Neptune database is not configured."
+
+    try:
+        with psycopg2.connect(dsn) as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    "SELECT email, name, password_hash, role FROM neptune_users WHERE lower(email) = lower(%s)",
+                    (email,),
+                )
+                row = cur.fetchone()
+    except Exception:
+        return None, "Unable to reach the Neptune database."
+
+    if not row:
+        return None, "Invalid email or password."
+
+    stored_hash = row[2]
+    if not _password_matches(password, stored_hash):
+        return None, "Invalid email or password."
+
+    return {
+        "email": row[0],
+        "name": row[1] or row[0],
+        "role": row[3] or "viewer",
+    }, None
+
+
+if not st.session_state.get(NEPTUNE_LOGIN_KEY):
+    st.title("Neptune Water Intelligence")
+    st.markdown("Secure login for the Neptune Streamlit application backed by a separate Neon database.")
+    with st.form("neptune_login_form"):
+        login_email = st.text_input("Email address", placeholder="your@email.com")
+        login_password = st.text_input("Password", type="password")
+        submitted = st.form_submit_button("Sign in")
+    if submitted:
+        user, error = _verify_neptune_user(login_email.strip(), login_password)
+        if user:
+            st.session_state[NEPTUNE_LOGIN_KEY] = True
+            st.session_state[NEPTUNE_USER_KEY] = user
+            st.rerun()
+        st.error(error or "Sign in failed.")
+    st.stop()
 
 # ── Session state bootstrap ───────────────────────────────────────────────────
 def _init():
@@ -87,6 +148,13 @@ def _costs():
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("### Neptune Platform")
+    current_user = st.session_state.get(NEPTUNE_USER_KEY, {})
+    if current_user:
+        st.caption(f"Signed in as {current_user.get('email', 'Neptune user')}")
+        if st.button("Sign out"):
+            st.session_state.pop(NEPTUNE_LOGIN_KEY, None)
+            st.session_state.pop(NEPTUNE_USER_KEY, None)
+            st.rerun()
     st.markdown(f"**{st.session_state.company_name}**")
     st.markdown(f"*{st.session_state.site}*")
     st.markdown("---")

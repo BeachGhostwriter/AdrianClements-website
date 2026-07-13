@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { prisma } from '../config/db'
+import { config } from '../config/env'
 import type { AuthRequest } from '../middleware/auth'
 
 export async function login(req: Request, res: Response) {
@@ -22,7 +23,7 @@ export async function login(req: Request, res: Response) {
       role: user.role,
       businessUnitIds: user.businessUnitMemberships.map(m => m.businessUnitId),
     }
-    const secret = process.env.JWT_SECRET as string
+    const secret = config.JWT_SECRET
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const token = jwt.sign(payload, secret, { expiresIn: '7d' } as any)
     res.json({ success: true, data: { token, user: payload } })

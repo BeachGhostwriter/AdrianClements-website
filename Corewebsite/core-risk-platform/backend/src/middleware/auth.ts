@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import type { AuthUser, UserRole } from 'shared-types'
+import { config } from '../config/env'
 
 export interface AuthRequest extends Request {
   user?: AuthUser
@@ -10,7 +11,7 @@ export function authenticate(req: AuthRequest, res: Response, next: NextFunction
   const token = req.headers.authorization?.replace('Bearer ', '')
   if (!token) return res.status(401).json({ success: false, message: 'No token provided' })
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as AuthUser
+    const decoded = jwt.verify(token, config.JWT_SECRET) as AuthUser
     req.user = decoded
     next()
   } catch {

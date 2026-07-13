@@ -4,8 +4,8 @@ dotenv.config();
 export const config = {
   NODE_ENV:      process.env.NODE_ENV      || 'development',
   PORT:          parseInt(process.env.PORT || '3001'),
-  DATABASE_URL:  process.env.DATABASE_URL  || '',
-  JWT_SECRET:    process.env.JWT_SECRET    || 'change-me-in-production',
+  DATABASE_URL:  process.env.CORE_DATABASE_URL || process.env.DATABASE_URL || '',
+  JWT_SECRET:    process.env.CORE_JWT_SECRET    || process.env.JWT_SECRET || 'change-me-in-production',
   JWT_EXPIRES:   process.env.JWT_EXPIRES   || '8h',
-  CORS_ORIGIN:   process.env.CORS_ORIGIN   || 'http://localhost:5173',
+  CORS_ORIGIN:   process.env.CORE_CORS_ORIGIN || process.env.CORS_ORIGIN || 'http://localhost:5173',
 } as const;
