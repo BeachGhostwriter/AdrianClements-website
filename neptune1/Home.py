@@ -54,7 +54,7 @@ def _verify_neptune_user(email: str, password: str):
         with psycopg2.connect(dsn) as conn:
             with conn.cursor() as cur:
                 cur.execute(
-                    "SELECT email, name, password_hash, role FROM neptune_users WHERE lower(email) = lower(%s)",
+                    "SELECT email, name, password_hash FROM neptune_users WHERE lower(email) = lower(%s)",
                     (email,),
                 )
                 row = cur.fetchone()
@@ -71,7 +71,7 @@ def _verify_neptune_user(email: str, password: str):
     return {
         "email": row[0],
         "name": row[1] or row[0],
-        "role": row[3] or "viewer",
+        "role": "viewer",
     }, None
 
 
