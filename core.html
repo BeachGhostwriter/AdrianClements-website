@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CORE App — AMC Adrian Clements</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -47,6 +48,42 @@
     .hero-wave .shape-2 { fill: rgba(0,99,56,0.24); top: 45%; }
     .hero-wave .shape-3 { fill: rgba(0,166,81,0.4); top: 65%; }
     .feature-card { background: #fff; border: 1px solid #e8e8e8; padding: 2.6rem; border-radius: 1.2rem; box-shadow: 0 24px 60px rgba(0,0,0,0.06); }
+
+    .core-reporting { background: #f5f3ed; border-top: 1px solid #d9d3c4; border-bottom: 1px solid #d9d3c4; }
+    .rp-shell { max-width: 1280px; margin: 0 auto; padding: 5.6rem 2.4rem 6.8rem; }
+    .rp-head { display: flex; justify-content: space-between; gap: 2rem; margin-bottom: 2.4rem; align-items: flex-end; }
+    .rp-head p { color: #5c6b7a; font-size: 1.4rem; line-height: 1.65; max-width: 64rem; }
+    .rp-badge { font-family: "Courier New", monospace; letter-spacing: 0.08em; font-size: 1.1rem; color: #1f3a5f; text-transform: uppercase; }
+    .rp-tier-tabs { display: flex; background: #122438; border-radius: 0.6rem; overflow: auto; margin-bottom: 2.2rem; }
+    .rp-tab { appearance: none; border: 0; background: transparent; color: #9aaec2; padding: 1.3rem 1.9rem; cursor: pointer; font-family: "Courier New", monospace; letter-spacing: 0.1em; text-transform: uppercase; font-size: 1.2rem; white-space: nowrap; }
+    .rp-tab.active { color: #fff; background: rgba(200,162,75,0.2); border-bottom: 3px solid #c8a24b; }
+    .rp-panel { display: none; }
+    .rp-panel.active { display: block; }
+    .rp-grid-2 { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 2rem; }
+    .rp-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .rp-card { background: #fff; border: 1px solid #d9d3c4; border-top: 3px solid #1f3a5f; padding: 2rem; }
+    .rp-card h3 { margin: 0 0 0.6rem 0; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 0.06em; color: #1f3a5f; }
+    .rp-hint { display: block; margin-bottom: 1.1rem; color: #5c6b7a; font-size: 1.15rem; font-family: "Courier New", monospace; }
+    .rp-chart { height: 30rem; width: 100%; }
+    .rp-chart.short { height: 22rem; }
+    .rp-chart.tall { height: 42rem; }
+    .rp-stat-row { display: flex; gap: 1.2rem; margin-top: 1.2rem; }
+    .rp-stat { flex: 1; background: #f6f4ef; border: 1px solid #d9d3c4; padding: 1rem 1.2rem; text-align: center; }
+    .rp-stat .v { font-size: 2.2rem; font-weight: 700; color: #1f3a5f; }
+    .rp-stat .l { font-size: 1rem; color: #5c6b7a; text-transform: uppercase; letter-spacing: 0.08em; font-family: "Courier New", monospace; }
+    .rp-list { display: grid; gap: 1rem; }
+    .rp-action { background: #f6f4ef; border-left: 4px solid #c8a24b; padding: 1rem 1.2rem; }
+    .rp-action b { display: block; color: #1f3a5f; margin-bottom: 0.4rem; }
+    .rp-action span { font-family: "Courier New", monospace; font-size: 1.05rem; color: #a23b32; text-transform: uppercase; letter-spacing: 0.06em; }
+    .rp-formula { background: #122438; color: #dce6f0; border-left: 4px solid #c8a24b; padding: 1.6rem; font-family: "Courier New", monospace; font-size: 1.2rem; line-height: 1.6; overflow-x: auto; }
+    .rp-table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 1.2rem; }
+    .rp-table th { text-align: left; background: #1f3a5f; color: #fff; font-family: "Courier New", monospace; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.7rem 0.9rem; }
+    .rp-table td { border-bottom: 1px solid #d9d3c4; padding: 0.7rem 0.9rem; color: #334155; }
+    @media (max-width: 980px) {
+      .rp-grid-2, .rp-grid-3 { grid-template-columns: 1fr; }
+      .rp-head { flex-direction: column; align-items: flex-start; }
+      .rp-stat-row { flex-direction: column; }
+    }
   </style>
 </head>
 <body>
@@ -135,6 +172,121 @@
     </div>
   </div>
 </section>
+
+<section class="core-reporting" aria-label="CORE reporting section">
+  <div class="rp-shell">
+    <div class="rp-head">
+      <div>
+        <div class="section-rule"></div>
+        <h2 class="display-lg" style="color:#1A1A1A;margin-bottom:1rem;">CORE Reporting Layer</h2>
+        <p>Three-tier reporting delivery based on one data model: executive dashboard, management analysis, and specialist analytics. This section mirrors the prototype reporting logic and presentation style you provided.</p>
+      </div>
+      <div class="rp-badge">CORE / RADAR / FORGE</div>
+    </div>
+
+    <div class="rp-tier-tabs" role="tablist" aria-label="Reporting tiers">
+      <button class="rp-tab active" data-rp-tab="1" role="tab" aria-selected="true">01 Executive Dashboard</button>
+      <button class="rp-tab" data-rp-tab="2" role="tab" aria-selected="false">02 Management Analysis</button>
+      <button class="rp-tab" data-rp-tab="3" role="tab" aria-selected="false">03 Specialist Analytics</button>
+    </div>
+
+    <div class="rp-panel active" id="rp-panel-1" role="tabpanel">
+      <div class="rp-grid-2">
+        <article class="rp-card">
+          <h3>Current Reading Vs Appetite</h3>
+          <span class="rp-hint">TTS gauge · appetite 5.0 · target 1.0 · current 32.7</span>
+          <div id="core-rp-gauge" class="rp-chart"></div>
+        </article>
+        <article class="rp-card">
+          <h3>Action Window Snapshot</h3>
+          <span class="rp-hint">CEO and board weekly decision brief</span>
+          <div class="rp-list">
+            <div class="rp-action"><span>Due 5 days</span><b>Release contingency tranche</b>Fund inventory hedge and trigger BCP while prevention space remains open.</div>
+            <div class="rp-action"><span>Due 10 days</span><b>Scale contactless channel</b>Prioritise the control path driving most of the residual-risk reduction.</div>
+            <div class="rp-action"><span>Weekly cadence</span><b>Re-run TTS and phase alerts</b>Escalate directly to board if gap-to-appetite widens by more than 20% week-on-week.</div>
+          </div>
+          <div class="rp-stat-row">
+            <div class="rp-stat"><div class="v">4 mo</div><div class="l">Lead Time</div></div>
+            <div class="rp-stat"><div class="v">98.8%</div><div class="l">Peak to Resolved</div></div>
+            <div class="rp-stat"><div class="v">487%</div><div class="l">ROI</div></div>
+          </div>
+        </article>
+      </div>
+      <div class="rp-grid-3" style="margin-top:2rem;">
+        <article class="rp-card" style="grid-column:span 2;">
+          <h3>Journey Milestones</h3>
+          <span class="rp-hint">First signal to resolution timeline</span>
+          <div id="core-rp-trajectory-lite" class="rp-chart short"></div>
+        </article>
+        <article class="rp-card">
+          <h3>Investment Vs Avoided Loss</h3>
+          <span class="rp-hint">$ millions</span>
+          <div id="core-rp-invest" class="rp-chart short"></div>
+        </article>
+      </div>
+    </div>
+
+    <div class="rp-panel" id="rp-panel-2" role="tabpanel">
+      <div class="rp-card" style="margin-bottom:2rem;">
+        <h3>Trajectory Evolution</h3>
+        <span class="rp-hint">Inherent risk vs managed risk with appetite and residual lines</span>
+        <div id="core-rp-trajectory" class="rp-chart tall"></div>
+      </div>
+      <div class="rp-grid-2">
+        <article class="rp-card">
+          <h3>Formula Build-Up At Peak</h3>
+          <span class="rp-hint">Running TTS as each component is applied</span>
+          <div id="core-rp-waterfall" class="rp-chart"></div>
+          <table class="rp-table">
+            <tr><th>Component</th><th>Value</th></tr>
+            <tr><td>Likelihood L</td><td>1.00</td></tr>
+            <tr><td>Impact I</td><td>9.33</td></tr>
+            <tr><td>Velocity V</td><td>0.90</td></tr>
+            <tr><td>Amplification A, alpha</td><td>2.5, 0.15/wk</td></tr>
+            <tr><td>Propagation ratio v/v_max</td><td>0.85</td></tr>
+            <tr><td><strong>Inherent TTS</strong></td><td><strong>89.5</strong></td></tr>
+          </table>
+        </article>
+        <article class="rp-card">
+          <h3>Decision Horizons</h3>
+          <span class="rp-hint">Action, predictability, and recovery windows</span>
+          <p style="color:#5c6b7a;line-height:1.7;">Inside the action horizon, prevention actions remain optional and low-cost. In predictability space, reversible hedges dominate. Beyond recovery horizon, governance shifts from prevention to restoration speed and capital efficiency.</p>
+          <table class="rp-table">
+            <tr><th>Horizon</th><th>Range</th></tr>
+            <tr><td>Action</td><td>0-2 months</td></tr>
+            <tr><td>Predictability</td><td>2-7 months</td></tr>
+            <tr><td>Recovery</td><td>7-16 months</td></tr>
+          </table>
+        </article>
+      </div>
+    </div>
+
+    <div class="rp-panel" id="rp-panel-3" role="tabpanel">
+      <div class="rp-grid-2">
+        <article class="rp-card">
+          <h3>Stochastic TTS Formula</h3>
+          <span class="rp-hint">Distribution-driven specialist model view</span>
+          <pre class="rp-formula">TTS(t) = { [L~(t) x I~(t) x V~(t) x (1 + A~ x exp(alpha~ x t))]
+          / sqrt(1 - (v~(t)/v_max)^2) } x [1 + beta x (psi~/psi_c)^gamma]
+
+L~(t) ~ Beta(5,15)
+I~(t) ~ Normal(8.5, 0.8^2)
+TTI~ ~ LogNormal(2.7, 0.3^2),   V~ = 1/TTI~
+A~ ~ Triangular(1.0, 1.5, 3.0)
+alpha~ ~ Normal(0.08, 0.02^2)
+v~(t) ~ Beta(2,8) x 1.0
+psi~(t) = sum(w_i x R~_i(t))</pre>
+        </article>
+        <article class="rp-card">
+          <h3>Clements Conformal Risk Diagram</h3>
+          <span class="rp-hint">Conformal-mapped trajectory across the causal boundary</span>
+          <div id="core-rp-ccrd" class="rp-chart tall"></div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer style="background:#1A1A1A;color:#fff;padding:4rem 2.4rem;">
   <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:2rem;">
     <p style="font-size:1.3rem;line-height:1.8;max-width:54rem;">CORE App is the entry point for the AMC risk platform family. The app is supported by the CORE white paper and by AMC’s broader research program.</p>
@@ -144,5 +296,123 @@
     </div>
   </div>
 </footer>
+<script>
+  (function () {
+    const NAVY = '#1F3A5F';
+    const NAVY_DEEP = '#122438';
+    const GOLD = '#C8A24B';
+    const GREEN = '#3F7A5A';
+    const AMBER = '#B9832F';
+    const RED = '#A23B32';
+    const MUTED = '#5C6B7A';
+    const LINE = '#D9D3C4';
+
+    const tabs = document.querySelectorAll('.rp-tab');
+    const panels = document.querySelectorAll('.rp-panel');
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((t) => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        panels.forEach((p) => p.classList.remove('active'));
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+        document.getElementById('rp-panel-' + tab.dataset.rpTab).classList.add('active');
+        window.dispatchEvent(new Event('resize'));
+      });
+    });
+
+    const t1Gauge = echarts.init(document.getElementById('core-rp-gauge'));
+    t1Gauge.setOption({
+      series: [{
+        type: 'gauge', min: 0, max: 100, startAngle: 210, endAngle: -30,
+        axisLine: { lineStyle: { width: 16, color: [[0.05, GREEN], [0.30, AMBER], [1, RED]] } },
+        pointer: { itemStyle: { color: NAVY_DEEP } },
+        axisTick: { show: false },
+        splitLine: { length: 12, lineStyle: { color: '#fff', width: 2 } },
+        axisLabel: { color: MUTED, fontSize: 10, distance: 18 },
+        detail: { fontSize: 30, fontWeight: 700, color: NAVY_DEEP, formatter: (v) => v.toFixed(1), offsetCenter: [0, '70%'] },
+        title: { fontSize: 11, color: MUTED, offsetCenter: [0, '95%'] },
+        data: [{ value: 32.7, name: 'Current TTS' }],
+        anchor: { show: true, itemStyle: { color: GOLD } }
+      }]
+    });
+
+    const t1Invest = echarts.init(document.getElementById('core-rp-invest'));
+    t1Invest.setOption({
+      grid: { left: 60, right: 16, top: 16, bottom: 28 },
+      xAxis: { type: 'value', axisLabel: { color: MUTED, fontSize: 10 }, splitLine: { lineStyle: { color: LINE } } },
+      yAxis: { type: 'category', data: ['Avoided loss', 'Response spend'], axisLabel: { color: MUTED, fontSize: 11 } },
+      series: [{
+        type: 'bar', barWidth: 22,
+        data: [{ value: 135, itemStyle: { color: GREEN } }, { value: 23, itemStyle: { color: NAVY } }],
+        label: { show: true, position: 'right', formatter: '${c}M', color: NAVY_DEEP, fontSize: 11 }
+      }]
+    });
+
+    const months = ['Dec 19', 'Jan 20', 'Feb 20', 'Mar 20', 'Apr 20', 'May 20', 'Jun 20', 'Jul 20', 'Oct 20', 'Jan 21', 'Apr 21'];
+    const inherent = [0.23, 2.4, 30.0, 58.0, 89.5, 72.0, 52.0, 35.7, 26.5, 19.4, 14.8];
+    const managed = [0.23, 1.1, 8.31, 18.5, 32.7, 20.0, 7.2, 0.96, 0.80, 0.55, 0.40];
+
+    const tLite = echarts.init(document.getElementById('core-rp-trajectory-lite'));
+    tLite.setOption({
+      grid: { left: 44, right: 16, top: 18, bottom: 28 },
+      xAxis: { type: 'category', data: months, axisLabel: { color: MUTED, fontSize: 9 } },
+      yAxis: { type: 'value', axisLabel: { color: MUTED, fontSize: 9 }, splitLine: { lineStyle: { color: LINE } } },
+      series: [{ type: 'line', data: managed, smooth: true, lineStyle: { color: NAVY, width: 3 }, symbolSize: 6, areaStyle: { color: 'rgba(31,58,95,0.10)' } }]
+    });
+
+    const t2Traj = echarts.init(document.getElementById('core-rp-trajectory'));
+    t2Traj.setOption({
+      tooltip: { trigger: 'axis' },
+      legend: { data: ['Inherent risk', 'Managed risk', 'Appetite (5.0)', 'Residual target (1.0)'], top: 0, textStyle: { fontSize: 11, color: MUTED } },
+      grid: { left: 50, right: 24, top: 44, bottom: 36 },
+      xAxis: { type: 'category', data: months, axisLabel: { color: MUTED, fontSize: 10 } },
+      yAxis: { type: 'value', name: 'TTS', nameTextStyle: { color: MUTED }, axisLabel: { color: MUTED, fontSize: 10 }, splitLine: { lineStyle: { color: LINE } } },
+      series: [
+        { name: 'Inherent risk', type: 'line', data: inherent, smooth: true, lineStyle: { color: AMBER, width: 2, type: 'dashed' }, symbolSize: 6 },
+        { name: 'Managed risk', type: 'line', data: managed, smooth: true, lineStyle: { color: NAVY, width: 3 }, symbolSize: 6, areaStyle: { color: 'rgba(31,58,95,0.08)' } },
+        { name: 'Appetite (5.0)', type: 'line', data: months.map(() => 5.0), lineStyle: { color: RED, type: 'dotted', width: 1.5 }, symbol: 'none' },
+        { name: 'Residual target (1.0)', type: 'line', data: months.map(() => 1.0), lineStyle: { color: GREEN, type: 'dotted', width: 1.5 }, symbol: 'none' }
+      ]
+    });
+
+    const t2Waterfall = echarts.init(document.getElementById('core-rp-waterfall'));
+    t2Waterfall.setOption({
+      grid: { left: 44, right: 16, top: 20, bottom: 52 },
+      xAxis: { type: 'category', data: ['L x I', 'x Velocity', 'x Amplification', 'x Relativistic'], axisLabel: { color: MUTED, fontSize: 9, interval: 0 } },
+      yAxis: { type: 'value', axisLabel: { color: MUTED, fontSize: 10 }, splitLine: { lineStyle: { color: LINE } } },
+      series: [{
+        type: 'bar', barWidth: '55%', data: [9.33, 8.40, 46.66, 88.6],
+        itemStyle: { color: (p) => ['#5C6B7A', '#3E5A7A', '#B9832F', '#A23B32'][p.dataIndex] },
+        label: { show: true, position: 'top', color: NAVY_DEEP, fontSize: 11, fontWeight: 700 }
+      }]
+    });
+
+    const ccrdRaw = [
+      { t: 0, r: 0.23, label: 'Dec 19 - first signal' },
+      { t: 2, r: 8.31, label: 'Feb 20 - escalation' },
+      { t: 4, r: 32.7, label: 'Apr 20 - crisis peak' },
+      { t: 7, r: 0.96, label: 'Jul 20 - mitigation' },
+      { t: 16, r: 0.40, label: 'Apr 21 - resolved' }
+    ];
+    const ccrdPts = ccrdRaw.map((p) => [Math.tanh(p.r / 100), Math.tanh(p.t / 18), p.label]);
+    const t3Ccrd = echarts.init(document.getElementById('core-rp-ccrd'));
+    t3Ccrd.setOption({
+      tooltip: { formatter: (p) => p.data[2] || '' },
+      grid: { left: 44, right: 24, top: 20, bottom: 36 },
+      xAxis: { type: 'value', min: -1.05, max: 1.05, name: 'Opportunity <- -> Risk', nameLocation: 'middle', nameGap: 28, axisLabel: { color: MUTED, fontSize: 10 }, splitLine: { show: false } },
+      yAxis: { type: 'value', min: -1.05, max: 1.05, name: 'Time (future/past)', nameLocation: 'middle', nameGap: 36, axisLabel: { color: MUTED, fontSize: 10 }, splitLine: { show: false } },
+      series: [
+        { type: 'line', showSymbol: false, silent: true, lineStyle: { color: NAVY, width: 2 }, data: [[0, 1], [1, 0], [0, -1], [-1, 0], [0, 1]] },
+        { type: 'line', data: ccrdPts, lineStyle: { color: GOLD, width: 2.5 }, itemStyle: { color: NAVY_DEEP }, symbolSize: 12, label: { show: true, formatter: (p) => p.dataIndex + 1, position: 'top', fontSize: 10, color: NAVY_DEEP } }
+      ]
+    });
+
+    const charts = [t1Gauge, t1Invest, tLite, t2Traj, t2Waterfall, t3Ccrd];
+    window.addEventListener('resize', () => charts.forEach((c) => c.resize()));
+  })();
+</script>
 </body>
 </html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CCORD Conformal Diagram — Basic Graph Prototype</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<style>
+  body {
+    margin: 0;
+    background: #ffffff;
+    font-family: 'Georgia', 'Fraunces', serif;
+    color: #1B2A4A;
+  }
+  header {
+    padding: 24px 32px 4px 32px;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 22px;
+    color: #1B2A4A;
+    letter-spacing: 0.3px;
+  }
+  header p {
+    margin: 6px 0 0 0;
+    font-size: 13px;
+    color: #555;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  #chart {
+    width: 900px;
+    height: 700px;
+    margin: 0 auto;
+  }
+  footer {
+    text-align: center;
+    font-size: 11px;
+    color: #999;
+    font-family: 'IBM Plex Mono', monospace;
+    padding-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AMC — CCORD Conformal Diagram: Diamond Boundary + Risk Trajectory Prototype</h1>
+  <p>ECharts "basic graph" boundary &middot; "line race" style trajectory &middot; |U| + |V| = 1 &middot; axes range −1 to +1</p>
+</header>
+
+<div id="chart"></div>
+<footer>Clements-Causal-Opportunity-Risk-Diagram (CCORD©) — illustrative construction, Hydreatio Group placeholder data</footer>
+
+<script>
+const chart = echarts.init(document.getElementById('chart'), null, { renderer: 'svg' });
+
+// The 4 defining nodes of the CCORD diamond boundary (|U| + |V| = 1)
+// U axis: Risk (negative / left) <-> Opportunity (positive / right)
+// V axis: Time, flowing upward (past -> future)
+const nodes = [
+  {
+    name: 'Future Horizon\n(V = +1)',
+    value: [0, 1],
+    itemStyle: { color: '#C9A84C' },
+    label: { position: 'top' }
+  },
+  {
+    name: 'Opportunity Extreme\n(U = +1)',
+    value: [1, 0],
+    itemStyle: { color: '#1B2A4A' },
+    label: { position: 'right' }
+  },
+  {
+    name: 'Origin (T₀)\n(U = 0, V = 0)',
+    value: [0, 0],
+    symbolSize: 14,
+    itemStyle: { color: '#8a8f98' },
+    label: { position: 'bottom', color: '#555' }
+  },
+  {
+    name: 'Risk Extreme\n(U = −1)',
+    value: [-1, 0],
+    itemStyle: { color: '#1B2A4A' },
+    label: { position: 'left' }
+  },
+  {
+    name: 'Past Horizon\n(V = −1)',
+    value: [0, -1],
+    itemStyle: { color: '#C9A84C' },
+    label: { position: 'bottom' }
+  }
+];
+
+// Edges forming the diamond boundary |U|+|V|=1, plus origin reference lines
+const links = [
+  { source: 'Future Horizon\n(V = +1)', target: 'Opportunity Extreme\n(U = +1)', lineStyle: { color: '#C9A84C', width: 2.5 } },
+  { source: 'Opportunity Extreme\n(U = +1)', target: 'Past Horizon\n(V = −1)', lineStyle: { color: '#C9A84C', width: 2.5 } },
+  { source: 'Past Horizon\n(V = −1)', target: 'Risk Extreme\n(U = −1)', lineStyle: { color: '#C9A84C', width: 2.5 } },
+  { source: 'Risk Extreme\n(U = −1)', target: 'Future Horizon\n(V = +1)', lineStyle: { color: '#C9A84C', width: 2.5 } },
+  { source: 'Origin (T₀)\n(U = 0, V = 0)', target: 'Future Horizon\n(V = +1)', lineStyle: { color: '#1B2A4A', width: 1, type: 'dashed', opacity: 0.5 } },
+  { source: 'Origin (T₀)\n(U = 0, V = 0)', target: 'Past Horizon\n(V = −1)', lineStyle: { color: '#1B2A4A', width: 1, type: 'dashed', opacity: 0.5 } }
+];
+
+// Example risk trajectory: magnitude (U, toward Risk Extreme) and Time (V, past -> future)
+// Solid segment = observed / actual movement. Dashed segment = backcast projection under mitigation.
+const actualTrajectory = [
+  { name: 'T−4', value: [-0.05, -0.85] },
+  { name: 'T−3', value: [-0.18, -0.62] },
+  { name: 'T−2', value: [-0.38, -0.38] },
+  { name: 'T−1', value: [-0.58, -0.12] },
+  { name: 'T0  (Now)', value: [-0.72, 0.08] }
+];
+
+const projectedTrajectory = [
+  { name: 'T0  (Now)', value: [-0.72, 0.08] },
+  { name: 'T+1 (backcast)', value: [-0.68, 0.28] },
+  { name: 'T+2 (backcast, mitigated)', value: [-0.45, 0.50] },
+  { name: 'T+3 (target)', value: [-0.20, 0.72] }
+];
+
+// Sequential "line race" reveal: each point animates in after the previous one
+const raceDelay = idx => idx * 450;
+
+const option = {
+  backgroundColor: '#ffffff',
+  grid: { left: 70, right: 60, top: 60, bottom: 60 },
+  legend: {
+    top: 8,
+    right: 60,
+    textStyle: { fontFamily: 'IBM Plex Mono, monospace', fontSize: 11, color: '#1B2A4A' },
+    data: ['CCORD Boundary', 'Risk Trajectory (observed)', 'Risk Trajectory (backcast)']
+  },
+  tooltip: {
+    formatter: p => {
+      if (p.seriesType === 'graph') {
+        return p.dataType === 'node'
+          ? `${p.data.name.replace('\n', ' ')}`
+          : `${p.data.source} → ${p.data.target}`;
+      }
+      const [u, v] = p.data.value;
+      const magnitude = (Math.abs(u) + Math.abs(v)).toFixed(2);
+      return `<b>${p.data.name}</b><br/>U (risk/opp): ${u.toFixed(2)}<br/>V (time): ${v.toFixed(2)}<br/>|U|+|V| (boundary metric): ${magnitude}`;
+    }
+  },
+  xAxis: {
+    name: 'U  —  Risk (−)  /  Opportunity (+)',
+    nameLocation: 'middle',
+    nameGap: 32,
+    min: -1,
+    max: 1,
+    interval: 0.5,
+    axisLine: { onZero: true, lineStyle: { color: '#1B2A4A' } },
+    splitLine: { lineStyle: { color: '#eee' } }
+  },
+  yAxis: {
+    name: 'V  —  Time (Future ↑ / Past ↓)',
+    nameLocation: 'middle',
+    nameGap: 40,
+    min: -1,
+    max: 1,
+    interval: 0.5,
+    axisLine: { onZero: true, lineStyle: { color: '#1B2A4A' } },
+    splitLine: { lineStyle: { color: '#eee' } }
+  },
+  series: [
+    {
+      type: 'graph',
+      coordinateSystem: 'cartesian2d',
+      layout: 'none',
+      symbolSize: 20,
+      roam: false,
+      label: {
+        show: true,
+        fontFamily: 'IBM Plex Mono, monospace',
+        fontSize: 11,
+        color: '#1B2A4A'
+      },
+      edgeSymbol: ['none', 'none'],
+      data: nodes,
+      links: links,
+      name: 'CCORD Boundary',
+      z: 2
+    },
+    {
+      name: 'Risk Trajectory (observed)',
+      type: 'line',
+      coordinateSystem: 'cartesian2d',
+      data: actualTrajectory,
+      showSymbol: true,
+      symbolSize: 9,
+      smooth: 0.15,
+      lineStyle: { color: '#B23A2E', width: 3, shadowBlur: 6, shadowColor: 'rgba(178,58,46,0.35)' },
+      itemStyle: { color: '#B23A2E' },
+      label: {
+        show: true,
+        formatter: p => p.data.name,
+        fontFamily: 'IBM Plex Mono, monospace',
+        fontSize: 10,
+        color: '#B23A2E',
+        position: 'top'
+      },
+      endLabel: { show: false },
+      animationDuration: 1200,
+      animationDelay: raceDelay,
+      z: 3
+    },
+    {
+      name: 'Risk Trajectory (backcast)',
+      type: 'line',
+      coordinateSystem: 'cartesian2d',
+      data: projectedTrajectory,
+      showSymbol: true,
+      symbolSize: 9,
+      smooth: 0.15,
+      lineStyle: { color: '#B23A2E', width: 2.5, type: 'dashed', opacity: 0.8 },
+      itemStyle: { color: '#B23A2E', opacity: 0.8 },
+      label: {
+        show: true,
+        formatter: p => p.data.name,
+        fontFamily: 'IBM Plex Mono, monospace',
+        fontSize: 10,
+        color: '#B23A2E',
+        opacity: 0.8,
+        position: 'top'
+      },
+      animationDuration: 1200,
+      animationDelay: idx => 2500 + idx * 450,
+      z: 3
+    },
+    {
+      name: 'Now marker',
+      type: 'effectScatter',
+      coordinateSystem: 'cartesian2d',
+      data: [{ value: [-0.72, 0.08] }],
+      symbolSize: 14,
+      showEffectOn: 'render',
+      rippleEffect: { brushType: 'stroke', scale: 3.5, period: 3 },
+      itemStyle: { color: '#C9A84C', shadowBlur: 10, shadowColor: 'rgba(201,168,76,0.6)' },
+      legendHoverLink: false,
+      silent: true,
+      animationDelay: 1900,
+      z: 4
+    }
+  ]
+};
+
+chart.setOption(option);
+window.addEventListener('resize', () => chart.resize());
+</script>
+
+</body>
+</html>
