@@ -19,17 +19,42 @@
       <p>This area is password protected.</p>
       <input id="password" type="password" placeholder="Enter password" />
       <button onclick="checkPassword()">Access</button>
-      <div class="hint">Hint: use your approved access code.</div>
+      <div class="hint">Hint: use your approved access code. After access, choose Live or Demo.</div>
+      <div id="app-links" style="display:none; margin-top: 18px; gap: 10px; flex-wrap: wrap;">
+        <a id="live-link" href="#" style="display:inline-block; padding:10px 14px; border-radius:8px; text-decoration:none; background:#2f6b3d; color:#fff;">Open Live CORE Platform</a>
+        <a id="demo-link" href="#" style="display:inline-block; padding:10px 14px; border-radius:8px; text-decoration:none; border:1px solid #2f6b3d; color:#2f6b3d;">Open Demo CORE</a>
+      </div>
       <div id="error" class="error"></div>
     </div>
     <script>
-      function checkPassword() {
+      async function checkPassword() {
         const pass = document.getElementById('password').value;
-        if (pass === 'Core2026') {
+        if (!pass) {
+          document.getElementById('error').textContent = 'Please enter your password.';
+          return;
+        }
+
+        try {
+          const response = await fetch('/api/core-access', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ accessCode: pass }),
+          });
+
+          const payload = await response.json();
+          if (!response.ok || !payload.success) {
+            document.getElementById('error').textContent = payload.message || 'Incorrect password.';
+            return;
+          }
+
           document.getElementById('error').textContent = '';
-          window.location.href = 'https://example.com/core';
-        } else {
-          document.getElementById('error').textContent = 'Incorrect password.';
+          const live = document.getElementById('live-link');
+          const demo = document.getElementById('demo-link');
+          live.href = payload.data.liveUrl || '#';
+          demo.href = payload.data.demoUrl || '../core.html';
+          document.getElementById('app-links').style.display = 'flex';
+        } catch {
+          document.getElementById('error').textContent = 'Could not verify access. Please try again.';
         }
       }
     </script>

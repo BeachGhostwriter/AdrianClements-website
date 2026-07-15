@@ -2,6 +2,7 @@ import { Response } from 'express'
 import { prisma } from '../config/db'
 import { AuthRequest } from '../middleware/auth'
 import { RiskCalculationService } from '../services/engines/riskCalculationService'
+import { userCanAccessBusinessUnit } from '../middleware/auth'
 
 const calcService = new RiskCalculationService()
 
@@ -36,6 +37,7 @@ export async function listRisks(req: AuthRequest, res: Response) {
 
 export async function getRisk(req: AuthRequest, res: Response) {
   try {
+    const buFilter = (req as any).buFilter as string[]
     const risk = await prisma.risk.findUnique({
       where: { id: req.params.id },
       include: {
@@ -49,6 +51,9 @@ export async function getRisk(req: AuthRequest, res: Response) {
       },
     })
     if (!risk) return res.status(404).json({ success: false, message: 'Risk not found' })
+    if (buFilter && !buFilter.includes(risk.businessUnitId)) {
+      return res.status(403).json({ success: false, message: 'Forbidden' })
+    }
     res.json({ success: true, data: risk })
   } catch (err: any) {
     res.status(500).json({ success: false, message: err.message })
@@ -58,6 +63,9 @@ export async function getRisk(req: AuthRequest, res: Response) {
 export async function createRisk(req: AuthRequest, res: Response) {
   try {
     const data = req.body
+    if (!userCanAccessBusinessUnit(req, data.businessUnitId)) {
+      return res.status(403).json({ success: false, message: 'Forbidden for selected business unit' })
+    }
     const computed = await calcService.computeRadar(data)
     const risk = await prisma.risk.create({
       data: { ...data, ...computed },
@@ -71,6 +79,11 @@ export async function createRisk(req: AuthRequest, res: Response) {
 export async function updateRisk(req: AuthRequest, res: Response) {
   try {
     const data = req.body
+    const existing = await prisma.risk.findUnique({ where: { id: req.params.id }, select: { businessUnitId: true } })
+    if (!existing) return res.status(404).json({ success: false, message: 'Risk not found' })
+    if (!userCanAccessBusinessUnit(req, existing.businessUnitId)) {
+      return res.status(403).json({ success: false, message: 'Forbidden' })
+    }
     const computed = await calcService.computeRadar(data)
     const risk = await prisma.risk.update({
       where: { id: req.params.id },
@@ -84,6 +97,11 @@ export async function updateRisk(req: AuthRequest, res: Response) {
 
 export async function deleteRisk(req: AuthRequest, res: Response) {
   try {
+    const existing = await prisma.risk.findUnique({ where: { id: req.params.id }, select: { businessUnitId: true } })
+    if (!existing) return res.status(404).json({ success: false, message: 'Risk not found' })
+    if (!userCanAccessBusinessUnit(req, existing.businessUnitId)) {
+      return res.status(403).json({ success: false, message: 'Forbidden' })
+    }
     await prisma.risk.delete({ where: { id: req.params.id } })
     res.json({ success: true, message: 'Risk deleted' })
   } catch (err: any) {
@@ -95,6 +113,9 @@ export async function recalculateRisk(req: AuthRequest, res: Response) {
   try {
     const risk = await prisma.risk.findUnique({ where: { id: req.params.id } })
     if (!risk) return res.status(404).json({ success: false, message: 'Not found' })
+    if (!userCanAccessBusinessUnit(req, risk.businessUnitId)) {
+      return res.status(403).json({ success: false, message: 'Forbidden' })
+    }
     const computed = await calcService.computeRadar(risk as any)
     const updated = await prisma.risk.update({ where: { id: req.params.id }, data: computed })
     res.json({ success: true, data: updated })
@@ -105,6 +126,11 @@ export async function recalculateRisk(req: AuthRequest, res: Response) {
 
 export async function getRiskTrajectories(req: AuthRequest, res: Response) {
   try {
+    const risk = await prisma.risk.findUnique({ where: { id: req.params.id }, select: { businessUnitId: true } })
+    if (!risk) return res.status(404).json({ success: false, message: 'Risk not found' })
+    if (!userCanAccessBusinessUnit(req, risk.businessUnitId)) {
+      return res.status(403).json({ success: false, message: 'Forbidden' })
+    }
     const trajectories = await prisma.riskTrajectory.findMany({
       where: { riskId: req.params.id },
       orderBy: { quarter: 'asc' },

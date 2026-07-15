@@ -1,6 +1,7 @@
 import { Response } from 'express'
 import { prisma } from '../config/db'
 import { AuthRequest } from '../middleware/auth'
+import { userCanAccessBusinessUnit } from '../middleware/auth'
 
 export async function listOpportunities(req: AuthRequest, res: Response) {
   try {
@@ -17,6 +18,10 @@ export async function listOpportunities(req: AuthRequest, res: Response) {
 export async function createOpportunity(req: AuthRequest, res: Response) {
   try {
     const data = req.body
+    if (!userCanAccessBusinessUnit(req, data.businessUnitId)) {
+      return res.status(403).json({ success: false, message: 'Forbidden for selected business unit' })
+    }
+
     // Auto-generate oppId if not provided
     if (!data.oppId) {
       const count = await prisma.opportunity.count({ where: { businessUnitId: data.businessUnitId } })
@@ -32,6 +37,12 @@ export async function createOpportunity(req: AuthRequest, res: Response) {
 
 export async function updateOpportunity(req: AuthRequest, res: Response) {
   try {
+    const existing = await prisma.opportunity.findUnique({ where: { id: req.params.id }, select: { businessUnitId: true } })
+    if (!existing) return res.status(404).json({ success: false, message: 'Opportunity not found' })
+    if (!userCanAccessBusinessUnit(req, existing.businessUnitId)) {
+      return res.status(403).json({ success: false, message: 'Forbidden' })
+    }
+
     const data = req.body
     data.upsideScore = Math.min(10, Math.max(1, 2 * Math.log((data.upsideEur ?? 0) + 1)))
     data.expectedValue = (data.probability ?? 0) * (data.upsideEur ?? 0)
@@ -42,6 +53,12 @@ export async function updateOpportunity(req: AuthRequest, res: Response) {
 
 export async function deleteOpportunity(req: AuthRequest, res: Response) {
   try {
+    const existing = await prisma.opportunity.findUnique({ where: { id: req.params.id }, select: { businessUnitId: true } })
+    if (!existing) return res.status(404).json({ success: false, message: 'Opportunity not found' })
+    if (!userCanAccessBusinessUnit(req, existing.businessUnitId)) {
+      return res.status(403).json({ success: false, message: 'Forbidden' })
+    }
+
     await prisma.opportunity.delete({ where: { id: req.params.id } })
     res.json({ success: true, message: 'Opportunity deleted' })
   } catch (err: any) { res.status(400).json({ success: false, message: err.message }) }

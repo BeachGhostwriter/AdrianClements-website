@@ -7,6 +7,23 @@ export interface AuthRequest extends Request {
   user?: AuthUser
 }
 
+export function normaliseClientCode(input: string): string {
+  return String(input || '').trim().toUpperCase()
+}
+
+export function clientCodeFromBusinessUnitCode(code: string): string {
+  const clean = String(code || '').trim().toUpperCase()
+  if (!clean) return ''
+  const dash = clean.indexOf('-')
+  return dash > 0 ? clean.slice(0, dash) : clean
+}
+
+export function userCanAccessBusinessUnit(req: AuthRequest, businessUnitId: string): boolean {
+  const buIds = (req as any).buFilter as string[] | undefined
+  if (!businessUnitId || !buIds) return false
+  return buIds.includes(businessUnitId)
+}
+
 export function authenticate(req: AuthRequest, res: Response, next: NextFunction) {
   const token = req.headers.authorization?.replace('Bearer ', '')
   if (!token) return res.status(401).json({ success: false, message: 'No token provided' })
@@ -31,9 +48,8 @@ export function requireRole(...roles: UserRole[]) {
 
 // Row-level security: filter data to user's business units (unless ADMIN)
 export function scopeToBusinessUnits(req: AuthRequest, res: Response, next: NextFunction) {
-  if (req.user?.role === 'ADMIN') return next()
-  // Attach BU filter to request for use in controllers
   const buIds = req.user?.businessUnitIds ?? []
   ;(req as any).buFilter = buIds.length > 0 ? buIds : ['__none__']
+  ;(req as any).clientCode = req.user?.clientCode || ''
   next()
 }

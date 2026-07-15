@@ -1,8 +1,8 @@
 import { AppLayout } from '../../components/layout/AppLayout'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '../../services/api'
-import { useState } from 'react'
-import { AlertTriangle, Filter, Download, Plus, X, Save } from 'lucide-react'
+import { useRef, useState } from 'react'
+import { AlertTriangle, Filter, Download, Plus, Upload, X, Save } from 'lucide-react'
 
 const CATEGORIES = ['OPS','REG','TECH','FIN','STR','REP','ENV','HR','LEGAL','OTHER']
 const STATUSES   = ['ACTIVE','MONITORING','MITIGATED','CLOSED']
@@ -171,6 +171,8 @@ function RiskModal({ initial, onClose, businessUnits }: {
 export default function RadarPage() {
   const [filter, setFilter] = useState({ status: '', category: '', priority: '' })
   const [modal, setModal] = useState<null | 'add' | any>(null)
+  const [ioBusy, setIoBusy] = useState(false)
+  const uploadRef = useRef<HTMLInputElement | null>(null)
 
   const { data: risks = [], isLoading } = useQuery({
     queryKey: ['risks', filter],
@@ -180,6 +182,53 @@ export default function RadarPage() {
     queryKey: ['business-units'],
     queryFn: () => api.get('/business-units').then(r => r.data.data),
   })
+
+  const activeBusinessUnitId = businessUnits[0]?.id
+
+  const exportRisks = async () => {
+    if (!activeBusinessUnitId) return
+    setIoBusy(true)
+    try {
+      const res = await api.get('/risks/export', {
+        params: { businessUnitId: activeBusinessUnitId },
+        responseType: 'blob',
+      })
+
+      const blob = new Blob([res.data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      })
+      const href = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = href
+      a.download = `radar-risks-${new Date().toISOString().slice(0, 10)}.xlsx`
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      URL.revokeObjectURL(href)
+    } finally {
+      setIoBusy(false)
+    }
+  }
+
+  const importRisks = async (file: File) => {
+    if (!activeBusinessUnitId) return
+    setIoBusy(true)
+    try {
+      const bytes = await file.arrayBuffer()
+      let binary = ''
+      const view = new Uint8Array(bytes)
+      for (let i = 0; i < view.length; i++) binary += String.fromCharCode(view[i])
+      const fileBase64 = btoa(binary)
+
+      await api.post('/risks/import', { businessUnitId: activeBusinessUnitId, fileBase64, filename: file.name })
+      window.alert('Risk workbook imported successfully.')
+      window.location.reload()
+    } catch (e: any) {
+      window.alert(e?.response?.data?.message || 'Import failed')
+    } finally {
+      setIoBusy(false)
+    }
+  }
 
   return (
     <AppLayout>
@@ -200,6 +249,9 @@ export default function RadarPage() {
           <button onClick={() => setFilter({ status:'', category:'', priority:'' })}
             className="text-xs text-gray-500 hover:text-gray-700">Clear</button>
           <div className="ml-auto">
+            <button onClick={() => uploadRef.current?.click()} disabled={ioBusy || !activeBusinessUnitId} className="btn-secondary py-1.5 text-xs mr-2">
+              <Upload className="w-3.5 h-3.5" /> Upload Excel
+            </button>
             <button onClick={() => setModal('add')} className="btn-primary py-1.5 text-xs">
               <Plus className="w-3.5 h-3.5" /> Add Risk
             </button>
@@ -214,7 +266,7 @@ export default function RadarPage() {
               RADAR Risk Register
               <span className="text-gray-400 font-normal">({risks.length} risks)</span>
             </h2>
-            <button className="btn-secondary py-1 text-xs"><Download className="w-3 h-3" /> Export</button>
+            <button onClick={exportRisks} disabled={ioBusy || !activeBusinessUnitId} className="btn-secondary py-1 text-xs"><Download className="w-3 h-3" /> Export</button>
           </div>
           <div className="overflow-x-auto">
             {isLoading ? (
@@ -272,6 +324,18 @@ export default function RadarPage() {
           businessUnits={businessUnits}
         />
       )}
+
+      <input
+        ref={uploadRef}
+        type="file"
+        accept=".xlsx,.xls"
+        className="hidden"
+        onChange={(e) => {
+          const file = e.target.files?.[0]
+          if (file) importRisks(file)
+          e.currentTarget.value = ''
+        }}
+      />
     </AppLayout>
   )
 }
