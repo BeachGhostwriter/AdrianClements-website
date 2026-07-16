@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "public": true,
   "builds": [
     {
       "src": "**/*",
@@ -7,6 +8,26 @@
     }
   ],
   "routes": [
+    {
+      "src": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "core.adrian-clements.com"
+        }
+      ],
+      "dest": "/core/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "core.adrian-clements.com"
+        }
+      ],
+      "dest": "/core/$1"
+    },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }

@@ -3,34 +3,218 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Core Application</title>
+    <title>CORE Portal | Adrian Clements</title>
+    <meta name="description" content="Secure access point for the CORE application on core.adrian-clements.com." />
     <style>
-      body { font-family: Segoe UI, Arial, sans-serif; margin: 0; background: #f7fbf8; color: #223127; }
-      .wrap { max-width: 720px; margin: 80px auto; padding: 32px; background: white; border-radius: 16px; box-shadow: 0 14px 30px rgba(0,0,0,0.08); }
-      input { width: 100%; padding: 12px; margin-top: 10px; border: 1px solid #cfe4d2; border-radius: 8px; }
-      button { margin-top: 16px; padding: 10px 16px; border: none; border-radius: 8px; background: #2f6b3d; color: white; cursor: pointer; }
-      .hint { color: #5d6d5f; font-size: 0.95rem; margin-top: 10px; }
-      .error { color: #b13b3b; margin-top: 12px; }
+      :root {
+        --ink: #10243d;
+        --teal: #0e6f73;
+        --sand: #f0e9de;
+        --sunset: #d78a42;
+        --paper: #f8f7f3;
+        --panel: #ffffff;
+        --text: #1b2a35;
+        --muted: #5f6f7a;
+        --danger: #b23f3f;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 80% -10%, rgba(215,138,66,0.22), transparent 45%),
+          radial-gradient(circle at 10% 20%, rgba(14,111,115,0.2), transparent 42%),
+          var(--paper);
+      }
+
+      .shell {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+
+      .hero {
+        padding: 64px 56px;
+        background: linear-gradient(160deg, var(--ink), #1c3955 55%, var(--teal));
+        color: #f5f8fb;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        right: -120px;
+        top: -100px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(215,138,66,0.42), transparent 66%);
+      }
+
+      .kicker {
+        display: inline-block;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 0.78rem;
+        color: rgba(245,248,251,0.78);
+        margin-bottom: 14px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2rem, 4vw, 3.25rem);
+        line-height: 1.08;
+      }
+
+      .hero p {
+        max-width: 560px;
+        color: rgba(245,248,251,0.88);
+        margin-top: 18px;
+      }
+
+      .pills {
+        margin-top: 22px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .pill {
+        border: 1px solid rgba(245,248,251,0.34);
+        border-radius: 999px;
+        padding: 7px 12px;
+        font-size: 0.84rem;
+      }
+
+      .login-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 34px;
+      }
+
+      .panel {
+        width: min(460px, 100%);
+        background: var(--panel);
+        border: 1px solid #d8e1e4;
+        border-radius: 18px;
+        box-shadow: 0 26px 54px rgba(16, 36, 61, 0.15);
+        padding: 28px;
+      }
+
+      .panel h2 {
+        margin: 0;
+        color: var(--ink);
+      }
+
+      .panel p {
+        margin-top: 8px;
+        color: var(--muted);
+      }
+
+      label {
+        display: block;
+        margin-top: 16px;
+        font-weight: 600;
+        font-size: 0.92rem;
+      }
+
+      input {
+        width: 100%;
+        margin-top: 7px;
+        border: 1px solid #c8d4db;
+        border-radius: 10px;
+        padding: 11px 12px;
+        font-size: 0.95rem;
+      }
+
+      .submit {
+        width: 100%;
+        margin-top: 16px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(140deg, var(--teal), #1f5e83);
+        color: #ffffff;
+        font-weight: 700;
+        padding: 12px;
+        cursor: pointer;
+      }
+
+      .hint {
+        margin-top: 12px;
+        font-size: 0.86rem;
+        color: var(--muted);
+      }
+
+      .error {
+        min-height: 22px;
+        margin-top: 6px;
+        font-size: 0.9rem;
+        color: var(--danger);
+      }
+
+      .success {
+        color: #22643f;
+      }
+
+      @media (max-width: 980px) {
+        .shell { grid-template-columns: 1fr; }
+        .hero { padding: 46px 24px; }
+        .login-wrap { padding: 24px; }
+      }
     </style>
   </head>
   <body>
-    <div class="wrap">
-      <h1>Core Application</h1>
-      <p>This area is password protected.</p>
-      <input id="password" type="password" placeholder="Enter password" />
-      <button onclick="checkPassword()">Access</button>
-      <div class="hint">Hint: use your approved access code.</div>
-      <div id="error" class="error"></div>
-    </div>
+    <main class="shell">
+      <section class="hero" aria-label="CORE portal hero">
+        <span class="kicker">core.adrian-clements.com</span>
+        <h1>CORE Portal for Risk Intelligence and Strategic Oversight</h1>
+        <p>This subdomain is dedicated to CORE access. Sign in on the right to continue to the protected application workspace.</p>
+        <div class="pills">
+          <span class="pill">Secure access</span>
+          <span class="pill">Risk analytics</span>
+          <span class="pill">Framework execution</span>
+        </div>
+      </section>
+
+      <section class="login-wrap" aria-label="CORE sign in">
+        <div class="panel">
+          <h2>Sign in to CORE</h2>
+          <p>Use your approved credentials to open the application.</p>
+
+          <label for="userid">User ID</label>
+          <input id="userid" type="text" placeholder="admin@core-platform.com" autocomplete="username" />
+
+          <label for="password">Password</label>
+          <input id="password" type="password" placeholder="Enter password" autocomplete="current-password" />
+
+          <button class="submit" type="button" onclick="checkPassword()">Access CORE</button>
+          <div class="hint">Credential check is currently client-side for static hosting.</div>
+          <div id="status" class="error" aria-live="polite"></div>
+        </div>
+      </section>
+    </main>
+
     <script>
       function checkPassword() {
+        const userid = document.getElementById('userid').value.trim().toLowerCase();
         const pass = document.getElementById('password').value;
-        if (pass === 'Core2026') {
-          document.getElementById('error').textContent = '';
-          window.location.href = 'https://example.com/core';
-        } else {
-          document.getElementById('error').textContent = 'Incorrect password.';
+        const status = document.getElementById('status');
+
+        if (userid === 'admin@core-platform.com' && pass === 'Admin123!') {
+          status.textContent = 'Access granted. Redirecting...';
+          status.classList.add('success');
+          window.setTimeout(function () {
+            window.location.href = '/core/app.html';
+          }, 350);
+          return;
         }
+
+        status.classList.remove('success');
+        status.textContent = 'Invalid user ID or password.';
       }
     </script>
   </body>
