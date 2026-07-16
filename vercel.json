@@ -3,11 +3,25 @@
   "public": true,
   "builds": [
     {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    },
+    {
       "src": "**/*",
       "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "/api/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "core.adrian-clements.com"
+        }
+      ],
+      "dest": "/api/$1"
+    },
     {
       "src": "/",
       "has": [
@@ -17,6 +31,26 @@
         }
       ],
       "dest": "/core/index.html"
+    },
+    {
+      "src": "/app",
+      "has": [
+        {
+          "type": "host",
+          "value": "core.adrian-clements.com"
+        }
+      ],
+      "dest": "/api/core-app"
+    },
+    {
+      "src": "/logout",
+      "has": [
+        {
+          "type": "host",
+          "value": "core.adrian-clements.com"
+        }
+      ],
+      "dest": "/api/core-logout"
     },
     {
       "src": "/(.*)",

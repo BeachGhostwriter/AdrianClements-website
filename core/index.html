@@ -191,31 +191,60 @@
           <label for="password">Password</label>
           <input id="password" type="password" placeholder="Enter password" autocomplete="current-password" />
 
-          <button class="submit" type="button" onclick="checkPassword()">Access CORE</button>
-          <div class="hint">Credential check is currently client-side for static hosting.</div>
+          <button id="submit" class="submit" type="button" onclick="checkPassword()">Access CORE</button>
+          <div class="hint">Credentials are verified by a secure server-side gate.</div>
           <div id="status" class="error" aria-live="polite"></div>
         </div>
       </section>
     </main>
 
     <script>
-      function checkPassword() {
+      async function checkPassword() {
         const userid = document.getElementById('userid').value.trim().toLowerCase();
         const pass = document.getElementById('password').value;
         const status = document.getElementById('status');
+        const submit = document.getElementById('submit');
 
-        if (userid === 'admin@core-platform.com' && pass === 'Admin123!') {
-          status.textContent = 'Access granted. Redirecting...';
-          status.classList.add('success');
-          window.setTimeout(function () {
-            window.location.href = '/core/app.html';
-          }, 350);
+        status.classList.remove('success');
+        status.textContent = '';
+
+        if (!userid || !pass) {
+          status.textContent = 'Enter your user ID and password.';
           return;
         }
 
-        status.classList.remove('success');
-        status.textContent = 'Invalid user ID or password.';
+        submit.disabled = true;
+        submit.textContent = 'Signing in...';
+
+        try {
+          const response = await fetch('/api/core-login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userid: userid, password: pass })
+          });
+
+          if (response.ok) {
+            status.textContent = 'Access granted. Redirecting...';
+            status.classList.add('success');
+            window.location.href = '/app';
+            return;
+          }
+
+          const payload = await response.json().catch(function () { return {}; });
+          status.textContent = payload.error || 'Invalid user ID or password.';
+        } catch (err) {
+          status.textContent = 'Unable to reach authentication service.';
+        } finally {
+          submit.disabled = false;
+          submit.textContent = 'Access CORE';
+        }
       }
+
+      document.getElementById('password').addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+          checkPassword();
+        }
+      });
     </script>
   </body>
 </html>
