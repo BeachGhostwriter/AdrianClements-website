@@ -1,17 +1,67 @@
 {
   "version": 2,
-  "functions": {
-    "api/contact.js": {
-      "runtime": "nodejs20.x"
+  "public": true,
+  "builds": [
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
     },
-    "api/core-access.js": {
-      "runtime": "nodejs20.x"
+    {
+      "src": "**/*",
+      "use": "@vercel/static"
     }
-  },
+  ],
   "routes": [
-    { "src": "/api/contact", "dest": "/api/contact.js" },
-    { "src": "/api/core-access", "dest": "/api/core-access.js" },
-    { "handle": "filesystem" },
+    {
+      "src": "/api/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "core.adrian-clements.com"
+        }
+      ],
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "core.adrian-clements.com"
+        }
+      ],
+      "dest": "/core/index.html"
+    },
+    {
+      "src": "/app",
+      "has": [
+        {
+          "type": "host",
+          "value": "core.adrian-clements.com"
+        }
+      ],
+      "dest": "/api/core-app"
+    },
+    {
+      "src": "/logout",
+      "has": [
+        {
+          "type": "host",
+          "value": "core.adrian-clements.com"
+        }
+      ],
+      "dest": "/api/core-logout"
+    },
+    {
+      "src": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "core.adrian-clements.com"
+        }
+      ],
+      "dest": "/core/$1"
+    },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }
