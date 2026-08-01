@@ -1,16 +1,11 @@
 # Neptune Water Intelligence Platform
 
 Industrial water management & sustainability investment decision support.
-Built with Python + Streamlit. Demo case: Bremen Steel Works.
+Legacy analytical source retained for reference. Demo case: Bremen Steel Works.
 
-## Quick Start (local)
+## Legacy source
 
-```bash
-pip install -r requirements.txt
-streamlit run Home.py
-```
-
-Or double-click **launch_neptune.bat** on Windows.
+The historical analytical code remains in the repository for reference, but it is no longer the public runtime. The live Neptune site is the Vercel deployment at `https://neptune.atipicgroup.com`.
 
 ## Pages
 
@@ -24,12 +19,28 @@ Or double-click **launch_neptune.bat** on Windows.
 | EBITDA Bridge | Value creation waterfall chart |
 | CapEx / OpEx | Multi-year investment plan, NPV, IRR, optimisation |
 
-## Deployment — Streamlit Community Cloud (free, shareable link)
+## Deployment — Vercel Static Site
 
-1. Push this folder to a **public GitHub repository**
-2. Go to [share.streamlit.io](https://share.streamlit.io) and sign in with GitHub
-3. Click **New app** → select your repo → set Main file = `Home.py`
-4. Click **Deploy** — your app gets a public URL like `https://yourname-neptune.streamlit.app`
+Neptune is now published directly as a static site at `https://neptune.atipicgroup.com`.
+
+1. Import this repository into Vercel.
+2. Set `neptune.atipicgroup.com` as the primary domain.
+3. Add DNS `CNAME neptune -> cname.vercel-dns.com`.
+4. Deploy the project.
+
+See root-level [DEPLOYMENT.md](../DEPLOYMENT.md) for full steps.
+
+## Login
+
+The legacy analytical source supports two login paths:
+
+- Database users from `neptune_users` (Neon/Postgres)
+- Fallback admin user via environment variables
+
+Fallback admin defaults (change in production if ever re-enabled):
+
+- Username: `admin@neptune.local` (or `admin`)
+- Password: `NeptuneAdmin2026!`
 
 ## Requirements
 

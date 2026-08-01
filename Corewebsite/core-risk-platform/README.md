@@ -110,3 +110,5 @@ R-TTS = [L(t) × I(t) × log₂(1+V) × (1+A×min(exp(αt),20))]
 
 Recommended extensions are in `.vscode/extensions.json`.
 Use `Ctrl+Shift+P` → "Tasks: Run Task" → "Dev: Start All" to launch.
+
+# Core

@@ -10,6 +10,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from utils.country_data import (
     WATER_STRESS, CLIMATE_DATA, COUNTRY_LIMITS, ALL_COUNTRIES, stress_category,
 )
+from utils.water_forecast import build_water_availability_projection
 
 st.set_page_config(page_title="Country & Region Setup | Neptune", layout="wide")
 
@@ -169,6 +170,58 @@ with col_gauge:
     )
 with col_cmp:
     st.plotly_chart(fig_bar, use_container_width=True)
+
+st.divider()
+
+# 10-year hydrology projection
+st.subheader("10-Year Hydrology Prognosis")
+projection_df = build_water_availability_projection(selected_country, years=10)
+
+fig_proj = go.Figure()
+fig_proj.add_trace(
+    go.Scatter(
+        x=projection_df["Year"],
+        y=projection_df["River Level Index"],
+        mode="lines+markers",
+        name="River level index",
+        line=dict(color="#1d4ed8", width=2),
+    )
+)
+fig_proj.add_trace(
+    go.Scatter(
+        x=projection_df["Year"],
+        y=projection_df["Aquifer Level Index"],
+        mode="lines+markers",
+        name="Aquifer level index",
+        line=dict(color="#0f766e", width=2),
+    )
+)
+fig_proj.add_trace(
+    go.Scatter(
+        x=projection_df["Year"],
+        y=projection_df["Water Availability Index"],
+        mode="lines",
+        name="Combined availability index",
+        line=dict(color="#f59e0b", width=2, dash="dash"),
+    )
+)
+fig_proj.update_layout(
+    title="Modeled river and aquifer outlook with combined availability",
+    height=360,
+    margin=dict(l=20, r=20, t=45, b=20),
+    yaxis_title="Index",
+    xaxis_title="Year",
+    paper_bgcolor="white",
+    plot_bgcolor="white",
+    font=dict(family="Arial, sans-serif", size=12),
+)
+st.plotly_chart(fig_proj, use_container_width=True)
+
+rain_avg = projection_df["Average Rainfall (mm)"].mean()
+st.caption(
+    f"Projected average rainfall across the horizon: {rain_avg:.0f} mm/year. "
+    "This forecast is an indicator model based on stress, drought and climate baselines."
+)
 
 # Copernicus reference panel
 with st.expander("Copernicus Satellite Data Reference", expanded=False):
