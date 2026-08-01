@@ -52,11 +52,11 @@
       <form id="neptuneLoginForm">
         <div class="f-group">
           <label for="neptune-email">Email Address</label>
-          <input type="email" id="neptune-email" name="email" placeholder="your@email.com" required autocomplete="username">
+          <input type="email" id="neptune-email" name="email" placeholder="your@email.com" autocomplete="username">
         </div>
         <div class="f-group">
           <label for="neptune-password">Password</label>
-          <input type="password" id="neptune-password" name="password" placeholder="••••••••" required autocomplete="current-password">
+          <input type="password" id="neptune-password" name="password" placeholder="••••••••" autocomplete="current-password">
         </div>
         <p id="neptuneLoginError" style="display:none;color:#c0392b;font-size:0.85rem;margin-bottom:1rem"></p>
         <button type="submit" class="btn-submit">Sign In →</button>
@@ -128,6 +128,12 @@
     errorEl.style.display = 'none';
     const email = document.getElementById('neptune-email').value.trim();
     const password = document.getElementById('neptune-password').value;
+
+    if (!email || !password) {
+      errorEl.textContent = 'Enter your email and password.';
+      errorEl.style.display = '';
+      return;
+    }
 
     fetch('/api/login', {
       method: 'POST',
