@@ -1,0 +1,65 @@
+import crypto from 'crypto';
+import pkg from 'pg';
+const { Pool } = pkg;
+
+export const COOKIE_NAME = 'core_session';
+const SESSION_TTL = 60 * 60 * 8;
+
+let pool;
+
+export function getPool() {
+  if (!pool) {
+    pool = new Pool({
+      connectionString: process.env.CORE_DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
+    });
+  }
+  return pool;
+}
+
+export function verifyPassword(password, stored) {
+  const [salt, hashHex] = String(stored).split(':');
+  if (!salt || !hashHex) return false;
+  const hash = crypto.scryptSync(password, salt, 64);
+  const storedBuf = Buffer.from(hashHex, 'hex');
+  if (storedBuf.length !== hash.length) return false;
+  return crypto.timingSafeEqual(storedBuf, hash);
+}
+
+export function signSession(email) {
+  const exp = Math.floor(Date.now() / 1000) + SESSION_TTL;
+  const payload = `${email}.${exp}`;
+  const secret = process.env.CORE_AUTH_SECRET;
+  const sig = crypto.createHmac('sha256', secret).update(payload).digest('hex');
+  return `${Buffer.from(payload).toString('base64url')}.${sig}`;
+}
+
+export function verifySession(token) {
+  if (!token) return null;
+  const parts = token.split('.');
+  if (parts.length !== 2) return null;
+  const [payloadB64, sig] = parts;
+  const payload = Buffer.from(payloadB64, 'base64url').toString();
+  const secret = process.env.CORE_AUTH_SECRET;
+  if (!secret) return null;
+  const expectedSig = crypto.createHmac('sha256', secret).update(payload).digest('hex');
+  const sigBuf = Buffer.from(sig);
+  const expectedBuf = Buffer.from(expectedSig);
+  if (sigBuf.length !== expectedBuf.length) return null;
+  if (!crypto.timingSafeEqual(sigBuf, expectedBuf)) return null;
+  const [email, exp] = payload.split('.');
+  if (!exp || Date.now() / 1000 > Number(exp)) return null;
+  return email;
+}
+
+export function parseCookies(header) {
+  const out = {};
+  (header || '').split(';').forEach((part) => {
+    const idx = part.indexOf('=');
+    if (idx === -1) return;
+    const key = part.slice(0, idx).trim();
+    const val = part.slice(idx + 1).trim();
+    if (key) out[key] = decodeURIComponent(val);
+  });
+  return out;
+}

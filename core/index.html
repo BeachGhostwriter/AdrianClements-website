@@ -63,6 +63,28 @@
         margin-bottom: 14px;
       }
 
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: rgba(245,248,251,0.82);
+        text-decoration: none;
+        font-size: 0.86rem;
+        font-weight: 600;
+        margin-bottom: 22px;
+        transition: color 0.16s ease, transform 0.16s ease;
+      }
+
+      .back-link:hover {
+        color: #f5f8fb;
+        transform: translateX(-2px);
+      }
+
+      .back-link:focus-visible {
+        outline: 2px solid rgba(245,248,251,0.6);
+        outline-offset: 3px;
+      }
+
       h1 {
         margin: 0;
         font-size: clamp(2rem, 4vw, 3.25rem);
@@ -170,6 +192,7 @@
   <body>
     <main class="shell">
       <section class="hero" aria-label="CORE portal hero">
+        <a class="back-link" href="https://adrian-clements.com">&larr; Back to adrian-clements.com</a>
         <span class="kicker">core.adrian-clements.com</span>
         <h1>CORE Portal for Risk Intelligence and Strategic Oversight</h1>
         <p>This subdomain is dedicated to CORE access. Sign in on the right to continue to the protected application workspace.</p>
@@ -185,37 +208,75 @@
           <h2>Sign in to CORE</h2>
           <p>Use your approved credentials to open the application.</p>
 
-          <label for="userid">User ID</label>
-          <input id="userid" type="text" placeholder="admin@core-platform.com" autocomplete="username" />
+          <label for="email">Email or User ID</label>
+          <input id="email" type="text" placeholder="admin@core-platform.com" autocomplete="username" />
 
           <label for="password">Password</label>
           <input id="password" type="password" placeholder="Enter password" autocomplete="current-password" />
 
-          <button class="submit" type="button" onclick="checkPassword()">Access CORE</button>
-          <div class="hint">Credential check is currently client-side for static hosting.</div>
+          <button id="submit" class="submit" type="button" onclick="checkPassword()">Access CORE</button>
+          <div class="hint">Credentials are verified by a secure server-side gate.</div>
           <div id="status" class="error" aria-live="polite"></div>
         </div>
       </section>
     </main>
 
     <script>
-      function checkPassword() {
-        const userid = document.getElementById('userid').value.trim().toLowerCase();
+      async function checkPassword() {
+        const email = document.getElementById('email').value.trim();
         const pass = document.getElementById('password').value;
         const status = document.getElementById('status');
+        const submit = document.getElementById('submit');
 
-        if (userid === 'admin@core-platform.com' && pass === 'Admin123!') {
-          status.textContent = 'Access granted. Redirecting...';
-          status.classList.add('success');
-          window.setTimeout(function () {
-            window.location.href = '/core/app.html';
-          }, 350);
+        status.classList.remove('success');
+        status.textContent = '';
+
+        if (!email || !pass) {
+          status.textContent = 'Enter your email and password.';
           return;
         }
 
-        status.classList.remove('success');
-        status.textContent = 'Invalid user ID or password.';
+        submit.disabled = true;
+        submit.textContent = 'Signing in...';
+
+        try {
+          const response = await fetch('/api/core-login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email, password: pass })
+          });
+
+          if (response.ok) {
+            status.textContent = 'Access granted. Redirecting...';
+            status.classList.add('success');
+            window.location.href = '/api/core-app';
+            return;
+          }
+
+          const payload = await response.json().catch(function () { return {}; });
+          status.textContent = payload.error || 'Invalid email or password.';
+        } catch (err) {
+          status.textContent = 'Unable to reach authentication service.';
+        } finally {
+          submit.disabled = false;
+          submit.textContent = 'Access CORE';
+        }
       }
+
+      document.getElementById('password').addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+          checkPassword();
+        }
+      });
+
+      fetch('/api/core-session')
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data.authenticated) {
+            window.location.href = '/api/core-app';
+          }
+        })
+        .catch(function () {});
     </script>
   </body>
 </html>

@@ -1,31 +1,28 @@
 {
   "version": 2,
-  "public": true,
   "builds": [
-    {
-      "src": "**/*",
-      "use": "@vercel/static"
-    }
+    { "src": "api/*.js", "use": "@vercel/node" },
+    { "src": "**/*", "use": "@vercel/static" }
   ],
   "routes": [
     {
+      "src": "/api/(core-[^/]+)",
+      "has": [{ "type": "host", "value": "core.adrian-clements.com" }],
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/logout",
+      "has": [{ "type": "host", "value": "core.adrian-clements.com" }],
+      "dest": "/api/core-logout"
+    },
+    {
       "src": "/",
-      "has": [
-        {
-          "type": "host",
-          "value": "core.adrian-clements.com"
-        }
-      ],
+      "has": [{ "type": "host", "value": "core.adrian-clements.com" }],
       "dest": "/core/index.html"
     },
     {
       "src": "/(.*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "core.adrian-clements.com"
-        }
-      ],
+      "has": [{ "type": "host", "value": "core.adrian-clements.com" }],
       "dest": "/core/$1"
     },
     { "src": "/(.*)", "dest": "/$1" }
