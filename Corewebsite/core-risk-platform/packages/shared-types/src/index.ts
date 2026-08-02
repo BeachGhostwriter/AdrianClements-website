@@ -155,12 +155,14 @@ export interface AuthUser {
   email: string
   name: string
   role: UserRole
+  clientCode: string
   businessUnitIds: string[]
 }
 
 export interface LoginRequest {
   email: string
   password: string
+  clientCode: string
 }
 
 export interface LoginResponse {

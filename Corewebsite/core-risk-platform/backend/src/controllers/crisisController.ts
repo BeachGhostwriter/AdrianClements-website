@@ -2,6 +2,7 @@ import { Response } from 'express'
 import { prisma } from '../config/db'
 import { AuthRequest } from '../middleware/auth'
 import { RiskCalculationService } from '../services/engines/riskCalculationService'
+import { userCanAccessBusinessUnit } from '../middleware/auth'
 
 const calcService = new RiskCalculationService()
 
@@ -20,6 +21,9 @@ export async function listCrises(req: AuthRequest, res: Response) {
 export async function createCrisis(req: AuthRequest, res: Response) {
   try {
     const data = req.body
+    if (!userCanAccessBusinessUnit(req, data.businessUnitId)) {
+      return res.status(403).json({ success: false, message: 'Forbidden for selected business unit' })
+    }
     if (!data.crisisId) {
       const count = await prisma.crisis.count({ where: { businessUnitId: data.businessUnitId } })
       data.crisisId = `C-${String(count + 1).padStart(3, '0')}`
@@ -39,6 +43,12 @@ export async function createCrisis(req: AuthRequest, res: Response) {
 
 export async function updateCrisis(req: AuthRequest, res: Response) {
   try {
+    const existing = await prisma.crisis.findUnique({ where: { id: req.params.id }, select: { businessUnitId: true } })
+    if (!existing) return res.status(404).json({ success: false, message: 'Crisis not found' })
+    if (!userCanAccessBusinessUnit(req, existing.businessUnitId)) {
+      return res.status(403).json({ success: false, message: 'Forbidden' })
+    }
+
     const data = req.body
     const computed = await calcService.computeForge({
       ...data,
@@ -55,6 +65,12 @@ export async function updateCrisis(req: AuthRequest, res: Response) {
 
 export async function deleteCrisis(req: AuthRequest, res: Response) {
   try {
+    const existing = await prisma.crisis.findUnique({ where: { id: req.params.id }, select: { businessUnitId: true } })
+    if (!existing) return res.status(404).json({ success: false, message: 'Crisis not found' })
+    if (!userCanAccessBusinessUnit(req, existing.businessUnitId)) {
+      return res.status(403).json({ success: false, message: 'Forbidden' })
+    }
+
     await prisma.crisis.delete({ where: { id: req.params.id } })
     res.json({ success: true, message: 'Crisis deleted' })
   } catch (err: any) { res.status(400).json({ success: false, message: err.message }) }

@@ -4,6 +4,7 @@ import { Activity } from 'lucide-react'
 
 export default function LoginPage() {
   const { login } = useAuth()
+  const [clientCode, setClientCode] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -12,7 +13,7 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(''); setLoading(true)
-    try { await login(email, password) }
+    try { await login(email, password, clientCode) }
     catch { setError('Invalid credentials. Please try again.') }
     finally { setLoading(false) }
   }
@@ -34,6 +35,11 @@ export default function LoginPage() {
               {error}
             </div>
           )}
+          <div>
+            <label className="label">Client code</label>
+            <input type="text" value={clientCode} onChange={e => setClientCode(e.target.value.toUpperCase())}
+              className="input" placeholder="e.g. ACME" required />
+          </div>
           <div>
             <label className="label">Email address</label>
             <input type="email" value={email} onChange={e => setEmail(e.target.value)}

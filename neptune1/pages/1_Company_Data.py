@@ -17,6 +17,11 @@ if "initialized" not in st.session_state:
     st.warning("Please visit the **Home** page first to initialise the session.")
     st.stop()
 
+if st.session_state.get("demo_data_active", False):
+    st.success("Demo dataset is active (Bremen Steel Works profile).")
+else:
+    st.info("Custom dataset is active.")
+
 # ── Company settings ──────────────────────────────────────────────────────────
 with st.expander("🏭 Site Settings", expanded=True):
     c1, c2, c3 = st.columns(3)
@@ -235,6 +240,7 @@ with tab_imp:
                         }
                 if new_p:
                     st.session_state.processes = new_p
+                    st.session_state.demo_data_active = False
                     st.success(f"Imported {len(new_p)} process rows.")
             if "Concentrations" in xl.sheet_names:
                 df_c = xl.parse("Concentrations")
@@ -251,6 +257,7 @@ with tab_imp:
                         }
                 if new_c:
                     st.session_state.contaminants = new_c
+                    st.session_state.demo_data_active = False
                     st.success("Imported concentration data.")
         except Exception as e:
             st.error(f"Import error: {e}")
@@ -275,4 +282,5 @@ if st.button("↺ Reset to Demo Data (Bremen Steel Works)"):
     st.session_state.contaminants  = {k: {c: d.copy() for c, d in v.items()}
                                        for k, v in DEFAULT_CONTAMINANTS.items()}
     st.session_state.water_sources = DEFAULT_WATER_SOURCES.copy()
+    st.session_state.demo_data_active = True
     st.rerun()

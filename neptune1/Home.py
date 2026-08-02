@@ -2,6 +2,7 @@
 
 import streamlit as st
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 import pandas as pd
 import sys, os
 import hashlib
@@ -16,6 +17,10 @@ from utils.data_models import (
 from utils.calculations import (
     annual_water_costs, recommend_treatments, treatment_capex_opex,
     material_recovery_revenue, ebitda_bridge, simple_payback,
+)
+from utils.water_forecast import (
+    build_water_availability_projection,
+    build_compliance_timeline,
 )
 
 st.set_page_config(
@@ -79,11 +84,12 @@ if not st.session_state.get(NEPTUNE_LOGIN_KEY):
     st.title("Neptune Water Intelligence")
     st.markdown("Secure login for the Neptune Streamlit application backed by a separate Neon database.")
     with st.form("neptune_login_form"):
-        login_email = st.text_input("Email address", placeholder="your@email.com")
+        login_email = st.text_input("Email", placeholder="your@email.com")
         login_password = st.text_input("Password", type="password")
         submitted = st.form_submit_button("Sign in")
     if submitted:
-        user, error = _verify_neptune_user(login_email.strip(), login_password)
+        login_identifier = login_email.strip()
+        user, error = _verify_neptune_user(login_identifier, login_password)
         if user:
             st.session_state[NEPTUNE_LOGIN_KEY] = True
             st.session_state[NEPTUNE_USER_KEY] = user
@@ -112,6 +118,7 @@ def _init():
     st.session_state.wwt_flow_m3h           = DEFAULT_SETTINGS["wwt_flow_m3h"]
     st.session_state.concentrate_flow_m3h   = DEFAULT_SETTINGS["concentrate_flow_m3h"]
     st.session_state.open_box               = None   # Grey / Blue / Brown / Red
+    st.session_state.demo_data_active       = True
     st.session_state.selected_country       = "Germany"
     # Seed with EU/Germany limits by default
     from utils.country_data import COUNTRY_LIMITS
@@ -150,11 +157,16 @@ with st.sidebar:
     st.markdown("### Neptune Platform")
     current_user = st.session_state.get(NEPTUNE_USER_KEY, {})
     if current_user:
-        st.caption(f"Signed in as {current_user.get('email', 'Neptune user')}")
+        st.caption(
+            f"Signed in as {current_user.get('email', 'Neptune user')} "
+            f"({current_user.get('role', 'viewer')})"
+        )
         if st.button("Sign out"):
             st.session_state.pop(NEPTUNE_LOGIN_KEY, None)
             st.session_state.pop(NEPTUNE_USER_KEY, None)
             st.rerun()
+    if st.session_state.get("demo_data_active", False):
+        st.success("Demo data profile is active")
     st.markdown(f"**{st.session_state.company_name}**")
     st.markdown(f"*{st.session_state.site}*")
     st.markdown("---")
@@ -527,6 +539,108 @@ k4.metric("Total Water Cost",       f"EUR {costs['total_cost_eur_yr']/1e6:.1f}M/
 k5.metric("Material Recovery",      f"EUR {total_mat_revenue/1e6:.1f}M/yr")
 k6.metric("EBITDA Improvement",     f"EUR {bridge['net_improvement']/1e6:.1f}M/yr",
           delta=f"{bridge['net_improvement']/costs['total_cost_eur_yr']*100:.0f}% of water cost")
+
+st.divider()
+
+# ── Water availability and compliance outlook ───────────────────────────────
+selected_country = st.session_state.get("selected_country", "Germany")
+projection_df = build_water_availability_projection(selected_country, years=10)
+timeline_df = build_compliance_timeline(selected_country, horizon_years=10)
+
+st.subheader("10-Year Water Availability and Compliance Outlook")
+st.caption(
+    "Forecast combines current country stress and climate profile with trend assumptions. "
+    "For site-specific precision, connect live Copernicus and local hydrology feeds."
+)
+
+forecast_col, timeline_col = st.columns([3, 2])
+
+with forecast_col:
+    fig_forecast = make_subplots(specs=[[{"secondary_y": True}]])
+    fig_forecast.add_trace(
+        go.Scatter(
+            x=projection_df["Year"],
+            y=projection_df["River Level Index"],
+            mode="lines+markers",
+            name="River level index",
+            line=dict(color="#1d4ed8", width=2),
+        ),
+        secondary_y=False,
+    )
+    fig_forecast.add_trace(
+        go.Scatter(
+            x=projection_df["Year"],
+            y=projection_df["Aquifer Level Index"],
+            mode="lines+markers",
+            name="Aquifer level index",
+            line=dict(color="#0f766e", width=2),
+        ),
+        secondary_y=False,
+    )
+    fig_forecast.add_trace(
+        go.Bar(
+            x=projection_df["Year"],
+            y=projection_df["Average Rainfall (mm)"],
+            name="Average rainfall (mm)",
+            marker_color="rgba(59,130,246,0.28)",
+        ),
+        secondary_y=True,
+    )
+    fig_forecast.update_yaxes(title_text="Water level index (0-130)", secondary_y=False)
+    fig_forecast.update_yaxes(title_text="Rainfall (mm/year)", secondary_y=True)
+    fig_forecast.update_layout(
+        height=380,
+        margin=dict(l=20, r=20, t=25, b=20),
+        legend=dict(orientation="h", y=1.08, x=0),
+        paper_bgcolor="white",
+        plot_bgcolor="white",
+        font=dict(family="Arial, sans-serif", size=12),
+    )
+    st.plotly_chart(fig_forecast, use_container_width=True)
+
+with timeline_col:
+    if timeline_df.empty:
+        st.info("No compliance milestones available for this country profile.")
+    else:
+        status_color = {
+            "Due in 12 months": "#dc2626",
+            "Near-term": "#f59e0b",
+            "Long-term": "#2563eb",
+        }
+        fig_timeline = go.Figure(
+            go.Scatter(
+                x=timeline_df["Deadline"],
+                y=timeline_df["Milestone"],
+                mode="markers+text",
+                marker=dict(
+                    size=11,
+                    color=[status_color.get(v, "#2563eb") for v in timeline_df["Status"]],
+                    line=dict(color="white", width=1),
+                ),
+                text=timeline_df["Status"],
+                textposition="middle right",
+                hovertemplate="%{y}<br>Deadline: %{x|%Y-%m-%d}<br>Status: %{text}<extra></extra>",
+            )
+        )
+        fig_timeline.update_layout(
+            title="Compliance deadline timeline",
+            height=380,
+            margin=dict(l=20, r=20, t=45, b=20),
+            paper_bgcolor="white",
+            plot_bgcolor="white",
+            xaxis_title="Deadline",
+            yaxis_title="",
+            font=dict(family="Arial, sans-serif", size=11),
+        )
+        st.plotly_chart(fig_timeline, use_container_width=True)
+
+avg_water_idx = projection_df["Water Availability Index"].mean()
+end_water_idx = projection_df.iloc[-1]["Water Availability Index"]
+trend_label = "declining" if end_water_idx < projection_df.iloc[0]["Water Availability Index"] else "stable-to-improving"
+st.info(
+    f"{selected_country}: average 10-year water availability index is {avg_water_idx:.1f}, "
+    f"with a {trend_label} outlook by year {int(projection_df.iloc[-1]['Year'])}."
+)
 
 st.divider()
 

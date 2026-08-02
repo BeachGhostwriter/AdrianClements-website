@@ -154,7 +154,10 @@ async function importCalibration(wb: XLSX.WorkBook, buId: string) {
 async function main() {
   console.log('🚀 CORE v7 Excel import starting...\n   File:', EXCEL_PATH)
   const wb = XLSX.readFile(EXCEL_PATH)
-  const hash = await bcrypt.hash(process.env.ADMIN_PASSWORD ?? 'Admin@CORE2026!', 12)
+  if (!process.env.ADMIN_PASSWORD) {
+    throw new Error('ADMIN_PASSWORD must be set in environment before import')
+  }
+  const hash = await bcrypt.hash(process.env.ADMIN_PASSWORD, 12)
   await prisma.user.upsert({
     where: { email: process.env.ADMIN_EMAIL ?? 'admin@core-platform.local' },
     create: { email: process.env.ADMIN_EMAIL ?? 'admin@core-platform.local',

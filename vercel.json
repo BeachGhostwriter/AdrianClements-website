@@ -1,4 +1,4 @@
-{
+﻿{
   "version": 2,
   "builds": [
     { "src": "api/*.js", "use": "@vercel/node" },
@@ -6,9 +6,14 @@
   ],
   "routes": [
     {
-      "src": "/api/(core-[^/]+)",
+      "src": "/api/(.*)",
       "has": [{ "type": "host", "value": "core.adrian-clements.com" }],
       "dest": "/api/$1"
+    },
+    {
+      "src": "/app",
+      "has": [{ "type": "host", "value": "core.adrian-clements.com" }],
+      "dest": "/api/core-app"
     },
     {
       "src": "/logout",

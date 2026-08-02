@@ -5,6 +5,12 @@
 import { UserRole } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { prisma } from '../config/db'
+import dotenv from 'dotenv'
+dotenv.config()
+
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@core-platform.local'
+const ADMIN_NAME = process.env.ADMIN_NAME || 'Platform Administrator'
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
 
 async function main() {
   console.log('🌱 Seeding CORE v7 database...')
@@ -21,15 +27,19 @@ async function main() {
     },
   })
 
-  // Admin user  (credentials: admin@core-platform.com / Admin123!)
-  const adminHash = await bcrypt.hash('Admin123!', 12)
+  if (!ADMIN_PASSWORD) {
+    throw new Error('ADMIN_PASSWORD must be set in environment before running seed')
+  }
+
+  // Admin user from secure environment variables
+  const adminHash = await bcrypt.hash(ADMIN_PASSWORD, 12)
   const admin = await prisma.user.upsert({
-    where:  { email: 'admin@core-platform.com' },
+    where:  { email: ADMIN_EMAIL },
     update: {},
     create: {
-      email:        'admin@core-platform.com',
+      email:        ADMIN_EMAIL,
       passwordHash: adminHash,
-      name:         'Platform Admin',
+      name:         ADMIN_NAME,
       role:         UserRole.ADMIN,
     },
   })
@@ -62,7 +72,7 @@ async function main() {
     },
   })
 
-  console.log(`✅ Admin:  ${admin.email}  /  Admin123!`)
+  console.log(`✅ Admin:  ${admin.email}`)
   console.log(`✅ BU:     ${bu.name} (${bu.code})`)
 }
 

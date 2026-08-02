@@ -6,7 +6,7 @@ import { api } from '../services/api'
 interface AuthContextType {
   user: AuthUser | null
   isLoading: boolean
-  login: (email: string, password: string) => Promise<void>
+  login: (email: string, password: string, clientCode: string) => Promise<void>
   logout: () => void
   isAdmin: boolean
   isDivisionHead: boolean
@@ -32,8 +32,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  const login = async (email: string, password: string) => {
-    const res = await api.post('/auth/login', { email, password })
+  const login = async (email: string, password: string, clientCode: string) => {
+    const res = await api.post('/auth/login', { email, password, clientCode })
     const { token, user } = res.data.data
     localStorage.setItem('core_token', token)
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`
