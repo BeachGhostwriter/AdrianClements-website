@@ -9,10 +9,10 @@ let pool;
 
 export function getPool() {
   if (!pool) {
-    pool = new Pool({
-      connectionString: process.env.CORE_DATABASE_URL,
-      ssl: { rejectUnauthorized: false },
-    });
+    const connectionString =
+      process.env.CORE_DATABASE_URL ||
+      process.env.core_database_DATABASE_URL;
+    pool = new Pool({ connectionString, ssl: { rejectUnauthorized: false } });
   }
   return pool;
 }
