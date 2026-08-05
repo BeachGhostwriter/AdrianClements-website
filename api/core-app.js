@@ -7,7 +7,7 @@ export default function handler(req, res) {
   const email = verifySession(cookies[COOKIE_NAME]);
 
   if (!email) {
-    return res.redirect(302, '/core/index.html');
+    return res.redirect(302, '/');
   }
 
   const appPath = path.join(process.cwd(), 'core', 'app.html');

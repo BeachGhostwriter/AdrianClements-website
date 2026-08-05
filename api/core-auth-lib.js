@@ -11,7 +11,8 @@ export function getPool() {
   if (!pool) {
     const connectionString =
       process.env.CORE_DATABASE_URL ||
-      process.env.core_database_DATABASE_URL;
+      process.env.core_database_DATABASE_URL ||
+      process.env.Core_database_url;
     pool = new Pool({ connectionString, ssl: { rejectUnauthorized: false } });
   }
   return pool;

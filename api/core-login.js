@@ -6,7 +6,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const dbUrl = process.env.CORE_DATABASE_URL || process.env.core_database_DATABASE_URL;
+  const dbUrl =
+    process.env.CORE_DATABASE_URL ||
+    process.env.core_database_DATABASE_URL ||
+    process.env.Core_database_url;
   if (!dbUrl || !process.env.CORE_AUTH_SECRET) {
     return res.status(500).json({ error: 'Core auth is not configured on the server.' });
   }
