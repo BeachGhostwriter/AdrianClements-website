@@ -24,7 +24,7 @@ export default async function handler(req, res) {
   try {
     const pool = getPool();
     const { rows } = await pool.query(
-      'SELECT email, name, password_hash FROM core_users WHERE lower(email) = lower($1) LIMIT 1',
+      'SELECT email, password_hash FROM core_users WHERE lower(email) = lower($1) LIMIT 1',
       [email]
     );
     const user = rows[0];
