@@ -48,7 +48,9 @@ export function verifySession(token) {
   const expectedBuf = Buffer.from(expectedSig);
   if (sigBuf.length !== expectedBuf.length) return null;
   if (!crypto.timingSafeEqual(sigBuf, expectedBuf)) return null;
-  const [email, exp] = payload.split('.');
+  const lastDot = payload.lastIndexOf('.');
+  const email = payload.slice(0, lastDot);
+  const exp = payload.slice(lastDot + 1);
   if (!exp || Date.now() / 1000 > Number(exp)) return null;
   return email;
 }
