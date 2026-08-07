@@ -23,7 +23,7 @@ export default async function handler(req, res) {
         CASE WHEN email LIKE '%+demo%' THEN 'Adrian Clements (Demo)' ELSE 'Adrian Clements' END,
         'ADMIN'::"UserRole", true, now(), now()
       FROM core_users
-      WHERE email = ANY($1::text[])
+      WHERE lower(email) = ANY(SELECT lower(unnest($1::text[])))
       ON CONFLICT (email) DO NOTHING
       RETURNING email;
       `,
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
       INSERT INTO "BusinessUnitMember" (id, "userId", "businessUnitId", "isCEO", "isRiskCoordinator", "createdAt")
       SELECT md5(random()::text || u.email), u.id, bu.id, false, true, now()
       FROM "User" u, "BusinessUnit" bu
-      WHERE u.email = ANY($1::text[]) AND bu.code = 'DEMO'
+      WHERE lower(u.email) = ANY(SELECT lower(unnest($1::text[]))) AND bu.code = 'DEMO'
       ON CONFLICT ("userId", "businessUnitId") DO NOTHING;
     `, [EMAILS]);
 
@@ -50,12 +50,20 @@ export default async function handler(req, res) {
       ON CONFLICT ("businessUnitId") DO NOTHING;
     `);
 
-    const check = await pool.query('SELECT email, role FROM "User" WHERE email = ANY($1::text[])', [EMAILS]);
+    const check = await pool.query(
+      'SELECT email, role FROM "User" WHERE lower(email) = ANY(SELECT lower(unnest($1::text[])))',
+      [EMAILS]
+    );
+    const coreUsersMatch = await pool.query(
+      'SELECT count(*)::int AS n FROM core_users WHERE lower(email) = ANY(SELECT lower(unnest($1::text[])))',
+      [EMAILS]
+    );
 
     return res.status(200).json({
       ok: true,
       usersCopiedThisRun: insertUsers.rows.map((r) => r.email),
       usersNowPresent: check.rows,
+      coreUsersMatchingCount: coreUsersMatch.rows[0].n,
     });
   } catch (err) {
     console.error('User migration error:', err);
